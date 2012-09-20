@@ -12,7 +12,7 @@ Change Log:
 v 4.4.0a
 - Added Zlib 1.2.4 support. [Leandro]
 - Completly Refactored the project. [Leandro]
-- Updated Localization. [Smaug]
+- [WIP] Updating Localization. [Smaug]
 - Updated TES4 HEDR Display. [Smaug]
 - Fixed compiler directives so EXE works on 64-bit install of Windows 7. [Smaug]
 
