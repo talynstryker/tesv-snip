@@ -9,6 +9,13 @@ Requirements:
   .NET 4.0
 
 Change Log:
+v 4.4.0a
+- Added Zlib 1.2.4 support. [Leandro]
+- Completly Refactored the project. [Leandro]
+- Updated Localization. [Smaug]
+- Updated TES4 HEDR Display. [Smaug]
+- Fixed compiler directives so EXE works on 64-bit install of Windows 7. [Smaug]
+
 v 4.3.1b
 - Backup of plugins for every save stored. (Format plugin.esp.XXX.bak where XXX is 000 to 999)
 - "File|Save" do not ask for a filename or if you want to overwrite (since we don't overwrite anymore).
@@ -257,7 +264,8 @@ Credits:
 * Crystal Project - Icons released under LGPL
 * wmrojer - For all the 4.3 and 4.3.1 Changes
 * SLuckyD - For his work on the latest RecordStructure.xml
-* Beryllium-9 - For his work on the latest RecordStructure.xml
+* Leandro Conde - For his work on 4.4.0a
+* Smaug Nogardeht - For his work on 4.4.0a
 
 License:
 * The TESsnip code is licensed under GPL so this is by extension also GPL
