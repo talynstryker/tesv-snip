@@ -16,6 +16,8 @@ namespace TESVSnip.Domain.Data.RecordStructure
 
         public readonly bool hexview;
 
+        public readonly bool hexviewwithdec;
+
         public readonly bool multiline;
 
         public readonly string name;
@@ -36,6 +38,7 @@ namespace TESVSnip.Domain.Data.RecordStructure
             this.desc = "Data";
             this.@group = 0;
             this.hexview = true;
+            this.hexviewwithdec = false;
             this.notininfo = true;
             this.optional = false;
             this.options = null;
@@ -53,6 +56,7 @@ namespace TESVSnip.Domain.Data.RecordStructure
             this.desc = node.desc;
             this.@group = node.group;
             this.hexview = node.hexview;
+            this.hexviewwithdec = node.hexviewwithdec;
             this.notininfo = node.notininfo;
             this.optional = node.optional != 0;
             this.options = node.options == null ? new string[0] : node.options.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);

@@ -799,7 +799,7 @@ namespace TESVSnip.Domain.Model
                         case ElementValueType.Short:
                         case ElementValueType.UShort:
                         case ElementValueType.Float:
-                            row.Add(new RTFCellDefinition(12, RTFAlignment.MiddleLeft, RTFBorderSide.Default, 15, Color.DarkGray, Padding.Empty));
+                            row.Add(new RTFCellDefinition(20, RTFAlignment.MiddleLeft, RTFBorderSide.Default, 15, Color.DarkGray, Padding.Empty));
                             row.Add(new RTFCellDefinition(30, RTFAlignment.MiddleLeft, RTFBorderSide.Default, 15, Color.DarkGray, Padding.Empty));
                             break;
                         case ElementValueType.Blob:
@@ -918,7 +918,10 @@ namespace TESVSnip.Domain.Model
                             {
                                 if (sselem.hexview || hasFlags)
                                 {
-                                    strValue = string.Format(string.Format("{{0:X{0}}}", elem.Data.Count * 2), value);
+                                    if (sselem.hexviewwithdec)
+                                        strValue = string.Format(string.Format("{{0:X{0}}}", elem.Data.Count * 2), value) + string.Format(" : {0}", value);
+                                    else
+                                        strValue = string.Format(string.Format("{{0:X{0}}}", elem.Data.Count * 2), value);
                                 }
                                 else
                                 {
@@ -966,7 +969,10 @@ namespace TESVSnip.Domain.Model
                             {
                                 if (sselem.hexview || hasFlags)
                                 {
-                                    strValue = string.Format(string.Format("{{0:X{0}}}", elem.Data.Count * 2), value);
+                                    if (sselem.hexviewwithdec)
+                                        strValue = string.Format(string.Format("{{0:X{0}}}", elem.Data.Count * 2), value) + string.Format(" : {0}", value);
+                                    else
+                                        strValue = string.Format(string.Format("{{0:X{0}}}", elem.Data.Count * 2), value);
                                 }
                                 else
                                 {

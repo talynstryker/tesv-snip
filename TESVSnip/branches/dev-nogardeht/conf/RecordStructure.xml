@@ -808,10 +808,10 @@
 			<Element name="Screenshot" type="blob"/>
 		</Subrecord>
 		<Subrecord name="INTV" desc="Internal Version #" optional="1">
-			<Element name="Version #" type="uint"/>
+			<Element name="Version #" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="INCC" desc="Inter Versioning Information" optional="1">
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 	</Record>
   <!-- condid="1" for GMST attached to EDID -->
