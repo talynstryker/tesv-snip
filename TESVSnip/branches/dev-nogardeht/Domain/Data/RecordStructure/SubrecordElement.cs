@@ -57,6 +57,15 @@ namespace TESVSnip.Domain.Data.RecordStructure
         public bool hexview;
 
         /// <summary>
+        /// The hexview with decimal
+        /// </summary>
+        /// <remarks>
+        /// </remarks>
+        [XmlAttribute]
+        [DefaultValue(false)]
+        public bool hexviewwithdec;   
+
+        /// <summary>
         /// The multiline.
         /// </summary>
         /// <remarks>
