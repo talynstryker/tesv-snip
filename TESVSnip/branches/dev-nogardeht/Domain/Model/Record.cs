@@ -254,18 +254,25 @@ namespace TESVSnip.Domain.Model
         {
             rb.FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 4).ForeColor(KnownColor.DarkGray).AppendLine("[Record]");
 
-            rb.Append("Type: \t").FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 2).AppendFormat("{0}", Name).AppendLine();
-            rb.Append("FormID: \t").FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 2).ForeColor(KnownColor.DarkRed).AppendFormat("{0:X8}", this.FormID).AppendLine();
-            rb.AppendLineFormat("Flags 1: \t{0:X8}", this.Flags1);
+            rb.Append("Type: ").FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 2).AppendFormat("{0}", Name).AppendLine();
+            rb.Append("FormID: ").FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 2).ForeColor(KnownColor.DarkRed).AppendFormat("{0:X8}", this.FormID).AppendLine();
+            
             if (this.Flags1 != 0)
             {
-                rb.AppendLineFormat(" ({0})", FlagDefs.GetRecFlags1Desc(this.Flags1));
+                rb.AppendLineFormat("Flags 1: {0:X8} : ({1})", this.Flags1, FlagDefs.GetRecFlags1Desc(this.Flags1));
             }
+            else
+                rb.AppendLineFormat("Flags 1: {0:X8}", this.Flags1);
 
-            rb.AppendLineFormat("Flags 2: \t{0:X8}", this.Flags2);
-            rb.AppendLineFormat("Flags 3: \t{0:X8}", this.Flags3);
-            rb.AppendLineFormat("Size: \t{0:N0}", this.Size);
-            rb.AppendLineFormat("Subrecords:\t{0}", this.SubRecords.Count);
+            //rb.AppendLineFormat("OLD --> Flags 3: \t{0:X8}", this.Flags3);
+            rb.AppendLineFormat("Version Control Info: {0:X8}", this.Flags2);
+
+            //rb.AppendLineFormat("OLD --> Flags 3: \t{0:X8}", this.Flags3);
+            rb.AppendLineFormat("Flags 2: {0:X4}", (this.Flags3 >> 16));
+            rb.AppendLineFormat("Form Version: {0:X4} : {1}", ((this.Flags3 << 16) >> 16), ((this.Flags3 << 16) >> 16));
+
+            rb.AppendLineFormat("Size: {0:N0}", this.Size);
+            rb.AppendLineFormat("Subrecords: {0}", this.SubRecords.Count);
             rb.AppendPara();
         }
 
