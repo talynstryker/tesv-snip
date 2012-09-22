@@ -892,6 +892,12 @@ del "$(TargetDir)Lang\resgen.exe"</PostBuildEvent>
     <Content Include="conf\settings.xml">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="README.TXT">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="LICENSE">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <inputAssemblies Include="$(TargetPath)" />
     <inputAssemblies Include="$(TargetDir)\*.dll" />
     <CopyToStaging Include="$(ProjectDir)\LICENSE" />
