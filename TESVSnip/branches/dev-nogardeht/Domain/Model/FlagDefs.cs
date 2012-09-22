@@ -4,9 +4,9 @@ namespace TESVSnip.Domain.Model
     {
         public static readonly string[] RecFlags1 =
             {
-                "ESM file", null, null, null, null, "Deleted", null, "Localized", null, "Casts shadows", "Quest item / Persistent reference", "Initially disabled"
-                , "Ignored", null, null, "Visible when distant", "Is full LOD", "Dangerous / Off limits (Interior cell)", "Data is compressed", "Can't wait", null
-                , null, null, null, null, null, null, null, null, null, null, null, 
+                "ESM file", null, null, null, null, "Deleted", "Constant/HiddenFromLocalMap/BorderRegion/HasTreeLOD", "Localized/IsPerch/AddOnLODObject/TurnOffFire/TreatSpellsAsPowers", "MustUpdateAnims/Inaccessible/DoesntLightWater", "HiddenFromLocalMap/StartsDead/MotionBlurCastsShadows", "PersistentReference/QuestItem/DisplaysInMainMenu", "Initially disabled"
+                , "Ignored", null, null, "Visible when distant", "RandomAnimationStart/NeverFades/IsfullLOD", "Dangerous/OffLimits(Interior cell)/DoesntLightLandscape/HighDetailLOD/CanHoldNPC", "Compressed", "CantWait/HasCurrents", "IgnoreObjectInteraction"
+                , null, null, "IsMarker", null, "Obstacle/NoAIAcquire", "NavMeshFilter", "NavMeshBoundingBox", "MustExitToTalk/ShowInWorldMap", "ChildCanUse/DontHavokSettle", "NavMeshGround NoRespawn", "MultiBound", 
             };
 
         public static string GetRecFlags1Desc(uint flags)
