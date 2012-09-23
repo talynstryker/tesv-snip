@@ -158,7 +158,7 @@ condition (optional): If it exists, a given value is compared the value of a pie
 
 condid (required if condition is used): An integer id that must match up with a previous and unique condid attribute.
 
-condvalue (required if condition is used): The value to compare against in a comparison and, condvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value"$01", 'float', 'formid', 'string'.
+condvalue (required if condition is used): The value to compare against in a comparison and, condvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value of "$01", '0.9500', '0x08D545', '1.023', 'Building'.
 
 XXXXXXXXXXXXXXX
 XXX Element XXX
@@ -195,7 +195,7 @@ elmcondition: Performs the same task as the Subrecord attribute, but with the fo
 
 elmcondid: Performs the same task as the Subrecord attribute, but with the following exception: An integer, used to match up with the elmcondid in a conditional Element. A value greater than 0 tells tessnip that this Element will be compared later within an Element or Subrecord block. Defaults to 0 if omitted.
 
-elmcondvalue (required if elmcondition is used): Performs the same task as the subrecord attribute.  The value to compare against in a comparison and, elmcondvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value"$01", 'float', 'formid', 'string'.
+elmcondvalue (required if elmcondition is used): Performs the same task as the subrecord attribute.  The value to compare against in a comparison and, elmcondvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value of "$01", '0.9500', '0x08D545', '1.023', 'Building'.
 
 XXXXXXXXXXXXXXXXXXXXXXXX
 XXX Script Functions XXX
