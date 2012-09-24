@@ -244,7 +244,7 @@
     <value>False</value>
   </data>
   <data name="pasteNewToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+Alt+V</value>
+    <value>Ctrl+Shift+V</value>
   </data>
   <data name="pasteNewToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>226, 22</value>
@@ -358,7 +358,7 @@
     <value>Find in Records...</value>
   </data>
   <data name="findToolStripMenuItem.ShortcutKeys" type="System.Windows.Forms.Keys, System.Windows.Forms">
-    <value>Ctrl+Alt+F</value>
+    <value>Ctrl+Shift+F</value>
   </data>
   <data name="findToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>226, 22</value>
