@@ -130,7 +130,7 @@
 				<Element name="Object Name" type="istring" optional="1"/>
 				<Element name="TextureSet" type="formid" reftype="TXST" optional="1"/>
 				<Element name="Object Index" type="uint" optional="1"/>
-				<Element name="(rest of data)" type="blob"/>
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="DSTF" desc="Unknown" optional="1"/>
 			<Group id="MODS" optional="1"/>
@@ -483,7 +483,7 @@
 			<Element name="(standard buffer)" type="ushort" hexview="1" optional="1"/>
 			<Element name="(standard buffer)" type="uint" hexview="1" optional="1"/>
 			<Element name="FormID" type="formid" optional="1"/>
-			<Element name="(additional prop data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			<!-- Snip can't repeat element data yet -->
 		</Subrecord>
 	</Group>
@@ -940,16 +940,13 @@
 		<!-- XNAM, PLVD, DATA and flags need finishing -->
 		<Group id="EDID" optional="1"/>
 		<Group id="FULL" optional="1"/>
-		<Subrecord name="XNAM" desc="(FACT)" optional="1" repeat="1">
+    <Subrecord name="XNAM" desc="(FACT)" optional="1" repeat="1">
 			<Element name="FormID" type="formid" reftype="FACT"/>
-			<Element name="Unknown uint 1" type="uint"/>
-			<Element name="Unknown uint 2" type="uint"/>
+			<Element name="Modifier" type="int"/>
+			<Element name="Group Combat Reaction" type="uint" hexview="1" hexviewwithdec="1" options="Neutral;0;Enemy;1;Ally;2;Friend;3"/>
 		</Subrecord>
 		<Subrecord name="DATA" desc="Check-Boxes">
-			<Element name="General/Crime Tabs" type="byte" options="Hidden from PC;2;4;8;16;32;Track Crime;Murder;256;512"/>
-			<Element name="VendorBox/IgnoreCrime" type="byte" flags="Assault;Stealing;Trespass;8;16;Pickpocket;Vendor;128;256;512"/>
-			<Element name="IgnoreCrime" type="byte" options="Werewolf;1"/>
-			<Element name="Unknown" type="byte"/>
+			<Element name="Flags" type="uint" flags="Hidden From NPC;Special Combat;Unknown 3;Unknown 4;Unknown 5;Unknown 6;Track Crime;Ignore Crimes: Murder;Ignore Crimes: Assult;Ignore Crimes: Stealing;Ignore Crimes: Trespass;Do Not Report Crimes Against Members;Crime Gold - Use Defaults;Ignore Crimes: Pickpocket;Vendor;Can Be Owner;Ignore Crimes: Werewolf;Unknown 18;Unknown 19;Unknown 20;Unknown 21;Unknown 22;Unknown 23;Unknown 24;Unknown 25;Unknown 26;Unknown 27;Unknown 28;Unknown 29;Unknown 30;Unknown 31;Unknown 32"/>
 		</Subrecord>
 		<Subrecord name="JAIL" desc="Exterior Jail Marker (REFR)" optional="1">
 			<Element name="REFR FormID" type="formid" reftype="REFR"/>
@@ -970,8 +967,8 @@
 			<Element name="OTFT FormID" type="formid" reftype="OTFT"/>
 		</Subrecord>
 		<Subrecord name="CRVA" desc="Crime Gold Values">
-			<Element name="Arrest" type="byte" options="Off;0;On;1"/>
-			<Element name="Attack on Sight" type="byte" options="Off;0;On;1"/>
+			<Element name="Arrest" type="byte" options="False;0;True;1"/>
+			<Element name="Attack on Sight" type="byte" options="False;0;True;1"/>
 			<Element name="Murder" type="ushort"/>
 			<Element name="Assault" type="ushort"/>
 			<Element name="Trespass" type="ushort"/>
@@ -992,6 +989,9 @@
 			<Subrecord name="FNAM" desc="Female Rank Name" optional="1">
 				<Element name="Name" type="lstring"/>
 			</Subrecord>
+			<Subrecord name="INAM" desc="Insignia (Unused)" optional="1">
+				<Element name="Name" type="string"/>
+			</Subrecord>
 		</Group>
 		<Subrecord name="VEND" desc="Vendor Buy/Sell List (FLST)" optional="1">
 			<Element name="FLST FormID" type="formid" reftype="FLST"/>
@@ -1003,15 +1003,15 @@
 			<Element name="Start Hour" type="ushort"/>
 			<Element name="End Hour" type="ushort"/>
 			<Element name="Radius" type="ushort"/>
-			<Element name="Unknown" type="ushort"/>
-			<Element name="Only Buys Stolen Items" type="byte" options="Off;0;On;1"/>
-			<Element name="Not Sell/Buy" type="byte" options="Off;0;On;1"/>
-			<Element name="Unknown" type="ushort"/>
+			<Element name="Unknown 1" type="ushort"/>
+			<Element name="Only Buys Stolen Items" type="byte" options="False;0;True;1"/>
+			<Element name="Not Sell/Buy" type="byte" options="False;0;True;1"/>
+			<Element name="Unknown 2" type="ushort"/>
 		</Subrecord>
 		<Subrecord name="PLVD" desc="Service-Related" optional="1">
-			<Element name="Unknown uint 1" type="uint" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="REFR FormID" type="formid"/>
-			<Element name="Unknown uint 2" type="uint"/>
+			<Element name="Unknown uint 1" type="uint" options="Near reference;0;In cell;1;Near package start location;2;Near editor location;3;Object ID;4;Object Type;5;Near linked reference;6;At package location;7;Alias (reference);8;Alias (location);9;Unknown 10;10;Unknown 11;11;Near self;12"/>
+			<Element name="FormID" type="formid"/>
+			<Element name="Radius" type="int"/>
 		</Subrecord>
 		<Group optional="1">
 			<!-- Conditionals -->
@@ -1378,12 +1378,14 @@
 		<Group id="MDOB" optional="1"/>
 		<Group id="KEYWORDS" optional="1"/>
 		<Subrecord name="DATA" desc="Effect Data" optional="1">
-			<Element name="Check-Boxes" type="uint" flags="Hostile;Recover;Detrimental;3;No Hit Event;5;6;7;Dispel Events;No Duration;No Magnitude;No Area;FX Persist;No Recast;Gory Visuals;Hide in UI;16;17;18;19;20;Power Affects Magnitude;Power Affects Duration;23;24;25;Painless;No Hit Effect;No Death Dispel;29;Ward;31"/>
+			<Element name="Check-Boxes" type="uint" flags="Hostile;Recover;Detrimental;Snap to Navmesh;No Hit Event;Unknown 6;Unknown 7;Unknown 8;Dispell with Keywords;No Duration;No Magnitude;No Area;FX Persist;Unknown 14;Gory Visuals;Hide in UI;Unknown 17;No Recast;Unknown 19;Unknown 20;Unknown 21;Power Affects Magnitude;Power Affects Duration;Unknown 24;Unknown 25;Unknown 26;Painless;No Hit Effect;No Death Dispel;Unknown 30;Unknown 31;Unknown 32"/>
 			<Element name="Base Cost" type="float"/>
-			<Element name="Assoc Item 1 SPEL FormID" type="formid" reftype="SPEL"/>
-			<Element name="Magic Skill" type="uint" options="None;-1;OneHanded;6;TwoHanded;7;Marksman;8;Block;9;Smithing;10;HeavyArmor;11;LightArmor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speechcraft;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Fame;60;Infamy;61"/>
-			<Element name="Resistance" type="uint" options="DamageResist;39;PoisonResist;40;FireResist;41;ElectricResist;42;FrostResist;43;MagicResist;44;DiseaseResist;45;NormalWeaponsResist;164;None;-1;Zero;0;"/>
-			<Element name="Unknown" type="uint" hexview="1" desc="(always 72 73 00 00)"/>
+			<Element name="Assoc Item 1 SPEL FormID" type="formid"/>
+      <!-- wbActorValueEnum -->
+			<Element name="Magic Skill" type="int" hexview="1" hexviewwithdec="1" options="None;-1;Aggresion;0;Confidence;1;Energy;2;Morality;3;Mood;4;Assistance;5;One-Handed;6;Two-Handed;7;Archery;8;Block;9;Smithing;10;Heavy Armor;11;Light Armor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speech;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Health;24;Magicka;25;Stamina;26;Heal Rate;27;Magicka Rate;28;Stamina Rate;29;Speed Mult;30;Inventory Weight;31;Carry Weight;32;Critical Chance;33;Melee Damage;34;Unarmed Damage;35;Mass;36;Voice Points;37;Voice Rate;38;Damage Resist;39;Poison Resist;40;Resist Fire;41;Resist Shock;42;Resist Frost;43;Resist Magic;44;Resist Disease;45;Unknown 46;46;Unknown 47;47;Unknown 48;48;Unknown 49;49;Unknown 50;50;Unknown 51;51;Unknown 52;52;Paralysis;53;Invisibility;54;Night Eye;55;Detect Life Range;56;Water Breathing;57;Water Walking;58;Unknown 59;59;Fame;60;Infamy;61;Jumping Bonus;62;Ward Power;63;Right Item Charge;64;Armor Perks;65;Shield Perks;66;Ward Deflection;67;Variable01;68;Variable02;69;Variable03;70;Variable04;71;Variable05;72;Variable06;73;Variable07;74;Variable08;75;Variable09;76;Variable10;77;Bow Speed Bonus;78;Favor Active;79;Favors Per Day;80;Favors Per Day Timer;81;Left Item Charge;82;Absorb Chance;83;Blindness;84;Weapon Speed Mult;85;Shout Recovery Mult;86;Bow Stagger Bonus;87;Telekinesis;88;Favor Points Bonus;89;Last Bribed Intimidated;90;Last Flattered;91;Movement Noise Mult;92;Bypass Vendor Stolen Check;93;Bypass Vendor Keyword Check;94;Waiting For Player;95;One-Handed Modifier;96;Two-Handed Modifier;97;Marksman Modifier;98;Block Modifier;99;Smithing Modifier;100;Heavy Armor Modifier;101;Light Armor Modifier;102;Pickpocket Modifier;103;Lockpicking Modifier;104;Sneaking Modifier;105;Alchemy Modifier;106;Speechcraft Modifier;107;Alteration Modifier;108;Conjuration Modifier;109;Destruction Modifier;110;Illusion Modifier;111;Restoration Modifier;112;Enchanting Modifier;113;One-Handed Skill Advance;114;Two-Handed Skill Advance;115;Marksman Skill Advance;116;Block Skill Advance;117;Smithing Skill Advance;118;Heavy Armor Skill Advance;119;Light Armor Skill Advance;120;Pickpocket Skill Advance;121;Lockpicking Skill Advance;122;Sneaking Skill Advance;123;Alchemy Skill Advance;124;Speechcraft Skill Advance;125;Alteration Skill Advance;126;Conjuration Skill Advance;127;Destruction Skill Advance;128;Illusion Skill Advance;129;Restoration Skill Advance;130;Enchanting Skill Advance;131;Left Weapon Speed Multiply;132;Dragon Souls;133;Combat Health Regen Multiply;134;One-Handed Power Modifier;135;Two-Handed Power Modifier;136;Marksman Power Modifier;137;Block Power Modifier;138;Smithing Power Modifier;139;Heavy Armor Power Modifier;140;Light Armor Power Modifier;141;Pickpocket Power Modifier;142;Lockpicking Power Modifier;143;Sneaking Power Modifier;144;Alchemy Power Modifier;145;Speechcraft Power Modifier;146;Alteration Power Modifier;147;Conjuration Power Modifier;148;Destruction Power Modifier;149;Illusion Power Modifier;150;Restoration Power Modifier;151;Enchanting Power Modifier;152;Dragon Rend;153;Attack Damage Mult;154;Heal Rate Mult;155;Magicka Rate Mult;156;Stamina Rate Mult;157;Werewolf Perks;158;Vampire Perks;159;Grab Actor Offset;160;Grabbed;161;Unknown 162;162;Reflect Damage;163"/>
+      <!-- wbActorValueEnum -->
+			<Element name="Resist Value" type="int" hexview="1" hexviewwithdec="1" options="None;-1;Aggresion;0;Confidence;1;Energy;2;Morality;3;Mood;4;Assistance;5;One-Handed;6;Two-Handed;7;Archery;8;Block;9;Smithing;10;Heavy Armor;11;Light Armor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speech;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Health;24;Magicka;25;Stamina;26;Heal Rate;27;Magicka Rate;28;Stamina Rate;29;Speed Mult;30;Inventory Weight;31;Carry Weight;32;Critical Chance;33;Melee Damage;34;Unarmed Damage;35;Mass;36;Voice Points;37;Voice Rate;38;Damage Resist;39;Poison Resist;40;Resist Fire;41;Resist Shock;42;Resist Frost;43;Resist Magic;44;Resist Disease;45;Unknown 46;46;Unknown 47;47;Unknown 48;48;Unknown 49;49;Unknown 50;50;Unknown 51;51;Unknown 52;52;Paralysis;53;Invisibility;54;Night Eye;55;Detect Life Range;56;Water Breathing;57;Water Walking;58;Unknown 59;59;Fame;60;Infamy;61;Jumping Bonus;62;Ward Power;63;Right Item Charge;64;Armor Perks;65;Shield Perks;66;Ward Deflection;67;Variable01;68;Variable02;69;Variable03;70;Variable04;71;Variable05;72;Variable06;73;Variable07;74;Variable08;75;Variable09;76;Variable10;77;Bow Speed Bonus;78;Favor Active;79;Favors Per Day;80;Favors Per Day Timer;81;Left Item Charge;82;Absorb Chance;83;Blindness;84;Weapon Speed Mult;85;Shout Recovery Mult;86;Bow Stagger Bonus;87;Telekinesis;88;Favor Points Bonus;89;Last Bribed Intimidated;90;Last Flattered;91;Movement Noise Mult;92;Bypass Vendor Stolen Check;93;Bypass Vendor Keyword Check;94;Waiting For Player;95;One-Handed Modifier;96;Two-Handed Modifier;97;Marksman Modifier;98;Block Modifier;99;Smithing Modifier;100;Heavy Armor Modifier;101;Light Armor Modifier;102;Pickpocket Modifier;103;Lockpicking Modifier;104;Sneaking Modifier;105;Alchemy Modifier;106;Speechcraft Modifier;107;Alteration Modifier;108;Conjuration Modifier;109;Destruction Modifier;110;Illusion Modifier;111;Restoration Modifier;112;Enchanting Modifier;113;One-Handed Skill Advance;114;Two-Handed Skill Advance;115;Marksman Skill Advance;116;Block Skill Advance;117;Smithing Skill Advance;118;Heavy Armor Skill Advance;119;Light Armor Skill Advance;120;Pickpocket Skill Advance;121;Lockpicking Skill Advance;122;Sneaking Skill Advance;123;Alchemy Skill Advance;124;Speechcraft Skill Advance;125;Alteration Skill Advance;126;Conjuration Skill Advance;127;Destruction Skill Advance;128;Illusion Skill Advance;129;Restoration Skill Advance;130;Enchanting Skill Advance;131;Left Weapon Speed Multiply;132;Dragon Souls;133;Combat Health Regen Multiply;134;One-Handed Power Modifier;135;Two-Handed Power Modifier;136;Marksman Power Modifier;137;Block Power Modifier;138;Smithing Power Modifier;139;Heavy Armor Power Modifier;140;Light Armor Power Modifier;141;Pickpocket Power Modifier;142;Lockpicking Power Modifier;143;Sneaking Power Modifier;144;Alchemy Power Modifier;145;Speechcraft Power Modifier;146;Alteration Power Modifier;147;Conjuration Power Modifier;148;Destruction Power Modifier;149;Illusion Power Modifier;150;Restoration Power Modifier;151;Enchanting Power Modifier;152;Dragon Rend;153;Attack Damage Mult;154;Heal Rate Mult;155;Magicka Rate Mult;156;Stamina Rate Mult;157;Werewolf Perks;158;Vampire Perks;159;Grab Actor Offset;160;Grabbed;161;Unknown 162;162;Reflect Damage;163"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="CastingLight LIGH FormID" type="formid" reftype="LIGH"/>
 			<Element name="Taper Weight" type="float" desc="Somehow controls the tapering of the spell over time, 0-1 typically"/>
 			<Element name="HitShader EFSH FormID" type="formid" reftype="EFSH"/>
@@ -1394,13 +1396,16 @@
 			<Element name="Taper Curve (this # div by 100)" type="float" desc="Somehow affects the tapering of spell duration, 0-2 typically"/>
 			<Element name="Taper Duration" type="float" desc="Controls how fast the duration tapers off assumably, 0-5 typically"/>
 			<Element name="SecondAV Weight" type="float" desc="Only valid if SecondAV is set, typical values of 0-2"/>
-			<Element name="Effect Archetype" type="uint" desc="The basic type of effect to apply (0-44)." options="Value Mod;0;Script;1;Dispel;2;Cure Disease;3;Absorb(PrimaryAV);4;Dual Value Mod;5;Calm;6;Demoralize(Confidence);7;Frenzy;8;Disarm;9;Command Summoned;10;Invisibility;11;Light;12;13;13;14;14;Lock;15;Open;16;Bound Weapon;17;SummonCreature;18;DetectLife;19;Telekinesis;20;Paralysis;21;Reanimate;22;Soul Trap;23;Turn Undead(Confidence);24;Guide(Hazard:Used only by Clairvoyance);25;Werewolf Feed;26;Cure Paralysis;27;Cure Addiction;28;Cure Poison;29;Concussion;30;Value and Parts(PrimaryAV is used, not used in game);31;Accumulate Magnitude;32;Stagger;33;Peak Value Mod(PrimaryAV and SecondAV select which actor value to modify, note that SecondAVWeight is not used);34;Cloak(RelatedID is a spell (only some spells supported, either/both hand?));35;Werewolf(DisablesCharacterMenus)(RelatedID is a race);36;Slow Time;37;Rally;38;Enhance Weapon(RelatedID is an enchantment);39;SpawnHazard;40;Etherealize;41;Banish(Confidence);42;Spawn Scripted Ref;43;Disguise;44;"/>
-			<Element name="Primary AVIF affected" type="uint" options="Health;24;Magicka;25;Stamina;26;HealRate;27;MagickaRate;28;StaminaRate;29;SpeedMult;30;InventoryWeight;31;CarryWeight;32;MeleeDamage;34;UnarmedDamage;35;Mass;36;VoiceRate;38;OneHanded;6;TwoHanded;7;Marksman;8;Block;9;Smithing;10;HeavyArmor;11;LightArmor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speechcraft;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Fame;60;Infamy;61;Aggression;0;Confidence;1;Energy;2;Morality;3;Mood;4;Assistance;5;DragonRend;33;VoicePoints;37;DamageResist;39;PoisonResist;40;FireResist;41;ElectricResist;42;FrostResist;43;MagicResist;44;DiseaseResist;45;NormalWeaponsResist;164;None;-1;WeaponSpeedMult;85;ShoutRecoveryMult;86;BowStaggerBonus;87;AbsorbChance;83;SlowTime Variable (0.5= 25%,0.25=50%);78;Blindness;84;MovementNoiseMult;92;OneHandedMod;96;TwoHandedMod;97;MarksmanMod;98;BlockMod;99;SmithingMod;100;HeavyArmorMod;101;LightArmorMod;102;PickPocketMod;103;LockpickingMod;104;SneakMod;105;AlchemyMod;106;SpeechcraftMod;107;AlterationMod;108;ConjurationMod;109;DestructionMod;110;IllusionMod;111;RestorationMod;112;EnchantingMod;113;LeftWeaponSpeedMult;132;ReflectDamage;163;AttackDamageMult;154;WaterWalking;58;WaterBreathing;57;DetectLifeRange;56;NightEye;55;Invisibility;54;Paralysis;53;"/>
+			<!-- wbMGEFType -->
+      <Element name="Effect Archetype" type="uint" desc="The basic type of effect to apply (0-44)." options="Value Modifier;0;Script;1;Dispel;2;Cure Disease;3;Absorb;4;Dual Value Modifier;5;Calm;6;Demoralize;7;Frenzy;8;Disarm;9;Command Summoned;10;Invisibility;11;Light;12;Unknown 13;13;Unknown 14;14;Lock;15;Open;16;Bound Weapon;17;Summon Creature;18;Detect Life;19;Telekinesis;20;Paralysis;21;Reanimate;22;Soul Trap;23;Turn Undead;24;Guide;25;Werewolf Feed;26;Cure Paralysis;27;Cure Addiction;28;Cure Poison;29;Concussion;30;Value and Parts;31;Accumulate Magnitude;32;Stagger;33;Peak Value Modifier;34;Cloak;35;Werewolf;36;Slow Time;37;Rally;38;Enhance Weapon;39;Spawn Hazard;40;Etherealize;41;Banish;42;Spawn Scripted Ref;43;Disguise;44;Grab Actor;46;Vampire Lord;47"/>
+      <!-- wbActorValueEnum -->
+			<Element name="Actor Value" type="int" hexview="1" hexviewwithdec="1" options="None;-1;Aggresion;0;Confidence;1;Energy;2;Morality;3;Mood;4;Assistance;5;One-Handed;6;Two-Handed;7;Archery;8;Block;9;Smithing;10;Heavy Armor;11;Light Armor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speech;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Health;24;Magicka;25;Stamina;26;Heal Rate;27;Magicka Rate;28;Stamina Rate;29;Speed Mult;30;Inventory Weight;31;Carry Weight;32;Critical Chance;33;Melee Damage;34;Unarmed Damage;35;Mass;36;Voice Points;37;Voice Rate;38;Damage Resist;39;Poison Resist;40;Resist Fire;41;Resist Shock;42;Resist Frost;43;Resist Magic;44;Resist Disease;45;Unknown 46;46;Unknown 47;47;Unknown 48;48;Unknown 49;49;Unknown 50;50;Unknown 51;51;Unknown 52;52;Paralysis;53;Invisibility;54;Night Eye;55;Detect Life Range;56;Water Breathing;57;Water Walking;58;Unknown 59;59;Fame;60;Infamy;61;Jumping Bonus;62;Ward Power;63;Right Item Charge;64;Armor Perks;65;Shield Perks;66;Ward Deflection;67;Variable01;68;Variable02;69;Variable03;70;Variable04;71;Variable05;72;Variable06;73;Variable07;74;Variable08;75;Variable09;76;Variable10;77;Bow Speed Bonus;78;Favor Active;79;Favors Per Day;80;Favors Per Day Timer;81;Left Item Charge;82;Absorb Chance;83;Blindness;84;Weapon Speed Mult;85;Shout Recovery Mult;86;Bow Stagger Bonus;87;Telekinesis;88;Favor Points Bonus;89;Last Bribed Intimidated;90;Last Flattered;91;Movement Noise Mult;92;Bypass Vendor Stolen Check;93;Bypass Vendor Keyword Check;94;Waiting For Player;95;One-Handed Modifier;96;Two-Handed Modifier;97;Marksman Modifier;98;Block Modifier;99;Smithing Modifier;100;Heavy Armor Modifier;101;Light Armor Modifier;102;Pickpocket Modifier;103;Lockpicking Modifier;104;Sneaking Modifier;105;Alchemy Modifier;106;Speechcraft Modifier;107;Alteration Modifier;108;Conjuration Modifier;109;Destruction Modifier;110;Illusion Modifier;111;Restoration Modifier;112;Enchanting Modifier;113;One-Handed Skill Advance;114;Two-Handed Skill Advance;115;Marksman Skill Advance;116;Block Skill Advance;117;Smithing Skill Advance;118;Heavy Armor Skill Advance;119;Light Armor Skill Advance;120;Pickpocket Skill Advance;121;Lockpicking Skill Advance;122;Sneaking Skill Advance;123;Alchemy Skill Advance;124;Speechcraft Skill Advance;125;Alteration Skill Advance;126;Conjuration Skill Advance;127;Destruction Skill Advance;128;Illusion Skill Advance;129;Restoration Skill Advance;130;Enchanting Skill Advance;131;Left Weapon Speed Multiply;132;Dragon Souls;133;Combat Health Regen Multiply;134;One-Handed Power Modifier;135;Two-Handed Power Modifier;136;Marksman Power Modifier;137;Block Power Modifier;138;Smithing Power Modifier;139;Heavy Armor Power Modifier;140;Light Armor Power Modifier;141;Pickpocket Power Modifier;142;Lockpicking Power Modifier;143;Sneaking Power Modifier;144;Alchemy Power Modifier;145;Speechcraft Power Modifier;146;Alteration Power Modifier;147;Conjuration Power Modifier;148;Destruction Power Modifier;149;Illusion Power Modifier;150;Restoration Power Modifier;151;Enchanting Power Modifier;152;Dragon Rend;153;Attack Damage Mult;154;Heal Rate Mult;155;Magicka Rate Mult;156;Stamina Rate Mult;157;Werewolf Perks;158;Vampire Perks;159;Grab Actor Offset;160;Grabbed;161;Unknown 162;162;Reflect Damage;163"/>
 			<Element name="Projectile PROJ FormID" type="formid" reftype="PROJ"/>
 			<Element name="Explosion EXPL FormID" type="formid" reftype="EXPL"/>
 			<Element name="Casting Type" type="uint" options="Constant Effect;0;Fire and Forget;1;Concentrate;2"/>
 			<Element name="Delivery" type="uint" options="Self;0;Contact;1;Aimed;2;Target Actor;3;Target Location;4"/>
-			<Element name="Secondary AVIF affected" type="uint" options="Health;24;Magicka;25;Stamina;26;HealRate;27;MagickaRate;28;StaminaRate;29;SpeedMult;30;InventoryWeight;31;CarryWeight;32;MeleeDamage;34;UnarmedDamage;35;Mass;36;VoiceRate;38;OneHanded;6;TwoHanded;7;Marksman;8;Block;9;Smithing;10;HeavyArmor;11;LightArmor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speechcraft;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Fame;60;Infamy;61;Aggression;0;Confidence;1;Energy;2;Morality;3;Mood;4;Assistance;5;DragonRend;33;VoicePoints;37;DamageResist;39;PoisonResist;40;FireResist;41;ElectricResist;42;FrostResist;43;MagicResist;44;DiseaseResist;45;NormalWeaponsResist;164;None;-1;WeaponSpeedMult;85;ShoutRecoveryMult;86;BowStaggerBonus;87;AbsorbChance;83;SlowTime Variable (0.5=25%,0.25=50%);78;Blindness;84;MovementNoiseMult;92;OneHandedMod;96;TwoHandedMod;97;MarksmanMod;98;BlockMod;99;SmithingMod;100;HeavyArmorMod;101;LightArmorMod;102;PickPocketMod;103;LockpickingMod;104;SneakMod;105;AlchemyMod;106;SpeechcraftMod;107;AlterationMod;108;ConjurationMod;109;DestructionMod;110;IllusionMod;111;RestorationMod;112;EnchantingMod;113;LeftWeaponSpeedMult;132;ReflectDamage;163;AttackDamageMult;154;WaterWalking;58;WaterBreathing;57;DetectLifeRange;56;NightEye;55;Invisibility;54;Paralysis;53;"/>
+      <!-- wbActorValueEnum -->
+			<Element name="Second Actor Value" type="int" hexview="1" hexviewwithdec="1" options="None;-1;Aggresion;0;Confidence;1;Energy;2;Morality;3;Mood;4;Assistance;5;One-Handed;6;Two-Handed;7;Archery;8;Block;9;Smithing;10;Heavy Armor;11;Light Armor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speech;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Health;24;Magicka;25;Stamina;26;Heal Rate;27;Magicka Rate;28;Stamina Rate;29;Speed Mult;30;Inventory Weight;31;Carry Weight;32;Critical Chance;33;Melee Damage;34;Unarmed Damage;35;Mass;36;Voice Points;37;Voice Rate;38;Damage Resist;39;Poison Resist;40;Resist Fire;41;Resist Shock;42;Resist Frost;43;Resist Magic;44;Resist Disease;45;Unknown 46;46;Unknown 47;47;Unknown 48;48;Unknown 49;49;Unknown 50;50;Unknown 51;51;Unknown 52;52;Paralysis;53;Invisibility;54;Night Eye;55;Detect Life Range;56;Water Breathing;57;Water Walking;58;Unknown 59;59;Fame;60;Infamy;61;Jumping Bonus;62;Ward Power;63;Right Item Charge;64;Armor Perks;65;Shield Perks;66;Ward Deflection;67;Variable01;68;Variable02;69;Variable03;70;Variable04;71;Variable05;72;Variable06;73;Variable07;74;Variable08;75;Variable09;76;Variable10;77;Bow Speed Bonus;78;Favor Active;79;Favors Per Day;80;Favors Per Day Timer;81;Left Item Charge;82;Absorb Chance;83;Blindness;84;Weapon Speed Mult;85;Shout Recovery Mult;86;Bow Stagger Bonus;87;Telekinesis;88;Favor Points Bonus;89;Last Bribed Intimidated;90;Last Flattered;91;Movement Noise Mult;92;Bypass Vendor Stolen Check;93;Bypass Vendor Keyword Check;94;Waiting For Player;95;One-Handed Modifier;96;Two-Handed Modifier;97;Marksman Modifier;98;Block Modifier;99;Smithing Modifier;100;Heavy Armor Modifier;101;Light Armor Modifier;102;Pickpocket Modifier;103;Lockpicking Modifier;104;Sneaking Modifier;105;Alchemy Modifier;106;Speechcraft Modifier;107;Alteration Modifier;108;Conjuration Modifier;109;Destruction Modifier;110;Illusion Modifier;111;Restoration Modifier;112;Enchanting Modifier;113;One-Handed Skill Advance;114;Two-Handed Skill Advance;115;Marksman Skill Advance;116;Block Skill Advance;117;Smithing Skill Advance;118;Heavy Armor Skill Advance;119;Light Armor Skill Advance;120;Pickpocket Skill Advance;121;Lockpicking Skill Advance;122;Sneaking Skill Advance;123;Alchemy Skill Advance;124;Speechcraft Skill Advance;125;Alteration Skill Advance;126;Conjuration Skill Advance;127;Destruction Skill Advance;128;Illusion Skill Advance;129;Restoration Skill Advance;130;Enchanting Skill Advance;131;Left Weapon Speed Multiply;132;Dragon Souls;133;Combat Health Regen Multiply;134;One-Handed Power Modifier;135;Two-Handed Power Modifier;136;Marksman Power Modifier;137;Block Power Modifier;138;Smithing Power Modifier;139;Heavy Armor Power Modifier;140;Light Armor Power Modifier;141;Pickpocket Power Modifier;142;Lockpicking Power Modifier;143;Sneaking Power Modifier;144;Alchemy Power Modifier;145;Speechcraft Power Modifier;146;Alteration Power Modifier;147;Conjuration Power Modifier;148;Destruction Power Modifier;149;Illusion Power Modifier;150;Restoration Power Modifier;151;Enchanting Power Modifier;152;Dragon Rend;153;Attack Damage Mult;154;Heal Rate Mult;155;Magicka Rate Mult;156;Stamina Rate Mult;157;Werewolf Perks;158;Vampire Perks;159;Grab Actor Offset;160;Grabbed;161;Unknown 162;162;Reflect Damage;163"/>
 			<Element name="CastingArt ARTO FormID" type="formid" reftype="ARTO"/>
 			<Element name="HitEffectArt ARTO FormID" type="formid" reftype="ARTO"/>
 			<Element name="ImpactDataSet IPDS FormID" type="formid" reftype="IPDS"/>
@@ -1416,6 +1421,9 @@
 			<Element name="Sound Volume" type="uint" options="Loud;0;Normal;1;Silent;2;Very Loud;3"/>
 			<Element name="ScriptEffect AIData Score" type="float"/>
 			<Element name="ScriptEffect AIData Delay" type="float"/>
+		</Subrecord>
+		<Subrecord name="ESCE" desc="Counter Effects" optional="1">
+			<Element name="Effect" type="formid" reftype="MGEF" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="SNDD" desc="Sounds" optional="1">
 			<Element name="Sound Type" type="uint" options="Sheathe/Draw;0;Charge;1;Ready;2;Release;3;Concentration Cast Loop;4;On Hit;5"/>
@@ -2352,7 +2360,7 @@
 			<Element name="s" type="ushort"/>
 			<Element name="s" type="ushort"/>
 			<Element name="s510" type="ushort"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Record>
 	<Record name="SCOL" desc="(EMPTY/Legacy)"/>
@@ -2435,7 +2443,7 @@
 		<!-- Snip doesn't support arranging this yet -->
 		<Group id="KEYWORDS" optional="1"/>
 		<Subrecord name="PNAM" desc="(legacy)" optional="1">
-			<Element name="(always 0)" type="uint"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="RNAM" desc="Activate Text Override" optional="1">
 			<!-- localized -->
@@ -4329,7 +4337,7 @@
 			<Element name="WTHR FormID" type="formid" reftype="WTHR"/>
 			<Element name="% Chance (0-100)" type="uint"/>
 			<Element name="Global GMST FormID" type="formid" reftype="GMST"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="FNAM" desc="Sun Texture (DDS)" optional="1">
 			<Element name="Path\Filename" type="string"/>
@@ -4418,7 +4426,7 @@
 				<Element name="Vertex Y" type="float"/>
 				<Element name="Vertex X" type="float"/>
 				<Element name="Vertex Y" type="float"/>
-				<Element name="(rest of data)" type="blob"/>
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 		</Group>
 		<Group optional="1" repeat="1">
@@ -4534,7 +4542,7 @@
 				<Element name="PaintVertexColor G" type="byte"/>
 				<Element name="PaintVertexColor B" type="byte"/>
 				<Element name="PaintVertex %ofRadius" type="byte"/>
-				<Element name="(rest of data)" type="blob"/>
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="RDMO" desc="Music Type (MUSC)" optional="1">
 				<Element name="MUSC FormID" type="formid" reftype="MUSC"/>
@@ -4556,7 +4564,7 @@
 				<Element name="Unknown" type="byte"/>
 				<Element name="Unknown" type="ushort"/>
 				<Element name="% Chance (0-1)" type="float"/>
-				<Element name="(rest of data)" type="blob"/>
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="RDWT" desc="Weather tab" optional="1">
 				<!-- Snip can't do element-groups yet -->
@@ -4572,7 +4580,7 @@
 				<Element name="WTHR FormID" type="formid" reftype="WTHR"/>
 				<Element name="% Chance (0-100)" type="uint"/>
 				<Element name="Global GMST FormID" type="formid" reftype="GMST"/>
-				<Element name="(rest of data)" type="blob"/>
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="RDGS" desc="Grass tab" optional="1">
 				<!-- Snip can't do element-groups yet -->
@@ -4588,7 +4596,7 @@
 				<Element name="(buffer/legacy?)" type="float"/>
 				<Element name="GRAS FormID" type="formid" reftype="GRAS"/>
 				<Element name="(buffer/legacy?)" type="float"/>
-				<Element name="(rest of data)" type="blob"/>
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="RDMP" desc="Map Name (Map tab)" optional="1">
 				<!-- localized -->
@@ -4617,7 +4625,7 @@
 			<Element name="(always A5E9A03C)" type="uint" hexview="1"/>
 			<Element name="Linked-To NAVM or CELL FormID" type="formid"/>
 			<Element name="Cell-Grid or CELL FormID" type="uint" hexview="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NVPP" desc="Cumulative NavMesh Data" optional="1">
 			<Element name="Unknown" type="blob"/>
@@ -4873,7 +4881,7 @@
 			<Element name="" type="byte"/>
 			<Element name="2,32" type="byte"/>
 			<Element name="3,1" type="byte"/>
-			<Element name="(rest of data to 32,32)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="XCLL" desc="Interior Cell Lighting" optional="1">
 			<!-- 2 unknown floats -->
@@ -5054,7 +5062,7 @@
 			<Element name="b" type="byte"/>
 			<Element name="b" type="byte"/>
 			<Element name="b" type="byte"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Group id="FULL" optional="1"/>
 		<!-- localized -->
@@ -6864,7 +6872,7 @@
 			<Element name="Blur Blur Radius (0-7)" type="float" optional="1"/>
 			<Element name="f(always 0-1)" type="float" optional="1"/>
 			<Element name="f(always 0-1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="VNAM" desc="Double Vision Strength" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -6875,7 +6883,7 @@
 			<Element name="Double Vision Strength (0-1)" type="float" optional="1"/>
 			<Element name="f(always 0-1)" type="float" optional="1"/>
 			<Element name="f(always 0-1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="TNAM" desc="Tint (#x255)" optional="1">
 			<!-- color calc, #x255 like MATO -->
@@ -6899,7 +6907,7 @@
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NAM3" desc="Fade (#x255)" optional="1">
 			<!-- color calc, #x255 like MATO -->
@@ -6923,7 +6931,7 @@
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="RNAM" desc="Radial Blur Strength" optional="1">
 			<Element name="f(always 0)" type="float"/>
@@ -6954,7 +6962,7 @@
 			<Element name="f(always 0)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="SNAM" desc="Radial Blur Rampup" optional="1">
 			<Element name="f(always 0)" type="float"/>
@@ -6977,7 +6985,7 @@
 			<Element name="f(always 0)" type="float"/>
 			<Element name="f(always 0)" type="float"/>
 			<Element name="f(always 0)" type="float"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="UNAM" desc="Radial Blur Start" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -6988,7 +6996,7 @@
 			<Element name="Start (0-10)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0-1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NAM1" desc="Radial Blur Rampdown" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -6999,7 +7007,7 @@
 			<Element name="Rampdown (0-100)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0-1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NAM2" desc="Radial Blur Downstart" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7010,7 +7018,7 @@
 			<Element name="Downstart (0-10)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(0, 1.1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="WNAM" desc="Depth of Field Strength" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7021,7 +7029,7 @@
 			<Element name="Strength (0-10)" type="float" optional="1"/>
 			<Element name="(always 0/1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="XNAM" desc="Depth of Field Distance" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7032,7 +7040,7 @@
 			<Element name="Distance (0-100000)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="YNAM" desc="Depth of Field Range" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7043,7 +7051,7 @@
 			<Element name="Range (1-10000)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NAM4" desc="FullScreen Motion Blur Strength" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7054,7 +7062,7 @@
 			<Element name="Strength (0-10)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x0;IAD" desc="HDR Eye Adapt Speed Multiply" optional="1">
 			<!-- *** Snip doesn't properly display this subrecord's name; character not supported? -->
@@ -7066,7 +7074,7 @@
 			<Element name="Eye Adapt Speed Multiply" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="@IAD" desc="HDR Eye Adapt Speed Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7077,7 +7085,7 @@
 			<Element name="Eye Adapt Speed" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x1;IAD" desc="HDR Bloom Blur Radius Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7088,7 +7096,7 @@
 			<Element name="Bloom Blur Radius" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="AIAD" desc="HDR Bloom Blur Radius Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7099,7 +7107,7 @@
 			<Element name="Bloom Blur Radius" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x2;IAD" desc="Bloom Threshold Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7110,7 +7118,7 @@
 			<Element name="Bloom Threshold" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="BIAD" desc="Bloom Threshold Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7121,7 +7129,7 @@
 			<Element name="Bloom Threshold" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x3;IAD" desc="Bloom Scale Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7132,7 +7140,7 @@
 			<Element name="Bloom Scale" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="CIAD" desc="Bloom Scale Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7143,7 +7151,7 @@
 			<Element name="Bloom Scale" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x4;IAD" desc="Target Lum Min Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7154,7 +7162,7 @@
 			<Element name="Target Lum Min" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="DIAD" desc="Target Lum Min Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7165,7 +7173,7 @@
 			<Element name="Target Lum Min" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x5;IAD" desc="Target Lum Max Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7176,7 +7184,7 @@
 			<Element name="Target Lum Max" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="EIAD" desc="Target Lum Max Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7187,7 +7195,7 @@
 			<Element name="Target Lum Max" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x6;IAD" desc="Sunlight Scale Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7198,7 +7206,7 @@
 			<Element name="Sunlight Scale" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="FIAD" desc="Sunlight Scale Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7209,7 +7217,7 @@
 			<Element name="Sunlight Scale" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x7;IAD" desc="Sky Scale Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7220,7 +7228,7 @@
 			<Element name="Sky Scale" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="GIAD" desc="Sky Scale Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7231,7 +7239,7 @@
 			<Element name="Sky Scale" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x8;IAD" desc="&amp;#x8;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7242,7 +7250,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="HIAD" desc="HIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7253,7 +7261,7 @@
 			<Element name="f(always 0)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x9;IAD" desc="&amp;#x9;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7264,7 +7272,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="IIAD" desc="IIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7275,7 +7283,7 @@
 			<Element name="i(always 0)" type="uint" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#xA;IAD" desc="&amp;#xA;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7286,7 +7294,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="JIAD" desc="JIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7297,7 +7305,7 @@
 			<Element name="i(always 0)" type="uint" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#xB;IAD" desc="&amp;#xB;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7308,7 +7316,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="KIAD" desc="KIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7319,7 +7327,7 @@
 			<Element name="f(always 0)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#xC;IAD" desc="&amp;#xC;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7330,7 +7338,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="LIAD" desc="LIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7341,7 +7349,7 @@
 			<Element name="f(always 0)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#xD;IAD" desc="&amp;#xD;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7352,7 +7360,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="MIAD" desc="MIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7363,7 +7371,7 @@
 			<Element name="f(always 0)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#xE;IAD" desc="&amp;#xE;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7374,7 +7382,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NIAD" desc="NIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7385,7 +7393,7 @@
 			<Element name="i(always 0)" type="uint" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#xF;IAD" desc="&amp;#xF;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7396,7 +7404,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="OIAD" desc="OIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7407,7 +7415,7 @@
 			<Element name="i(always 0)" type="uint" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x10;IAD" desc="&amp;#x10;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7418,7 +7426,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="PIAD" desc="PIAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7429,7 +7437,7 @@
 			<Element name="i(always 0)" type="uint" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="i(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x11;IAD" desc="Cinematic Saturation Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7440,7 +7448,7 @@
 			<Element name="Saturation" type="float" optional="1"/>
 			<Element name="(.9, 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="QIAD" desc="Cinematic Saturation Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7451,7 +7459,7 @@
 			<Element name="Saturation" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 0)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x12;IAD" desc="Cinematic Brightness Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7462,7 +7470,7 @@
 			<Element name="Brightness" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="RIAD" desc="Cinematic Brightness Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7473,7 +7481,7 @@
 			<Element name="Brightness" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(-.1 to 1.5)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x13;IAD" desc="Cinematic Contrast Multiply" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7484,7 +7492,7 @@
 			<Element name="Contrast" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="SIAD" desc="Cinematic Contrast Add" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -7495,7 +7503,7 @@
 			<Element name="Contrast" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="f(.15, .2)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="&amp;#x14;IAD" desc="&amp;#x14;IAD" optional="1">
 			<Element name="i(always 0)" type="uint"/>
@@ -7506,7 +7514,7 @@
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
 			<Element name="f(always 1)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="TIAD" desc="TIAD" optional="1">
 			<Element name="(always 0)" type="uint"/>
@@ -7517,7 +7525,7 @@
 			<Element name="(always 0)" type="float" optional="1"/>
 			<Element name="(always 1)" type="float" optional="1"/>
 			<Element name="(always 0)" type="uint" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<!-- Snip cannot correctly display the previous -->
 	</Record>
@@ -10113,7 +10121,7 @@
 			<Element name="Cue Point (sec)" type="float" optional="1"/>
 			<Element name="Cue Point (sec)" type="float" optional="1"/>
 			<Element name="Cue Point (sec)" type="float" optional="1"/>
-			<Element name="(rest of data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Group id="CONDITIONAL" optional="1" repeat="1"/>
 		<Subrecord name="SNAM" desc="Palette Tracks (MUST)" optional="1">
