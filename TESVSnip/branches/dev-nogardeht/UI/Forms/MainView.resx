@@ -1437,7 +1437,7 @@
     <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>TESsnip (Skyrim edition)</value>
+    <value>TESsnip 4.4.0a(Skyrim edition)</value>
   </data>
   <data name="&gt;&gt;fileToolStripMenuItem.Name" xml:space="preserve">
     <value>fileToolStripMenuItem</value>
