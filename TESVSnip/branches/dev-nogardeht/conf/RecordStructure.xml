@@ -113,8 +113,10 @@
 			</Subrecord>
 			<Subrecord name="DMDT" desc="Replacer Alternative DDSs" optional="1">
 				<!-- same as MODT -->
-				<Element name="(# of tex?)" type="uint"/>
-				<Element name="Localized names of DDSs" type="blob"/>
+			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Total # of Textures Used by Model" type="uint"/>
+			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="DMDS" desc="Alternate TexData for Replacer Model" optional="1">
 				<Element name="# of Textures" type="uint"/>
@@ -185,7 +187,7 @@
 			<Element name="Unknown" type="uint" hexview="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
 			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1" optional="1" repeat="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Group id="MODS" optional="1"/>
 		<Subrecord name="MODD" desc="FaceGen Model Flags" optional="1">
@@ -197,7 +199,7 @@
 			<Element name="Unknown" type="uint" hexview="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
 			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1" optional="1" repeat="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="MO3Textures" desc="Model Texture Data (DDS referenced in NIF)">
@@ -205,7 +207,7 @@
 			<Element name="Unknown" type="uint" hexview="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
 			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1" optional="1" repeat="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="MO4Textures" desc="Model Texture Data (DDS referenced in NIF)">
@@ -213,7 +215,7 @@
 			<Element name="Unknown" type="uint" hexview="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
 			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1" optional="1" repeat="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="MO5Textures" desc="Model Texture Data (DDS referenced in NIF)">
@@ -221,7 +223,7 @@
 			<Element name="Unknown" type="uint" hexview="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
 			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1" optional="1" repeat="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
   <Group id="POSDATA">
@@ -586,12 +588,12 @@
 	</Group>
 	<!-- apparently OBND may be linked to collision or could be legacy data (almost always 0s); non-zero OBND- AMMO/some arrows, ACTI, CONT, ? -->
 	<!-- untested/finished repeating groupings -->
-	<Group id="TINTING" optional="1" repeat="1">
+	<Group id="TINTING" optional="1">
 		<!-- TINP -->
-		<Subrecord name="TINI" desc="Tint Index #">
+		<Subrecord name="TINI" desc="Tint Index #" optional="1">
 			<Element name="Index #" type="ushort"/>
 		</Subrecord>
-		<Subrecord name="TINT" desc="Tint Texture">
+		<Subrecord name="TINT" desc="Tint Texture" optional="1">
 			<Element name="Path\FileName" type="string"/>
 		</Subrecord>
 		<Subrecord name="TINP" desc="Tint Part?" optional="1">
@@ -601,7 +603,7 @@
 			<Element name="CLFM FormID" type="formid" reftype="CLFM"/>
 		</Subrecord>
 		<Group optional="1" repeat="1">
-			<Subrecord name="TINC" desc="Tint Color (CLFM)">
+			<Subrecord name="TINC" desc="Tint Color (CLFM)" optional="1">
 				<Element name="CLFM FormID" type="formid" reftype="CLFM"/>
 			</Subrecord>
 			<Subrecord name="TINV" desc="Tint Alpha" optional="1">
@@ -1590,17 +1592,18 @@
 			<Element name="FormID" type="formid" reftype="ENCH" />
 		</Subrecord>
 		<!-- insert -->
-		<Group id="MODEL" optional="1"/>
 		<Subrecord name="MOD2" desc="Male world model" optional="1">
 			<Element name="Model Filename" type="string" />
 		</Subrecord>
     <Group id="MO2Textures" optional="1"/>
 		<Group id="Model2S" optional="1"/>
+    <Group id="ICONIMAGE" optional="1"/>
 		<Subrecord name="MOD4" desc="Female Ground Model Path" optional="1">
 			<Element name="Model Path 4" type="string" />
 		</Subrecord>
     <Group id="MO4Textures" optional="1"/>
 		<Group id="Model4S" optional="1"/>
+    <Group id="ICONIMAGE" optional="1"/>
 		<Group id="BODYDATA" optional="1"/>
 		<Group id="DESTRUCT" optional="1"/>
 		<Group id="SOUNDS" optional="1"/>
@@ -2535,6 +2538,10 @@
 		<Group id="KEYWORDS" optional="1"/>
 		<Group id="DESC" optional="1"/>
 		<!-- localized -->
+		<Subrecord name="MOD3" desc="Female Biped Model (NIF)" optional="1">
+			<Element name="Path\Filename" type="string"/>
+		</Subrecord>
+    <Group id="MO3Textures" optional="1"/>
 		<Subrecord name="NNAM" desc="Embedded Weapon" optional="1">
 			<Element name="Node Name" type="string"/>
 		</Subrecord>
@@ -2593,7 +2600,7 @@
 			<Element name="Check-boxes2" type="ushort" flags="PlayerOnly;NPCsUseAmmo;NoJamAfterReload;8;Minor Crime;FixedRange;NotUsedInNormCombat;128;256;512"/>
 			<Element name="Check-boxes3" type="ushort" flags="Don'tUse3rdPersISAnim;BurstShot;AlternateFiringRumble;LongBursts;NonHostile;BoundWeapon;64;128;256;512"/>
 			<Element name="Animation Attack Multiplier" type="float"/>
-			<Element name="Unknown (always 0-5?)" type="uint" hexview="1"/>
+			<Element name="Unknown Float" type="float"  hexview="1" hexviewwithdec="1"/>
 			<Element name="Firing Rumble LeftMotor Strength" type="float"/>
 			<Element name="Firing Rumble RightMotor Strength" type="float"/>
 			<Element name="Firing Rumble Duration" type="float"/>
@@ -4810,7 +4817,7 @@
 			<Element name="s" type="ushort"/>
 			<Element name="s" type="ushort"/>
 			<Element name="s" type="ushort"/>
-			<Element name="(rest is 0s)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="MHDT" desc="Hand-Modified Height Data (by vertex)?" optional="1">
 			<Element name="max" type="ushort"/>
