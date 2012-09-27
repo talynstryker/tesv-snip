@@ -2600,7 +2600,7 @@
 			<Element name="Check-boxes2" type="ushort" flags="PlayerOnly;NPCsUseAmmo;NoJamAfterReload;8;Minor Crime;FixedRange;NotUsedInNormCombat;128;256;512"/>
 			<Element name="Check-boxes3" type="ushort" flags="Don'tUse3rdPersISAnim;BurstShot;AlternateFiringRumble;LongBursts;NonHostile;BoundWeapon;64;128;256;512"/>
 			<Element name="Animation Attack Multiplier" type="float"/>
-			<Element name="Unknown Float" type="float"  hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown Float" type="float"/>
 			<Element name="Firing Rumble LeftMotor Strength" type="float"/>
 			<Element name="Firing Rumble RightMotor Strength" type="float"/>
 			<Element name="Firing Rumble Duration" type="float"/>
