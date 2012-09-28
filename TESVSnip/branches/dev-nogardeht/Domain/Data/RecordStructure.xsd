@@ -18,6 +18,7 @@
             <xs:attribute name="type" type="xs:string" />
             <xs:attribute name="options" type="xs:string" />
             <xs:attribute name="hexview" type="xs:boolean"  default="false" />
+            <xs:attribute name="hexviewwithdec" type="xs:boolean"  default="false" />
             <xs:attribute name="reftype" type="xs:string"  default="" />
             <xs:attribute name="multiline" type="xs:boolean"  default="false" />
             <xs:attribute name="condid" type="xs:int"  default="0" />
