@@ -5290,7 +5290,15 @@
 		<Subrecord name="XRGD" desc="Ragdoll Data" optional="1" >
 			<Element name="Unknown" type="blob" />
 		</Subrecord>
- 		<Group id="XPRM" optional="1"/>
+    <Group id="XMBOPattern1" optional="1">
+      <Subrecord name="XMBO" desc="Object Bounds" optional="1">
+        <Element name="x1" type="float" />
+        <Element name="y1" type="float" />
+        <Element name="z1" type="float" />
+      </Subrecord>
+      <Group id="XPRM" optional="1"/>
+    </Group>
+    <Group id="XPRM" optional="1"/>
     <!--            -->
     <Group id="Pattern1" optional="1">
       <Group id="XEMI" optional="1"/>
@@ -5477,10 +5485,42 @@
 				<Element name="Count" type="uint"/>
 			</Subrecord>
 			<Subrecord name="XPPA" desc="XPPA" optional="1" />
-			<Subrecord name="XPOD" desc="Portal Destination (REFR)" optional="1" >
-				<Element name="Origin FormID" type="formid" reftype="REFR"/>
-				<Element name="Destination FormID" type="formid" reftype="REFR"/>
-			</Subrecord>
+        <Group id="XPODPattern1" optional="1">
+          <Subrecord name="XPOD" desc="Portal Destination (REFR)" optional="1" >
+            <Element name="Origin FormID" type="formid" reftype="REFR"/>
+            <Element name="Destination FormID" type="formid" reftype="REFR"/>
+          </Subrecord>
+          <Subrecord name="XPTL" desc="Portal Destination (REFR)" optional="1" >
+            <Element name="(XPRM) Bounds from Origin X" type="float"/>
+            <Element name="(XPRM) Bounds from Origin Z" type="float"/>
+            <Element name="Unknown 3" type="float"/>
+            <Element name="Unknown 4" type="float"/>
+            <Element name="Unknown 5" type="float"/>
+            <Element name="(XPRM) Bounds from Origin Y" type="float"/>
+            <Element name="Red" type="float" desc="Multiply by 255"/>
+            <Element name="Green" type="float" desc="Multiply by 255"/>
+            <Element name="Blue" type="float" desc="Multiply by 255"/>
+            <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+          </Subrecord>
+        </Group>
+        <Group id="XPODPattern2" optional="1">
+          <Subrecord name="XPTL" desc="Portal Destination (REFR)" optional="1" >
+            <Element name="(XPRM) Bounds from Origin X" type="float"/>
+            <Element name="(XPRM) Bounds from Origin Z" type="float"/>
+            <Element name="Unknown 3" type="float"/>
+            <Element name="Unknown 4" type="float"/>
+            <Element name="Unknown 5" type="float"/>
+            <Element name="(XPRM) Bounds from Origin YUnknown 6" type="float"/>
+            <Element name="Red" type="float" desc="Multiply by 255"/>
+            <Element name="Green" type="float" desc="Multiply by 255"/>
+            <Element name="Blue" type="float" desc="Multiply by 255"/>
+            <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+          </Subrecord>
+          <Subrecord name="XPOD" desc="Portal Destination (REFR)" optional="1" >
+            <Element name="Origin FormID" type="formid" reftype="REFR"/>
+            <Element name="Destination FormID" type="formid" reftype="REFR"/>
+          </Subrecord>
+        </Group>
 			<Subrecord name="XRMR" desc="Reference Marker" optional="1">
 				<Element name="Count?" type="ushort"/>
 				<Element name="Flags?" type="ushort"/>
