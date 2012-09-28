@@ -154,7 +154,7 @@ usehexeditor (optional): If present and set to a value of "true" the subrecord w
 
 NOTE: If the subrecord block uses a condition then the condition should be evaluated against condid (Subrecord) or elmcondid (Element) then [condition] and [condvalue] are evaluated.
 
-condition (optional): If it exists, a given value is compared the value of a piece of data in a previous subrecord. If the comparison returns false, this record is skipped. Must be one of 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
+condition (optional): If it exists, a given value is compared the value of a piece of data in a previous subrecord. If the comparison returns false, this record is skipped. Must be one of 'none', 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
 
 condid (required if condition is used): An integer id that must match up with a previous and unique condid attribute.
 
@@ -191,7 +191,7 @@ optional (required 'Only' if repeat is greater then 1): Performs the same task a
 
 hexview: If present and set to a value of 'true', the field is displayed in base 16 instead of base 10. Doesn't effect the subrecord editor.
 
-elmcondition: Performs the same task as the Subrecord attribute, but with the following exception:  The given value compared is the value of a piece of data in a previous Element indicated by an elmcondid. If the comparison returns false, this Element is skipped.  Must be one of 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
+elmcondition: Performs the same task as the Subrecord attribute, but with the following exception:  The given value compared is the value of a piece of data in a previous Element indicated by an elmcondid. If the comparison returns false, this Element is skipped.  Must be one of 'none', 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
 
 elmcondid: Performs the same task as the Subrecord attribute, but with the following exception: An integer, used to match up with the elmcondid in a conditional Element. A value greater than 0 tells tessnip that this Element will be compared later within an Element or Subrecord block. Defaults to 0 if omitted.
 
