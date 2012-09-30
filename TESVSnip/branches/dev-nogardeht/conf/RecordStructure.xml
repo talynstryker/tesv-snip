@@ -455,38 +455,116 @@
 			<Element name="Half-cost Perk" type="formid" reftype="PERK"/>
 		</Subrecord>
 	</Group>
+<!--
+05 00 02 00 02 00 
+0B 00 PhysicsTrap 00 0B 00 
+0A 00 LvlDamage2 03 01 0D 00 00 00 
+0A 00 LvlDamage1 03 01 0A 00 00 00 
+0D 00 LvlThreshold4 03 01 12 00 00 00 
+0A 00 LvlDamage5 03 01 16 00 00 00 
+0D 00 LvlThreshold2 03 01 0A 00 00 00 
+0D 00 LvlThreshold3 03 01 0E 00 00 00 
+0A 00 LvlDamage4 03 01 12 00 00 00 
+0A 00 LvlDamage3 03 01 0F 00 00 00 
+0A 00 LvlDamage6 03 01 19 00 00 00 
+0D 00 LvlThreshold1 03 01 06 00 00 00 
+0D 00 LvlThreshold5 03 01 16 00 00 00 
+0E 00 PhysicsTrapHit 00 0B 00 
+0D 00 staggerAmount 04 01 CD CC CC 3D 
+0C 00 GhostAbility 01 01 00 00 FF FF 0B 03 05 00 
+11 00 TrapDiseaseAtaxia 01 01 00 00 FF FF 4A A2 10 00 
+19 00 TrapDiseaseBoneBreakFever 01 01 00 00 FF FF 4C A2 10 00 
+13 00 TrapDiseaseBrainRot 01 01 00 00 FF FF 4D A2 10 00 
+12 00 TrapDiseaseRattles 01 01 00 00 FF FF 4E A2 10 00 
+14 00 TrapDiseaseRockjoint 01 01 00 00 FF FF 4F A2 10 00 
+11 00 cameraShakeAmount 04 01 CD CC 4C 3E 
+12 00 TrapDiseaseWitbane 01 01 00 00 FF FF 50 A2 10 00 
+0B 00 cameraShake 05 01 01 
+11 00 trapCausesStagger 05 01 01
+-->
 	<Group id="VMAD" optional="1">
-		<!-- Snip doesn't support repeating element-groups yet -->
 		<Subrecord name="VMAD" desc="Script Data" optional="1">
-			<Element name="Version" type="short" hexview="1"/>
-			<Element name="Object Format" type="short" hexview="1"/>
-			<Element name="Script Count" type="short"/>
-			<!-- <ElementGroup> -->
-			<Element name="Script Name" type="bstring"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="Property Total Count" type="ushort"/>
-			<!-- <ElementGroup> -->
-			<Element name="Property Name" type="bstring"/>
-			<Element name="PropertyType" type="byte" options="Object Reference (8byte);1;String;2;uint (4byte);3;Float (4byte);4;Bool (1byte);5;Array of Object References (8byte);11;Array of Strings;12;Array of uint (4byte);13;Array of Float (4byte);14;Array of Bool (1byte);15"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="FormID" type="formid"/>
-			<!--  </ElementGroup> -->
-			<!-- </ElementGroup> -->
+			<Element name="Version" type="short" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Object Format" type="short" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Script Count" type="short" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Script Name" type="bstring" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="byte" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Total Count" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
 			<Element name="Property Name" type="bstring" optional="1"/>
-			<Element name="(standard buffer)" type="ushort" hexview="1" optional="1"/>
-			<Element name="(standard buffer)" type="uint" hexview="1" optional="1"/>
 			<Element name="FormID" type="formid" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
 			<Element name="Property Name" type="bstring" optional="1"/>
-			<Element name="(standard buffer)" type="ushort" hexview="1" optional="1"/>
-			<Element name="(standard buffer)" type="uint" hexview="1" optional="1"/>
 			<Element name="FormID" type="formid" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
 			<Element name="Property Name" type="bstring" optional="1"/>
-			<Element name="(standard buffer)" type="ushort" hexview="1" optional="1"/>
-			<Element name="(standard buffer)" type="uint" hexview="1" optional="1"/>
-			<Element name="FormID" type="formid" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="byte" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="byte" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
+			<Element name="Unknown" type="byte" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1" optional="1"/>
+			<Element name="Property Name" type="bstring" optional="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
-			<!-- Snip can't repeat element data yet -->
 		</Subrecord>
 	</Group>
 	<Group id="XAPD" optional="1">
@@ -1590,6 +1668,9 @@
 		<!-- localized -->
 		<Subrecord name="EITM" desc="Enchantment ID (ENCH)" optional="1">
 			<Element name="FormID" type="formid" reftype="ENCH" />
+		</Subrecord>
+		<Subrecord name="EAMT" desc="Enchantment Amount" optional="1">
+			<Element name="Amount" type="ushort" hexview="1" hexviewwithdec="1" />
 		</Subrecord>
 		<!-- insert -->
 		<Subrecord name="MOD2" desc="Male world model" optional="1">
@@ -2841,12 +2922,12 @@
 			<Element name="Health" type="ushort" />
 			<Element name="Magika" type="ushort" />
 			<Element name="Stamina" type="ushort" />
-			<Element name="unknown ushort" type="ushort"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1"/>
 			<Element name="FarAwayModel Distance" type="float"/>
-			<Element name="" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
+			<Element name="Geared up weapons" type="byte"  hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
+			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
+			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 		</Subrecord>
 		<Subrecord name="PNAM" desc="CharGenParts tab Base Head-Parts (HDPT)" optional="1" repeat="1">
 			<Element name="HDPT FormID" type="formid" reftype="HDPT"/>
@@ -5418,14 +5499,15 @@
 		<Group id="XSCL" optional="1"/>
     <!-- End Misc -->
 		<Subrecord name="XMRK" desc="Map Data Marker" optional="1"/>
-		<Subrecord name="FNAM" desc="FNAM" optional="1">
-			<Element name="Flags" type="byte" flags="Visible;Can Travel To;Unknown 3"/>
+    <!-- Map Marker Data Data -->
+		<Subrecord name="FNAM" desc="Marker Data" optional="1">
+			<Element name="Flags" type="byte" flags="Visible;Can Travel To;Show All Hidden"/>
 		</Subrecord>
 		<Group id="FULL" optional="1"/>
-    <!-- Map Data -->
-		<Subrecord name="TNAM" desc="TNAM" optional="1">
-			<Element name="Unknown ushort" type="ushort"/>
+		<Subrecord name="TNAM" desc="Marker Data" optional="1">
+			<Element name="Marker Type" type="ushort" options="City;1;Town;2;Settlement;3;Cave;4;Camp;5;Fort;6;Nordic Ruins;7;Dwemer Ruin;8;Shipwreck;9;Grove;10;Landmark;11;Dragon Lair;12;Farm;13;Wood Mill;14;Mine;15;Imperial Camp;16;Stormcloak Camp;17;Doomstone;18;Wheat Mill;19;Smelter;20;Stable;21;Imperial Tower;22;Clearing;23;Pass;24;Altar;25;Rock;26;Lighthouse;27;Orc Stronghold;28;Giant Camp;29;Shack;30;Nordic Tower;31;Nordic Dwelling;32;Docks;33;Shrine;34;Riften Castle;35;Riften Capitol;36;Windhelm Castle;37;Windhelm Capitol;38;Whiterun Castle;39;Whiterun Capitol;40;Solitude Castle;41;Solitude Capitol;42;Markarth Castle;43;Markarth Capitol;44;Winterhold Castle;45;Winterhold Capitol;46;Morthal Castle;47;Morthal Capitol;48;Falkreath Castle;49;Falkreath Capitol;50;Dawnstar Castle;51;Dawnstar Capitol;52"/>
 		</Subrecord>
+    <!-- End Map Marker Data Data -->
 		<Subrecord name="XRDS" desc="Light Related" optional="1">
 			<Element name="Unknown float" type="float"/>
 		</Subrecord>
@@ -5476,6 +5558,14 @@
       </Subrecord>
       <Group id="XESP" optional="1"/>
     </Group>
+    <Group id="XLKRPattern1" optional="1">
+      <Group id="XLKR" optional="1" repeat="1"/>
+ 			<Group id="XLRT" optional="1"/>
+      <Subrecord name="XRDS" desc="Light Related?" optional="1">
+        <Element name="Radius" type="float"/>
+      </Subrecord>
+      <Group id="XLRL" optional="1"/>
+    </Group>
 
     <!-- Verified to here  -->
 		<Group optional="1" repeat="1">
@@ -5490,30 +5580,31 @@
             <Element name="Origin FormID" type="formid" reftype="REFR"/>
             <Element name="Destination FormID" type="formid" reftype="REFR"/>
           </Subrecord>
-          <Subrecord name="XPTL" desc="Portal Destination (REFR)" optional="1" >
-            <Element name="(XPRM) Bounds from Origin X" type="float"/>
-            <Element name="(XPRM) Bounds from Origin Z" type="float"/>
-            <Element name="Unknown 3" type="float"/>
-            <Element name="Unknown 4" type="float"/>
-            <Element name="Unknown 5" type="float"/>
-            <Element name="(XPRM) Bounds from Origin Y" type="float"/>
-            <Element name="Red" type="float" desc="Multiply by 255"/>
-            <Element name="Green" type="float" desc="Multiply by 255"/>
-            <Element name="Blue" type="float" desc="Multiply by 255"/>
+          <Subrecord name="XPTL" desc="Portal Data" optional="1" >
+            <Element name="Width" type="float"/>
+            <Element name="Height" type="float"/>
+            <Element name="Position X" type="float"/>
+            <Element name="Position X" type="float"/>
+            <Element name="Position X" type="float"/>
+            <Element name="Rotation (Quaternion?) q1" type="float"/>
+            <Element name="Rotation (Quaternion?) q2" type="float" desc="Multiply by 255"/>
+            <Element name="Rotation (Quaternion?) q3" type="float" desc="Multiply by 255"/>
+            <Element name="Rotation (Quaternion?) q4" type="float" desc="Multiply by 255"/>
             <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
           </Subrecord>
+          <Group id="XLRL" optional="1"/>
         </Group>
         <Group id="XPODPattern2" optional="1">
-          <Subrecord name="XPTL" desc="Portal Destination (REFR)" optional="1" >
-            <Element name="(XPRM) Bounds from Origin X" type="float"/>
-            <Element name="(XPRM) Bounds from Origin Z" type="float"/>
-            <Element name="Unknown 3" type="float"/>
-            <Element name="Unknown 4" type="float"/>
-            <Element name="Unknown 5" type="float"/>
-            <Element name="(XPRM) Bounds from Origin YUnknown 6" type="float"/>
-            <Element name="Red" type="float" desc="Multiply by 255"/>
-            <Element name="Green" type="float" desc="Multiply by 255"/>
-            <Element name="Blue" type="float" desc="Multiply by 255"/>
+          <Subrecord name="XPTL" desc="Portal Data" optional="1" >
+            <Element name="Width" type="float"/>
+            <Element name="Height" type="float"/>
+            <Element name="Position X" type="float"/>
+            <Element name="Position X" type="float"/>
+            <Element name="Position X" type="float"/>
+            <Element name="Rotation (Quaternion?) q1" type="float"/>
+            <Element name="Rotation (Quaternion?) q2" type="float" desc="Multiply by 255"/>
+            <Element name="Rotation (Quaternion?) q3" type="float" desc="Multiply by 255"/>
+            <Element name="Rotation (Quaternion?) q4" type="float" desc="Multiply by 255"/>
             <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
           </Subrecord>
           <Subrecord name="XPOD" desc="Portal Destination (REFR)" optional="1" >
@@ -6746,6 +6837,8 @@
 	<Record name="EXPL" desc="Explosion">
 		<!-- localized; Snip doesn't support arranging this yet -->
 		<Group id="EDID" optional="1"/>
+		<!-- VMAD May not be Valid, needs further research. -->
+		<Group id="VMAD" optional="1"/>
 		<Group id="OBND" optional="1"/>
 		<Group id="FULL" optional="1"/>
 		<!-- localized -->
