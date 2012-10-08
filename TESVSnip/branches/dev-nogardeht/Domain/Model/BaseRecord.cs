@@ -7,6 +7,7 @@ namespace TESVSnip.Domain.Model
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
+    using System.IO.MemoryMappedFiles;
 
     using RTF;
 
@@ -208,12 +209,20 @@ namespace TESVSnip.Domain.Model
             }
         }
 
-        protected static string ReadRecName(BinaryReader br)
+        protected static string ReadRecName(MemoryMappedViewAccessor reader, ref int positionInFile, ref int offset)
         {
-            br.Read(RecByte, 0, 4);
+            reader.ReadArray(positionInFile, RecByte, offset, 4);
+            positionInFile += 4 + offset;
             return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
         }
 
+        protected static string ReadRecName(BinaryReader br)
+        {
+            //TODO: Remove if MemoryMappedFile OK
+            br.Read(RecByte, 0, 4);
+            return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
+        }
+        
         protected static void WriteString(BinaryWriter bw, string s)
         {
             var b = new byte[s.Length];

@@ -56,6 +56,7 @@
     <NoWarn>
     </NoWarn>
     <PlatformTarget>x86</PlatformTarget>
+    <CheckForOverflowUnderflow>true</CheckForOverflowUnderflow>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>pdbonly</DebugType>
@@ -85,6 +86,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain\MemoryMapped.cs" />
     <Compile Include="Domain\Data\RecordStructure\Conditional.cs" />
     <Compile Include="Domain\Data\RecordStructure\CondType.cs" />
     <Compile Include="Domain\Data\RecordStructure\ElementStructure.cs" />
@@ -139,6 +141,7 @@
     <Compile Include="Domain\Model\SearchSubrecordXml.cs" />
     <Compile Include="Domain\Model\SubRecord.cs" />
     <Compile Include="Domain\Model\TESParserException.cs" />
+    <Compile Include="Domain\SaveReadStream.cs" />
     <Compile Include="Domain\Scripts\Keywords.cs" />
     <Compile Include="Domain\Scripts\ScriptCompiler.cs" />
     <Compile Include="Domain\Scripts\Token.cs" />

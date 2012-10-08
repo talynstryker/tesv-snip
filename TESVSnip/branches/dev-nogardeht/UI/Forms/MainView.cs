@@ -1625,14 +1625,40 @@ namespace TESVSnip.UI.Forms
 
     private void LoadPluginFromListOfFileNames(string[] fileNames)
     {
-      foreach (string s in fileNames)
-      {
-        this.LoadPlugin(s);
-        mruMenu.AddFileAndSaveToRegistry(s);
-      }
+        try
+        {
+            foreach (string s in fileNames)
+            {
+                this.LoadPlugin(s);
+                mruMenu.AddFileAndSaveToRegistry(s);
+            }
 
-      this.FixMasters();
-      this.PluginTree.UpdateRoots();
+            this.FixMasters();
+            this.PluginTree.UpdateRoots();
+        }
+        catch (Exception ex)
+        {
+            string errMsg =
+                "Message: " + ex.Message +
+                Environment.NewLine +
+                Environment.NewLine +
+                "StackTrace: " + ex.StackTrace +
+                Environment.NewLine +
+                Environment.NewLine +
+                "Source: " + ex.Source +
+                Environment.NewLine +
+                Environment.NewLine +
+                "GetType: " + ex.GetType().ToString();
+
+            System.Windows.Forms.Clipboard.SetDataObject(errMsg, true);
+
+            // Create an EventLog instance and assign its source.
+            EventLog myLog = new EventLog();
+            myLog.Source = "ThreadException";
+            myLog.WriteEntry(errMsg);
+
+            MessageBox.Show(errMsg, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+        }
     }
 
     private void pasteNewToolStripMenuItem_Click(object sender, EventArgs e)
@@ -1790,6 +1816,8 @@ namespace TESVSnip.UI.Forms
         }
       }
 
+      // faire les changement ici pour le dossier de sauvegarde
+     //TODO:   toto toto toto toto toto
       if (string.IsNullOrWhiteSpace(p.PluginPath)) p.PluginPath = Options.Value.GameDataDirectory; 
       p.Save(Path.Combine(p.PluginPath, p.Name));
       mruMenu.AddFileAndSaveToRegistry(Path.Combine(p.PluginPath, p.Name));
@@ -2154,7 +2182,7 @@ namespace TESVSnip.UI.Forms
       else
       {
         string msg = string.Format(TranslateUI.TranslateUIGlobalization.RM.GetString("UI_MRU_FileNotExist"), filename);
-        MessageBox.Show(msg, "TESsnip", MessageBoxButtons.OK, MessageBoxIcon.Error);
+        MessageBox.Show(msg, "Tesvsnip", MessageBoxButtons.OK, MessageBoxIcon.Error);
         mruMenu.RemoveFile(number);
       }
     }

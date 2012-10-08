@@ -58,7 +58,7 @@ namespace TESVSnip.UI.Forms
       }
 
       ToolStripMenuItem menu = new System.Windows.Forms.ToolStripMenuItem();
-      menu.Name = "UILanguageToolStripMenuItem";
+      menu.Name = "uiLanguageToolStripMenuItem";
       menu.Tag = "UILanguage";
       menu.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("UI_Language_MenuName"); 
       this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { menu });
@@ -67,7 +67,7 @@ namespace TESVSnip.UI.Forms
       for (int i = 0; i < items.Length; i++)
       {
         items[i] = new ToolStripMenuItem();
-        items[i].Name = "dynamicItem" + i.ToString();
+        items[i].Name = "dynamicItemUILanguage" + i.ToString();
         switch (i)
         {
           case 0:

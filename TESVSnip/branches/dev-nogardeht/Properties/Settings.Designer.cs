@@ -427,5 +427,53 @@ namespace TESVSnip.Properties {
                 this["CultureCodeUI"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastOpenFolder {
+            get {
+                return ((string)(this["LastOpenFolder"]));
+            }
+            set {
+                this["LastOpenFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string LastSaveFolder {
+            get {
+                return ((string)(this["LastSaveFolder"]));
+            }
+            set {
+                this["LastSaveFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PersonalSaveFolder {
+            get {
+                return ((string)(this["PersonalSaveFolder"]));
+            }
+            set {
+                this["PersonalSaveFolder"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("")]
+        public string PersonalOpenFolder {
+            get {
+                return ((string)(this["PersonalOpenFolder"]));
+            }
+            set {
+                this["PersonalOpenFolder"] = value;
+            }
+        }
     }
 }

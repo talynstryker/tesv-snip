@@ -5,6 +5,7 @@ namespace TESVSnip.Domain.Model
     using System.Drawing;
     using System.Globalization;
     using System.IO;
+    using System.IO.MemoryMappedFiles;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
@@ -89,8 +90,18 @@ namespace TESVSnip.Domain.Model
             }
         }
 
+        internal SubRecord(Record rec, string name, MemoryMappedViewAccessor reader, ref int positionInFile, uint size)
+        {
+            this.Owner = rec;
+            Name = name;
+            this.Data = new byte[size];
+            TESVSnip.Domain.MemoryMapped.Read(reader, this.Data, ref positionInFile, size);
+            // br.Read(this.Data, 0, this.Data.Length);
+        }
+
         internal SubRecord(Record rec, string name, BinaryReader br, uint size)
         {
+            //TODO: Remove if MemoryMappedFile OK
             this.Owner = rec;
             Name = name;
             this.Data = new byte[size];

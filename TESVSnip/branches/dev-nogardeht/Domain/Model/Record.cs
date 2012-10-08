@@ -15,6 +15,7 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Domain.Services;
     using TESVSnip.Framework.Collections;
     using TESVSnip.Framework.Persistence;
+    using System.IO.MemoryMappedFiles;
 
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
@@ -51,8 +52,80 @@ namespace TESVSnip.Domain.Model
             this.FixSubrecordOwner();
         }
 
+        internal Record(string name, uint dataSize, MemoryMappedViewAccessor reader, ref int positionInFile, bool oblivion)
+        {
+            int offset = 0;
+            this.dataSize = dataSize;
+
+            this.SubRecords = new AdvancedList<SubRecord>(1) { AllowSorting = false };
+            Name = name;
+            this.Flags1 = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+            this.FormID = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+            this.Flags2 = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+            if (!oblivion)
+            {
+                this.Flags3 = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+            }
+
+            var compressed = (this.Flags1 & 0x00040000) != 0;
+            uint amountRead = 0;
+
+            var realSize = dataSize;
+            if (compressed)
+            {
+                realSize = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+                dataSize -= 4;
+            }
+
+            //using (var stream = new MemoryStream(recordReader.ReadBytes((int)dataSize)))
+            byte[] buffer = new byte[dataSize];
+            reader.ReadArray<byte>(positionInFile, buffer, offset, (int) dataSize);
+            //{
+            //    using (var dataReader = compressed ? ZLib.Decompress(stream, (int)realSize) : new BinaryReader(stream))
+            //    {
+            //        while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
+            uint maxSize = (uint) positionInFile + dataSize;
+
+            while (positionInFile < maxSize)
+                    {
+            //            var type = ReadRecName(dataReader);
+                        var type = ReadRecName(reader, ref positionInFile, ref offset);
+                        uint size;
+                        if (type == "XXXX")
+                        {
+                            TESVSnip.Domain.MemoryMapped.ReadUInt16(reader, ref positionInFile, ref offset);
+                            size = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset);
+                            type = ReadRecName(reader, ref positionInFile, ref offset);
+                            TESVSnip.Domain.MemoryMapped.ReadUInt16(reader, ref positionInFile, ref offset);
+                        }
+                        else
+                        {
+                            size = TESVSnip.Domain.MemoryMapped.ReadUInt16(reader, ref positionInFile, ref offset);
+                        }
+
+                        var record = new SubRecord(this, type, reader, ref positionInFile, size);
+                        this.SubRecords.Add(record);
+                        amountRead += (uint)record.Size2;
+                    }
+            //    }
+            //}
+
+            if (amountRead > realSize)
+            {
+                Debug.Print(" * ERROR: SUB-RECORD {0} DATA DOESN'T MATCH THE SIZE SPECIFIED IN THE HEADER: DATA-SIZE={1} REAL-SIZE={2} AMOUNT-READ={3}", name, dataSize, realSize, amountRead);
+                throw new TESParserException(
+                    string.Format("Subrecord block did not match the size specified in the record header: ExpectedSize={0} ReadSize={1} DataSize={2}", realSize, amountRead, dataSize));
+            }
+
+            this.descNameOverride = this.DefaultDescriptiveName;
+            this.UpdateShortDescription();
+
+            // br.BaseStream.Position+=Size;
+        }
+
         internal Record(string name, uint dataSize, BinaryReader recordReader, bool oblivion)
         {
+            //TODO: Remove if MemoryMappedFile OK
             this.dataSize = dataSize;
 
             this.SubRecords = new AdvancedList<SubRecord>(1) { AllowSorting = false };
