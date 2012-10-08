@@ -293,4 +293,13 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="UI_MRU_FileNotExist" xml:space="preserve">
     <value>The file '{0}' doesn't exist and will be removed from the Recent list(s).</value>
   </data>
+  <data name="UI_File_OpenSaveInPersonalFolder" xml:space="preserve">
+    <value>In Personnal Folder</value>
+  </data>
+  <data name="UI_File_OpenSavePluginInLastFolder" xml:space="preserve">
+    <value>In Last Folder</value>
+  </data>
+  <data name="UI_File_OpenSavePluginInSkyrimFolder" xml:space="preserve">
+    <value>In Skyrim Folder</value>
+  </data>
 </root>
