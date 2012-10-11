@@ -19,6 +19,8 @@ name (required): the 4 letter code of the record
 
 desc (required): A human readable description of what the record contains
 
+unordered (optional): Subrecords do not have to follow the xml definition.  All subrecords are displayed in the order found in the record.
+
 XXXXXXXXXXXXXX
 XXX Group XXX
 XXXXXXXXXXXXXX
