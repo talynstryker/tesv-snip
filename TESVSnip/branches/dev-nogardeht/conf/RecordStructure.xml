@@ -16,17 +16,17 @@
 			<Element name="# of Conditionals" type="uint"/>
 		</Subrecord>
 		<Subrecord name="CTDA" desc="Conditional" optional="1" repeat="1">
-			<Element name="Comparison Type" type="byte" hexview="1" options="Equal and;0;Equal or;1;useAlias Equal and;2;useAlias Equal or;3;useGlobal Equal and;4;useGlobal Equal or;5;usePackData Equal and;8;usePackData Equal or;9;swapSubTarg Equal and;10;swapSubTarg Equal or;11;NOT Equal and;32;NOT Equal or;33;useAlias NOT Equal and;34;useAlias NOT Equal or;35;usePackData NOT Equal and;40;usePackData NOT Equal or;41;GreaterThan and;64;GreaterThan or;65;useAlias GreaterThan and;66;useAlias GreaterThan or;67;usePack GreaterThan and;72;usePack GreaterThan or;73;Greater/Equal and;96;Greater/Equal or;97;usePack Greater/Equal and;104;usePack Greater/Equal or;105;LessThan and;128;LessThan or;129;usePackData LessThan and;136;usePackData LessThan or;137;Less/Equal and;160;Less/Equal or;161"/>
-			<Element name="Unknown" type="byte" hexview="1"/>
-			<Element name="Unknown" type="ushort" hexview="1"/>
-			<Element name="Value to Compare Against" type="float" hexview="1" desc="(could be a GLOB FormID or float)"/>
-			<Element name="Function Name" type="ushort" hexview="1" options="GetWantBlocking (Edit);0;GetDistance (Edit);1;AddItem (Snip);2;SetEssential (Snip);3;Rotate (Snip);4;GetLocked (Edit);5;GetPos (Edit);6;SetPos (Snip);7;GetAngle (Edit);8;SetAngle (Snip);9;GetStartingPos (Edit);10;GetStartingAngle (Edit);11;GetSecondsPassed (Edit);12;Activate (Snip);13;GetActorValue (Edit);14;SetActorValue (Snip);15;ModActorValue (Snip);16;SetAtStart (Snip);17;GetCurrentTime (Edit);18;PlayGroup (Snip);19;LoopGroup (Snip);20;SkipAnim (Snip);21;StartCombat (Snip);22;StopCombat (Snip);23;GetScale (Edit);24;IsMoving (Edit);25;IsTurning (Edit);26;GetLineOfSight (Edit);27;AddSpell (Snip);28;RemoveSpell (Snip);29;Cast (Snip);30;GetButtonPressed (Snip);31;GetInSameCell (Edit);32;Enable (Snip);33;Disable (Snip);34;GetDisabled (Edit);35;MenuMode (Edit);36;PlaceAtMe (Snip);37;PlaySound (Snip);38;GetDisease (Edit);39;FailAllObjectives (Snip);40;GetClothingValue (Edit);41;SameFaction (Edit);42;SameRace (Edit);43;SameSex (Edit);44;GetDetected (Edit);45;GetDead (Edit);46;GetItemCount (Edit);47;GetGold (Edit);48;GetSleeping (Edit);49;GetSleeping (Snip);49;GetTalkedToPC (Edit);50;Say (Snip);51;SayTo (Snip);52;GetScriptVariable (Edit);53;StartQuest (Snip);54;StopQuest (Snip);55;GetQuestRunning (getqr) (Edit);56;SetStage (Snip);57;GetStage (Edit);58;GetStageDone (Edit);59;GetFactionRankDifference (Edit);60;GetAlarmed (Edit);61;IsRaining (Edit);62;GetAttacked (Edit);63;GetIsCreature (Edit);64;GetLockLevel (Edit);65;GetShouldAttack (Edit);66;GetInCell (Edit);67;GetIsClass (Edit);68;GetIsRace (Edit);69;GetIsSex (Edit);70;GetInFaction (Edit);71;GetIsID (Edit);72;GetFactionRank (Edit);73;GetGlobalValue (Edit);74;IsSnowing (Edit);75;FastTravel (ft) (Snip);76;GetRandomPercent (Edit);77;RemoveMusic (Snip);78;GetQuestVariable (Edit);79;GetLevel (Edit);80;IsRotating (Edit);81;RemoveItem (Snip);82;GetLeveledEncounterValue (Snip);83;GetDeadCount (Edit);84;AddToMap (showMap) (Snip);85;StartConversation (Snip);86;Drop (Snip);87;AddTopic (Snip);88;ShowMessage (Snip);89;SetAlert (Snip);90;GetIsAlerted (Edit);91;Look (Snip);92;StopLook (Snip);93;EvaluatePackage (evp) (Snip);94;SendAssaultAlarm (Snip);95;EnablePlayerControls (epc) (Snip);96;DisablePlayerControls (dpc) (Snip);97;GetPlayerControlsDisabled (gpc) (Edit);98;GetHeadingAngle (Edit);99;PickIdle (Snip);100;IsWeaponMagicOut (Edit);101;IsTorchOut (Edit);102;IsShieldOut (Edit);103;CreateDetectionEvent (Snip);104;IsActionRef (Snip);105;IsFacingUp (Edit);106;GetKnockedState (Edit);107;GetWeaponAnimType (Edit);108;IsWeaponSkillType (Edit);109;GetCurrentAIPackage (Edit);110;IsWaiting (Edit);111;IsIdlePlaying (Edit);112;CompleteQuest (Snip);113;Lock (Snip);114;UnLock (Snip);115;IsIntimidatebyPlayer (Edit);116;IsPlayerInRegion (Edit);117;GetActorAggroRadiusViolated (Edit);118;GetCrimeKnown (Snip);119;SetEnemy (Snip);120;SetAlly (Snip);121;GetCrime (Edit);122;IsGreetingPlayer (Edit);123;StartMisterSandMan (Snip);124;IsGuard (Edit);125;StartCannibal (Snip);126;HasBeenEaten (Edit);127;GetStaminaPercentage (getStamina) (Edit);128;GetPCIsClass (Edit);129;GetPCIsRace (Edit);130;GetPCIsSex (Edit);131;GetPCInFaction (Edit);132;SameFactionAsPC (Edit);133;SameRaceAsPC (Edit);134;SameSexAsPC (Edit);135;GetIsReference (Edit);136;SetFactionRank (Snip);137;ModFactionRank (Snip);138;KillActor (kill) (Snip);139;ResurrectActor (resurrect) (Snip);140;IsTalking (Edit);141;GetWalkSpeed (getWalk) (Edit);142;GetCurrentAIProcedure (Edit);143;GetTrespassWarningLevel (Edit);144;IsTrespassing (Edit);145;IsInMyOwnedCell (Edit);146;GetWindSpeed (Edit);147;GetCurrentWeatherPercent (getWeatherpct) (Edit);148;GetIsCurrentWeather (getWeather) (Edit);149;IsContinuingPackagePCNear (Edit);150;SetCrimeFaction (Snip);151;GetIsCrimeFaction (Edit);152;CanHaveFlames (Edit);153;HasFlames (Edit);154;AddFlames (Snip);155;RemoveFlames (Snip);156;GetOpenState (Edit);157;MoveToMarker (moveto) (Snip);158;GetSitting (Edit);159;GetFurnitureMarkerID (Snip);160;GetIsCurrentPackage (Edit);161;IsCurrentFurnitureRef (Edit);162;IsCurrentFurnitureObj (Edit);163;SetSize (cSize) (Snip);164;RemoveMe (Snip);165;DropMe (Snip);166;GetFactionReaction (Snip);167;SetFactionReaction (Snip);168;ModFactionReaction (Snip);169;GetDayOfWeek (Edit);170;IgnoreCrime (Snip);171;GetTalkedToPCParam (Edit);172;RemoveAllItems (Snip);173;WakeUpPC (Snip);174;IsPCSleeping (Edit);175;IsPCAMurderer (Edit);176;SetCombatStyle (setcs) (Snip);177;PlaySound3D (Snip);178;SelectPlayerSpell (spSpell) (Snip);179;HasSameEditorLocAsRef (Edit);180;HasSameEditorLocAsRefAlias (Edit);181;GetEquipped (Edit);182;Wait (Snip);183;StopWaiting (Snip);184;IsSwimming (Edit);185;ScriptEffectElapsedSeconds (Snip);186;SetCellPublicFlag (setPublic) (Snip);187;GetPCSleepHours (Snip);188;GetAmountSoldStolen (Edit);190;ModAmountSoldStolen (Snip);191;GetIgnoreCrime (Edit);192;GetPCExpelled (Edit);193;SetPCExpelled (Snip);194;GetPCFactionMurder (Edit);195;SetPCFactionMurder (Snip);196;GetPCEnemyofFaction (Edit);197;SetPCEnemyofFaction (Snip);198;GetPCFactionAttack (Edit);199;SetPCFactionAttack (Snip);200;StartScene (Snip);201;StopScene (Snip);202;GetDestroyed (Edit);203;SetDestroyed (Snip);204;GetActionRef (getAR) (Snip);205;GetSelf (this) (Snip);206;GetContainer (Snip);207;GetForceRun (Snip);208;SetForceRun (Snip);209;GetForceSneak (Snip);210;SetForceSneak (Snip);211;AdvancePCSkill (advSkill) (Snip);212;AdvancePCLevel (advLevel) (Snip);213;HasMagicEffect (Edit);214;GetDefaultOpen (Edit);215;SetDefaultOpen (Snip);216;ShowClassMenu (Snip);217;ShowRaceMenu (setPlayerRace) (Snip);218;GetAnimAction (Edit);219;ShowNameMenu (Snip);220;SetOpenState (Snip);221;ResetReference (recycleActor) (Snip);222;IsSpellTarget (Edit);223;GetVATSMode (Edit);224;GetPersuasionNumber (Edit);225;GetVampireFeed (Edit);226;GetCannibal (Edit);227;GetIsClassDefault (Edit);228;GetClassDefaultMatch (Edit);229;GetInCellParam (Edit);230;UnusedFunction1 (Snip);231;GetCombatTarget (Snip);232;GetPackageTarget (Snip);233;ShowSpellMaking (Snip);234;GetVatsTargetHeight (Edit);235;SetGhost (Snip);236;GetIsGhost (Edit);237;EquipItem (equipObject) (Snip);238;UnequipItem (unEquipObject) (Snip);239;SetClass (Snip);240;SetUnconscious (Snip);241;GetUnconscious (Edit);242;SetRestrained (Snip);243;GetRestrained (Edit);244;ForceFlee (flee) (Snip);245;GetIsUsedItem (Edit);246;GetIsUsedItemType (Edit);247;IsScenePlaying (Edit);248;IsInDialogueWithPlayer (Edit);249;GetLocationCleared (Edit);250;SetLocationCleared (Snip);251;ForceRefIntoAlias (Snip);252;EmptyRefAlias (Snip);253;GetIsPlayableRace (Edit);254;GetOffersServicesNow (Edit);255;GetGameSetting (getgs) (Snip);256;StopCombatAlarmOnActor (scaOnActor) (Snip);257;HasAssociationType (Edit);258;HasFamilyRelationship (family) (Edit);259;SetWeather (sw) (Snip);260;HasParentRelationship (isParent) (Edit);261;IsWarningAbout (Edit);262;IsWeaponOut (Edit);263;HasSpell (Edit);264;IsTimePassing (Edit);265;IsPleasant (Edit);266;IsCloudy (Edit);267;TrapUpdate (Snip);268;ShowQuestObjectives (sqo) (Snip);269;ForceActorValue (forceAV) (Snip);270;IncrementPCSkill (incpcs) (Snip);271;DoTrap (Snip);272;EnableFastTravel (enableFast) (Snip);273;IsSmallBump (Edit);274;GetParentRef (Snip);275;PlayBink (Snip);276;GetBaseActorValue (getBaseav) (Edit);277;IsOwner (Edit);278;SetOwnership (Snip);279;IsCellOwner (Edit);280;SetCellOwnership (Snip);281;IsHorseStolen (Edit);282;SetCellFullName (Snip);283;SetActorFullName (Snip);284;IsLeftUp (Edit);285;IsSneaking (Edit);286;IsRunning (Edit);287;GetFriendHit (Edit);288;IsInCombat (Edit);289;SetPackDuration (spdur) (Snip);290;PlayMagicShaderVisuals (pms) (Snip);291;PlayMagicEffectVisuals (pme) (Snip);292;StopMagicShaderVisuals (sms) (Snip);293;StopMagicEffectVisuals (sme) (Snip);294;ResetInterior (Snip);295;IsAnimPlaying (Snip);296;SetActorAlpha (saa) (Snip);297;EnableLinkedPathPoints (Snip);298;DisableLinkedPathPoints (Snip);299;IsInInterior (Edit);300;ForceWeather (fw) (Snip);301;ToggleActorsAI (Snip);302;IsActorsAIOff (Snip);303;IsWaterObject (Edit);304;GetPlayerAction (Edit);305;IsActorUsingATorch (Edit);306;SetLevel (Snip);307;ResetFallDamageTimer (Snip);308;IsXBox (Edit);309;GetInWorldspace (Edit);310;ModPCMiscStat (modpcms) (Snip);311;GetPCMiscStat (getpcms) (Edit);312;GetPairedAnimation (gpa) (Edit);313;IsActorAVictim (Edit);314;GetTotalPersuasionNumber (Edit);315;SetScale (Snip);316;ModScale (Snip);317;GetIdleDoneOnce (Edit);318;KillAllActors (killAll) (Snip);319;GetNoRumors (Edit);320;SetNoRumors (Snip);321;Dispel (Snip);322;GetCombatState (Edit);323;TriggerHitShader (ths) (Snip);324;GetWithinPackageLocation (Edit);325;Reset3DState (Snip);326;IsRidingMount (Edit);327;DispelAllSpells (Snip);328;IsFleeing (Edit);329;AddAchievement (Snip);330;DuplicateAllItems (Snip);331;IsInDangerousWater (Edit);332;EssentialDeathReload (Snip);333;SetShowQuestItems (Snip);334;DuplicateNPCStats (Snip);335;ResetHealth (Snip);336;SetIgnoreFriendlyHits (sifh) (Snip);337;GetIgnoreFriendlyHits (gifh) (Edit);338;IsPlayersLastRiddenMount (Edit);339;SetActorRefraction (sar) (Snip);340;SetItemValue (Snip);341;SetRigidBodyMass (Snip);342;ShowViewerStrings (svs) (Snip);343;ReleaseWeatherOverride (rwo) (Snip);344;SetAllReachable (Snip);345;SetAllVisible (Snip);346;SetNoAvoidance (Snip);347;SendTrespassAlarm (Snip);348;SetSceneIsComplex (Snip);349;Autosave (Snip);350;StartMasterFileSeekData (Snip);351;DumpMasterFileSeekData (Snip);352;IsActor (Edit);353;IsEssential (Edit);354;PreloadMagicEffect (Snip);355;ShowDialogSubtitles (Snip);356;SetPlayerResistingArrest (Snip);357;IsPlayerMovingIntoNewSpace (Edit);358;GetInCurrentLoc (Edit);359;GetInCurrentLocAlias (Edit);360;GetTimeDead (Edit);361;HasLinkedRef (Edit);362;GetLinkedRef (Snip);363;DamageObject (do) (Snip);364;IsChild (Edit);365;GetStolenItemValueNoCrime (Edit);366;GetLastPlayerAction (Edit);367;IsPlayerActionActive (Edit);368;SetTalkingActivatorActor (Snip);369;IsTalkingActivatorActor (Edit);370;ShowBarterMenu (sbm) (Snip);371;IsInList (Edit);372;GetStolenItemValue (Edit);373;AddPerk (Snip);374;GetCrimeGoldViolent (getViolent) (Edit);375;GetCrimeGoldNonviolent (getNonviolent) (Edit);376;ShowRepairMenu (srm) (Snip);377;HasShout (Edit);378;AddNote (an) (Snip);379;RemoveNote (rn) (Snip);380;GetHasNote (getn) (Edit);381;AddToFaction (addFac) (Snip);382;RemoveFromFaction (removeFac) (Snip);383;DamageActorValue (damageav) (Snip);384;RestoreActorValue (RestoreAV) (Snip);385;TriggerHUDShudder (hudsh) (Snip);386;GetObjectiveFailed (Snip);387;SetObjectiveFailed (Snip);388;SetGlobalTimeMultiplier (sgtm) (Snip);389;GetHitLocation (Edit);390;IsPC1stPerson (pc1st) (Edit);391;PurgeCellBuffers (pcb) (Snip);392;PushActorAway (Snip);393;SetActorsAI (Snip);394;ClearOwnership (Snip);395;GetCauseofDeath (Edit);396;IsLimbGone (Edit);397;IsWeaponInList (Edit);398;PlayIdle (Snip);399;ApplyImageSpaceModifier (imod) (Snip);400;RemoveImageSpaceModifier (rimod) (Snip);401;IsBribedbyPlayer (Edit);402;GetRelationshipRank (Edit);403;SetRelationshipRank (Snip);404;SetCellImageSpace (Snip);405;ShowChargenMenu (scgm) (Snip);406;GetVATSValue (Edit);407;IsKiller (Edit);408;IsKillerObject (Edit);409;GetFactionCombatReaction (Edit);410;UseWeapon (Snip);411;EvaluateSpellConditions (esc) (Snip);412;ToggleMotionBlur (tmb) (Snip);413;Exists (Edit);414;GetGroupMemberCount (Edit);415;GetGroupTargetCount (Edit);416;SetObjectiveCompleted (Snip);417;SetObjectiveDisplayed (Snip);418;GetObjectiveCompleted (Snip);419;GetObjectiveDisplayed (Snip);420;SetImageSpace (Snip);421;PipboyRadio (prad) (Snip);422;RemovePerk (Snip);423;DisableAllActors (disaa) (Snip);424;GetIsFormType (Snip);425;GetIsVoiceType (Edit);426;GetPlantedExplosive (Edit);427;CompleteAllObjectives (Snip);428;IsScenePackageRunning (Edit);429;GetHealthPercentage (Edit);430;SetAudioMultithreading (sam) (Snip);431;GetIsObjectType (Edit);432;ShowChargenMenuParams (scgmp) (Snip);433;GetDialogueEmotion (Edit);434;GetDialogueEmotionValue (Edit);435;ExitGame (exit) (Snip);436;GetIsCreatureType (Edit);437;PlayerCreatePotion (Snip);438;PlayerEnchantObject (Snip);439;ShowWarning (Snip);440;EnterTrigger (Snip);441;MarkForDelete (Snip);442;SetPlayerAIDriven (Snip);443;GetInCurrentLocFormList (Edit);444;GetInZone (Edit);445;GetVelocity (Edit);446;GetGraphVariableFloat (Edit);447;HasPerk (Edit);448;GetFactionRelation (Edit);449;IsLastIdlePlayed (Edit);450;SetNPCRadio (snr) (Snip);451;SetPlayerTeammate (Snip);452;GetPlayerTeammate (Edit);453;GetPlayerTeammateCount (Edit);454;OpenActorContainer (Snip);455;ClearFactionPlayerEnemyFlag (Snip);456;ClearActorsFactionsPlayerEnemyFlag (Snip);457;GetActorCrimePlayerEnemy (Edit);458;GetCrimeGold (Edit);459;SetCrimeGold (Snip);460;ModCrimeGold (Snip);461;GetPlayerGrabbedRef (Snip);462;IsPlayerGrabbedRef (Edit);463;PlaceLeveledActorAtMe (Snip);464;GetKeywordItemCount (Edit);465;ShowLockpickMenu (slpm) (Snip);466;GetBroadcastState (Snip);467;SetBroadcastState (Snip);468;StartRadioConversation (Snip);469;GetDestructionStage (Edit);470;ClearDestruction (Snip);471;CastImmediateOnSelf (cios) (Snip);472;GetIsAlignment (Edit);473;ResetQuest (Snip);474;SetQuestDelay (Snip);475;IsProtected (Edit);476;GetThreatRatio (Edit);477;MatchFaceGeometry (Snip);478;GetIsUsedItemEquipType (Edit);479;GetPlayerName (Snip);480;FireWeapon (Snip);481;PayCrimeGold (Snip);482;UnusedFunction2 (Snip);483;MatchRace (Snip);484;SetPCYoung (Snip);485;SexChange (Snip);486;IsCarryable (Edit);487;GetConcussed (Edit);488;SetZoneRespawns (Snip);489;SetVATSTarget (Snip);490;GetMapMarkerVisible (Edit);491;ResetInventory (Snip);492;PlayerKnows (Edit);493;GetPermanentActorValue (GetPermAV) (Edit);494;GetKillingBlowLimb (Edit);495;GoToJail (Snip);496;CanPayCrimeGold (Edit);497;ServeTime (Snip);498;GetDaysInJail (Edit);499;EPAlchemyGetMakingPoison (Edit);500;EPAlchemyEffectHasKeyword (Edit);501;ShowAllMapMarkers (tmm) (Snip);502;GetAllowWorldInteractions (Edit);503;ResetAI (Snip);504;SetRumble (Snip);505;SetNoActivationSound (Snip);506;ClearNoActivationSound (Snip);507;GetLastHitCritical (Edit);508;AddMusic (Snip);509;UnusedFunction3 (Snip);510;UnusedFunction4 (Snip);511;SetPCToddler (Snip);512;IsCombatTarget (Edit);513;TriggerScreenBlood (tsb) (Snip);514;GetVATSRightAreaFree (Edit);515;GetVATSLeftAreaFree (Edit);516;GetVATSBackAreaFree (Edit);517;GetVATSFrontAreaFree (Edit);518;GetLockIsBroken (Edit);519;IsPS3 (Edit);520;IsWin32 (Edit);521;GetVATSRightTargetVisible (Edit);522;GetVATSLeftTargetVisible (Edit);523;GetVATSBackTargetVisible (Edit);524;GetVATSFrontTargetVisible (Edit);525;AttachAshPile (Snip);526;SetCriticalStage (Snip);527;IsInCriticalStage (Edit);528;RemoveFromAllFactions (Snip);529;GetXPForNextLevel (Edit);530;ShowLockpickMenuDebug (slpmd) (Snip);531;ForceSave (Snip);532;GetInfamy (Edit);533;GetInfamyViolent (Edit);534;GetInfamyNonViolent (Edit);535;UnusedFunction5 (Snip);536;Sin (Snip);537;Cos (Snip);538;Tan (Snip);539;Sqrt (Snip);540;Log (Snip);541;Abs (Snip);542;GetQuestCompleted (getqc) (Edit);543;UnusedFunction6 (Snip);544;PipBoyRadioOff (Snip);545;AutoDisplayObjectives (Snip);546;IsGoreDisabled (Edit);547;FadeSFX (fsfx) (Snip);548;SetMinimalUse (Snip);549;IsSceneActionComplete (Edit);550;ShowQuestStages (SQS) (Snip);551;GetSpellUsageNum (Edit);552;ForceRadioStationUpdate (frsu) (Snip);553;GetActorsInHigh (Edit);554;HasLoaded3D (Edit);555;DisableAllMines (Snip);556;SetLastExtDoorActivated (Snip);557;KillQuestUpdates (KQU) (Snip);558;IsImageSpaceActive (Snip);559;HasKeyword (Edit);560;HasRefType (Edit);561;LocationHasKeyword (Edit);562;LocationHasRefType (Edit);563;CreateEvent (Snip);564;GetIsEditorLocation (Edit);565;GetIsAliasRef (Edit);566;GetIsEditorLocAlias (Edit);567;IsSprinting (Edit);568;IsBlocking (Edit);569;HasEquippedSpell (hasSpell) (Edit);570;GetCurrentCastingType (getCasting) (Edit);571;GetCurrentDeliveryType (getDelivery) (Edit);572;EquipSpell (Snip);573;GetAttackState (Edit);574;GetAliasedRef (Snip);575;GetEventData (Edit);576;IsCloserToAThanB (Edit);577;EquipShout (Snip);578;GetEquippedShout (Edit);579;IsBleedingOut (Edit);580;UnlockWord (Snip);581;TeachWord (Snip);582;AddToContainer (Snip);583;GetRelativeAngle (Edit);584;SendAnimEvent (sae) (Snip);585;Shout (Snip);586;AddShout (Snip);587;RemoveShout (Snip);588;GetMovementDirection (Edit);589;IsInScene (Edit);590;GetRefTypeDeadCount (Edit);591;GetRefTypeAliveCount (Edit);592;ApplyHavokImpulse (Snip);593;GetIsFlying (Edit);594;IsCurrentSpell (Edit);595;SpellHasKeyword (Edit);596;GetEquippedItemType (Edit);597;GetLocationAliasCleared (Edit);598;SetLocationAliasCleared (Snip);599;GetLocAliasRefTypeDeadCount (Edit);600;GetLocAliasRefTypeAliveCount (Edit);601;IsWardState (Edit);602;IsInSameCurrentLocAsRef (Edit);603;IsInSameCurrentLocAsRefAlias (Edit);604;LocAliasIsLocation (Edit);605;GetKeywordDataForLocation (Edit);606;SetKeywordDataForLocation (Snip);607;GetKeywordDataForAlias (Edit);608;SetKeywordDataForAlias (Snip);609;LocAliasHasKeyword (Edit);610;IsNullPackageData (Edit);611;GetNumericPackageData (Edit);612;IsFurnitureAnimType (Edit);613;IsFurnitureEntryType (Edit);614;GetHighestRelationshipRank (Edit);615;GetLowestRelationshipRank (Edit);616;HasAssociationTypeAny (Edit);617;HasFamilyRelationshipAny (Edit);618;GetPathingTargetOffset (Edit);619;GetPathingTargetAngleOffset (Edit);620;GetPathingTargetSpeed (Edit);621;GetPathingTargetSpeedAngle (Edit);622;GetMovementSpeed (Edit);623;GetInContainer (Edit);624;IsLocationLoaded (Edit);625;IsLocAliasLoaded (Edit);626;IsDualCasting (Edit);627;DualCast (Snip);628;GetVMQuestVariable (Edit);629;GetVMScriptVariable (Edit);630;IsEnteringInteractionQuick (Edit);631;IsCasting (Edit);632;GetFlyingState (Edit);633;SetFavorState (Snip);634;IsInFavorState (Edit);635;HasTwoHandedWeaponEquipped (Edit);636;IsExitingInstant (Edit);637;IsInFriendStateWithPlayer (Edit);638;GetWithinDistance (Edit);639;GetActorValuePercent (Edit);640;IsUnique (Edit);641;GetLastBumpDirection (Edit);642;CameraShake (Snip);643;IsInFurnitureState (Edit);644;GetIsInjured (Edit);645;GetIsCrashLandRequest (Edit);646;GetIsHastyLandRequest (Edit);647;UpdateQuestInstanceGlobal (Snip);648;SetAllowFlying (Snip);649;IsLinkedTo (Edit);650;GetKeywordDataForCurrentLocation (Edit);651;GetInSharedCrimeFaction (Edit);652;GetBribeAmount (Snip);653;GetBribeSuccess (Edit);654;GetIntimidateSuccess (Edit);655;GetArrestedState (Edit);656;GetArrestingActor (Edit);657;ClearArrestState (Snip);658;EPTemperingItemIsEnchanted (Edit);659;EPTemperingItemHasKeyword (Edit);660;GetReceivedGiftValue (Snip);661;GetGiftGivenValue (Snip);662;ForceLocIntoAlias (Snip);663;GetReplacedItemType (Edit);664;SetHorseActor (Snip);665;PlayReferenceEffect (pre) (Snip);666;StopReferenceEffect (sre) (Snip);667;PlayShaderParticleGeometry (pspg) (Snip);668;StopShaderParticleGeometry (sspg) (Snip);669;ApplyImageSpaceModifierCrossFade (imodcf) (Snip);670;RemoveImageSpaceModifierCrossFade (rimodcf) (Snip);671;IsAttacking (Edit);672;IsPowerAttacking (Edit);673;IsLastHostileActor (Edit);674;GetGraphVariableInt (Edit);675;GetCurrentShoutVariation (Edit);676;PlayImpactEffect (pie) (Snip);677;ShouldAttackKill (Edit);678;SendStealAlarm (steal) (Snip);679;GetActivatorHeight (Edit);680;EPMagic_IsAdvanceSkill (Edit);681;WornHasKeyword (Edit);682;GetPathingCurrentSpeed (Edit);683;GetPathingCurrentSpeedAngle (Edit);684;KnockAreaEffect (kae) (Snip);685;InterruptCast (Snip);686;AddFormToFormList (Snip);687;RevertFormList (Snip);688;AddFormToLeveledList (Snip);689;RevertLeveledList (Snip);690;EPModSkillUsage_AdvanceObjectHasKeyword (Edit);691;EPModSkillUsage_IsAdvanceAction (Edit);692;EPMagic_SpellHasKeyword (Edit);693;GetNoBleedoutRecovery (Edit);694;SetNoBleedoutRecovery (Snip);695;EPMagic_SpellHasSkill (Edit);696;IsAttackType (Edit);697;IsAllowedToFly (Edit);698;HasMagicEffectKeyword (Edit);699;IsCommandedActor (Edit);700;IsStaggered (Edit);701;IsRecoiling (Edit);702;IsExitingInteractionQuick (Edit);703;IsPathing (Edit);704;GetShouldHelp (Edit);705;HasBoundWeaponEquipped (Edit);706;GetCombatTargetHasKeyword (Edit);707;UpdateLevel (Snip);708;GetCombatGroupMemberCount (gcgmc) (Edit);709;IsIgnoringCombat (Edit);710;GetLightLevel (gll) (Edit);711;SavePCFace (spf) (Snip);712;SpellHasCastingPerk (Edit);713;IsBeingRidden (Edit);714;IsUndead (Edit);715;GetRealHoursPassed (Edit);716;UnequipAll (Snip);717;IsUnlockedDoor (Edit);718;IsHostileToActor (Edit);719;GetTargetHeight (Edit);720;IsPoison (Edit);721;WornApparelHasKeywordCount (Edit);722;GetItemHealthPercent (Edit);723;EffectWasDualCast (Edit);724;GetKnockedStateEnum (Edit);725;DoesNotExist (Edit);726;CanFlyHere (Edit);731"/>
+			<Element name="Comparison Type" type="byte" hexview="1" hexviewwithdec="1" options="Equal and;0;Equal or;1;useAlias Equal and;2;useAlias Equal or;3;useGlobal Equal and;4;useGlobal Equal or;5;usePackData Equal and;8;usePackData Equal or;9;swapSubTarg Equal and;10;swapSubTarg Equal or;11;NOT Equal and;32;NOT Equal or;33;useAlias NOT Equal and;34;useAlias NOT Equal or;35;usePackData NOT Equal and;40;usePackData NOT Equal or;41;GreaterThan and;64;GreaterThan or;65;useAlias GreaterThan and;66;useAlias GreaterThan or;67;usePack GreaterThan and;72;usePack GreaterThan or;73;Greater/Equal and;96;Greater/Equal or;97;usePack Greater/Equal and;104;usePack Greater/Equal or;105;LessThan and;128;LessThan or;129;usePackData LessThan and;136;usePackData LessThan or;137;Less/Equal and;160;Less/Equal or;161"/>
+			<Element name="Unknown" type="byte" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1"/>
+			<Element name="Value to Compare Against" type="float" hexview="1" hexviewwithdec="1" desc="(could be a GLOB FormID or float)"/>
+			<Element name="Function Name" type="ushort" hexview="1" hexviewwithdec="1" options="GetWantBlocking (Edit);0;GetDistance (Edit);1;AddItem (Snip);2;SetEssential (Snip);3;Rotate (Snip);4;GetLocked (Edit);5;GetPos (Edit);6;SetPos (Snip);7;GetAngle (Edit);8;SetAngle (Snip);9;GetStartingPos (Edit);10;GetStartingAngle (Edit);11;GetSecondsPassed (Edit);12;Activate (Snip);13;GetActorValue (Edit);14;SetActorValue (Snip);15;ModActorValue (Snip);16;SetAtStart (Snip);17;GetCurrentTime (Edit);18;PlayGroup (Snip);19;LoopGroup (Snip);20;SkipAnim (Snip);21;StartCombat (Snip);22;StopCombat (Snip);23;GetScale (Edit);24;IsMoving (Edit);25;IsTurning (Edit);26;GetLineOfSight (Edit);27;AddSpell (Snip);28;RemoveSpell (Snip);29;Cast (Snip);30;GetButtonPressed (Snip);31;GetInSameCell (Edit);32;Enable (Snip);33;Disable (Snip);34;GetDisabled (Edit);35;MenuMode (Edit);36;PlaceAtMe (Snip);37;PlaySound (Snip);38;GetDisease (Edit);39;FailAllObjectives (Snip);40;GetClothingValue (Edit);41;SameFaction (Edit);42;SameRace (Edit);43;SameSex (Edit);44;GetDetected (Edit);45;GetDead (Edit);46;GetItemCount (Edit);47;GetGold (Edit);48;GetSleeping (Edit);49;GetSleeping (Snip);49;GetTalkedToPC (Edit);50;Say (Snip);51;SayTo (Snip);52;GetScriptVariable (Edit);53;StartQuest (Snip);54;StopQuest (Snip);55;GetQuestRunning (getqr) (Edit);56;SetStage (Snip);57;GetStage (Edit);58;GetStageDone (Edit);59;GetFactionRankDifference (Edit);60;GetAlarmed (Edit);61;IsRaining (Edit);62;GetAttacked (Edit);63;GetIsCreature (Edit);64;GetLockLevel (Edit);65;GetShouldAttack (Edit);66;GetInCell (Edit);67;GetIsClass (Edit);68;GetIsRace (Edit);69;GetIsSex (Edit);70;GetInFaction (Edit);71;GetIsID (Edit);72;GetFactionRank (Edit);73;GetGlobalValue (Edit);74;IsSnowing (Edit);75;FastTravel (ft) (Snip);76;GetRandomPercent (Edit);77;RemoveMusic (Snip);78;GetQuestVariable (Edit);79;GetLevel (Edit);80;IsRotating (Edit);81;RemoveItem (Snip);82;GetLeveledEncounterValue (Snip);83;GetDeadCount (Edit);84;AddToMap (showMap) (Snip);85;StartConversation (Snip);86;Drop (Snip);87;AddTopic (Snip);88;ShowMessage (Snip);89;SetAlert (Snip);90;GetIsAlerted (Edit);91;Look (Snip);92;StopLook (Snip);93;EvaluatePackage (evp) (Snip);94;SendAssaultAlarm (Snip);95;EnablePlayerControls (epc) (Snip);96;DisablePlayerControls (dpc) (Snip);97;GetPlayerControlsDisabled (gpc) (Edit);98;GetHeadingAngle (Edit);99;PickIdle (Snip);100;IsWeaponMagicOut (Edit);101;IsTorchOut (Edit);102;IsShieldOut (Edit);103;CreateDetectionEvent (Snip);104;IsActionRef (Snip);105;IsFacingUp (Edit);106;GetKnockedState (Edit);107;GetWeaponAnimType (Edit);108;IsWeaponSkillType (Edit);109;GetCurrentAIPackage (Edit);110;IsWaiting (Edit);111;IsIdlePlaying (Edit);112;CompleteQuest (Snip);113;Lock (Snip);114;UnLock (Snip);115;IsIntimidatebyPlayer (Edit);116;IsPlayerInRegion (Edit);117;GetActorAggroRadiusViolated (Edit);118;GetCrimeKnown (Snip);119;SetEnemy (Snip);120;SetAlly (Snip);121;GetCrime (Edit);122;IsGreetingPlayer (Edit);123;StartMisterSandMan (Snip);124;IsGuard (Edit);125;StartCannibal (Snip);126;HasBeenEaten (Edit);127;GetStaminaPercentage (getStamina) (Edit);128;GetPCIsClass (Edit);129;GetPCIsRace (Edit);130;GetPCIsSex (Edit);131;GetPCInFaction (Edit);132;SameFactionAsPC (Edit);133;SameRaceAsPC (Edit);134;SameSexAsPC (Edit);135;GetIsReference (Edit);136;SetFactionRank (Snip);137;ModFactionRank (Snip);138;KillActor (kill) (Snip);139;ResurrectActor (resurrect) (Snip);140;IsTalking (Edit);141;GetWalkSpeed (getWalk) (Edit);142;GetCurrentAIProcedure (Edit);143;GetTrespassWarningLevel (Edit);144;IsTrespassing (Edit);145;IsInMyOwnedCell (Edit);146;GetWindSpeed (Edit);147;GetCurrentWeatherPercent (getWeatherpct) (Edit);148;GetIsCurrentWeather (getWeather) (Edit);149;IsContinuingPackagePCNear (Edit);150;SetCrimeFaction (Snip);151;GetIsCrimeFaction (Edit);152;CanHaveFlames (Edit);153;HasFlames (Edit);154;AddFlames (Snip);155;RemoveFlames (Snip);156;GetOpenState (Edit);157;MoveToMarker (moveto) (Snip);158;GetSitting (Edit);159;GetFurnitureMarkerID (Snip);160;GetIsCurrentPackage (Edit);161;IsCurrentFurnitureRef (Edit);162;IsCurrentFurnitureObj (Edit);163;SetSize (cSize) (Snip);164;RemoveMe (Snip);165;DropMe (Snip);166;GetFactionReaction (Snip);167;SetFactionReaction (Snip);168;ModFactionReaction (Snip);169;GetDayOfWeek (Edit);170;IgnoreCrime (Snip);171;GetTalkedToPCParam (Edit);172;RemoveAllItems (Snip);173;WakeUpPC (Snip);174;IsPCSleeping (Edit);175;IsPCAMurderer (Edit);176;SetCombatStyle (setcs) (Snip);177;PlaySound3D (Snip);178;SelectPlayerSpell (spSpell) (Snip);179;HasSameEditorLocAsRef (Edit);180;HasSameEditorLocAsRefAlias (Edit);181;GetEquipped (Edit);182;Wait (Snip);183;StopWaiting (Snip);184;IsSwimming (Edit);185;ScriptEffectElapsedSeconds (Snip);186;SetCellPublicFlag (setPublic) (Snip);187;GetPCSleepHours (Snip);188;GetAmountSoldStolen (Edit);190;ModAmountSoldStolen (Snip);191;GetIgnoreCrime (Edit);192;GetPCExpelled (Edit);193;SetPCExpelled (Snip);194;GetPCFactionMurder (Edit);195;SetPCFactionMurder (Snip);196;GetPCEnemyofFaction (Edit);197;SetPCEnemyofFaction (Snip);198;GetPCFactionAttack (Edit);199;SetPCFactionAttack (Snip);200;StartScene (Snip);201;StopScene (Snip);202;GetDestroyed (Edit);203;SetDestroyed (Snip);204;GetActionRef (getAR) (Snip);205;GetSelf (this) (Snip);206;GetContainer (Snip);207;GetForceRun (Snip);208;SetForceRun (Snip);209;GetForceSneak (Snip);210;SetForceSneak (Snip);211;AdvancePCSkill (advSkill) (Snip);212;AdvancePCLevel (advLevel) (Snip);213;HasMagicEffect (Edit);214;GetDefaultOpen (Edit);215;SetDefaultOpen (Snip);216;ShowClassMenu (Snip);217;ShowRaceMenu (setPlayerRace) (Snip);218;GetAnimAction (Edit);219;ShowNameMenu (Snip);220;SetOpenState (Snip);221;ResetReference (recycleActor) (Snip);222;IsSpellTarget (Edit);223;GetVATSMode (Edit);224;GetPersuasionNumber (Edit);225;GetVampireFeed (Edit);226;GetCannibal (Edit);227;GetIsClassDefault (Edit);228;GetClassDefaultMatch (Edit);229;GetInCellParam (Edit);230;UnusedFunction1 (Snip);231;GetCombatTarget (Snip);232;GetPackageTarget (Snip);233;ShowSpellMaking (Snip);234;GetVatsTargetHeight (Edit);235;SetGhost (Snip);236;GetIsGhost (Edit);237;EquipItem (equipObject) (Snip);238;UnequipItem (unEquipObject) (Snip);239;SetClass (Snip);240;SetUnconscious (Snip);241;GetUnconscious (Edit);242;SetRestrained (Snip);243;GetRestrained (Edit);244;ForceFlee (flee) (Snip);245;GetIsUsedItem (Edit);246;GetIsUsedItemType (Edit);247;IsScenePlaying (Edit);248;IsInDialogueWithPlayer (Edit);249;GetLocationCleared (Edit);250;SetLocationCleared (Snip);251;ForceRefIntoAlias (Snip);252;EmptyRefAlias (Snip);253;GetIsPlayableRace (Edit);254;GetOffersServicesNow (Edit);255;GetGameSetting (getgs) (Snip);256;StopCombatAlarmOnActor (scaOnActor) (Snip);257;HasAssociationType (Edit);258;HasFamilyRelationship (family) (Edit);259;SetWeather (sw) (Snip);260;HasParentRelationship (isParent) (Edit);261;IsWarningAbout (Edit);262;IsWeaponOut (Edit);263;HasSpell (Edit);264;IsTimePassing (Edit);265;IsPleasant (Edit);266;IsCloudy (Edit);267;TrapUpdate (Snip);268;ShowQuestObjectives (sqo) (Snip);269;ForceActorValue (forceAV) (Snip);270;IncrementPCSkill (incpcs) (Snip);271;DoTrap (Snip);272;EnableFastTravel (enableFast) (Snip);273;IsSmallBump (Edit);274;GetParentRef (Snip);275;PlayBink (Snip);276;GetBaseActorValue (getBaseav) (Edit);277;IsOwner (Edit);278;SetOwnership (Snip);279;IsCellOwner (Edit);280;SetCellOwnership (Snip);281;IsHorseStolen (Edit);282;SetCellFullName (Snip);283;SetActorFullName (Snip);284;IsLeftUp (Edit);285;IsSneaking (Edit);286;IsRunning (Edit);287;GetFriendHit (Edit);288;IsInCombat (Edit);289;SetPackDuration (spdur) (Snip);290;PlayMagicShaderVisuals (pms) (Snip);291;PlayMagicEffectVisuals (pme) (Snip);292;StopMagicShaderVisuals (sms) (Snip);293;StopMagicEffectVisuals (sme) (Snip);294;ResetInterior (Snip);295;IsAnimPlaying (Snip);296;SetActorAlpha (saa) (Snip);297;EnableLinkedPathPoints (Snip);298;DisableLinkedPathPoints (Snip);299;IsInInterior (Edit);300;ForceWeather (fw) (Snip);301;ToggleActorsAI (Snip);302;IsActorsAIOff (Snip);303;IsWaterObject (Edit);304;GetPlayerAction (Edit);305;IsActorUsingATorch (Edit);306;SetLevel (Snip);307;ResetFallDamageTimer (Snip);308;IsXBox (Edit);309;GetInWorldspace (Edit);310;ModPCMiscStat (modpcms) (Snip);311;GetPCMiscStat (getpcms) (Edit);312;GetPairedAnimation (gpa) (Edit);313;IsActorAVictim (Edit);314;GetTotalPersuasionNumber (Edit);315;SetScale (Snip);316;ModScale (Snip);317;GetIdleDoneOnce (Edit);318;KillAllActors (killAll) (Snip);319;GetNoRumors (Edit);320;SetNoRumors (Snip);321;Dispel (Snip);322;GetCombatState (Edit);323;TriggerHitShader (ths) (Snip);324;GetWithinPackageLocation (Edit);325;Reset3DState (Snip);326;IsRidingMount (Edit);327;DispelAllSpells (Snip);328;IsFleeing (Edit);329;AddAchievement (Snip);330;DuplicateAllItems (Snip);331;IsInDangerousWater (Edit);332;EssentialDeathReload (Snip);333;SetShowQuestItems (Snip);334;DuplicateNPCStats (Snip);335;ResetHealth (Snip);336;SetIgnoreFriendlyHits (sifh) (Snip);337;GetIgnoreFriendlyHits (gifh) (Edit);338;IsPlayersLastRiddenMount (Edit);339;SetActorRefraction (sar) (Snip);340;SetItemValue (Snip);341;SetRigidBodyMass (Snip);342;ShowViewerStrings (svs) (Snip);343;ReleaseWeatherOverride (rwo) (Snip);344;SetAllReachable (Snip);345;SetAllVisible (Snip);346;SetNoAvoidance (Snip);347;SendTrespassAlarm (Snip);348;SetSceneIsComplex (Snip);349;Autosave (Snip);350;StartMasterFileSeekData (Snip);351;DumpMasterFileSeekData (Snip);352;IsActor (Edit);353;IsEssential (Edit);354;PreloadMagicEffect (Snip);355;ShowDialogSubtitles (Snip);356;SetPlayerResistingArrest (Snip);357;IsPlayerMovingIntoNewSpace (Edit);358;GetInCurrentLoc (Edit);359;GetInCurrentLocAlias (Edit);360;GetTimeDead (Edit);361;HasLinkedRef (Edit);362;GetLinkedRef (Snip);363;DamageObject (do) (Snip);364;IsChild (Edit);365;GetStolenItemValueNoCrime (Edit);366;GetLastPlayerAction (Edit);367;IsPlayerActionActive (Edit);368;SetTalkingActivatorActor (Snip);369;IsTalkingActivatorActor (Edit);370;ShowBarterMenu (sbm) (Snip);371;IsInList (Edit);372;GetStolenItemValue (Edit);373;AddPerk (Snip);374;GetCrimeGoldViolent (getViolent) (Edit);375;GetCrimeGoldNonviolent (getNonviolent) (Edit);376;ShowRepairMenu (srm) (Snip);377;HasShout (Edit);378;AddNote (an) (Snip);379;RemoveNote (rn) (Snip);380;GetHasNote (getn) (Edit);381;AddToFaction (addFac) (Snip);382;RemoveFromFaction (removeFac) (Snip);383;DamageActorValue (damageav) (Snip);384;RestoreActorValue (RestoreAV) (Snip);385;TriggerHUDShudder (hudsh) (Snip);386;GetObjectiveFailed (Snip);387;SetObjectiveFailed (Snip);388;SetGlobalTimeMultiplier (sgtm) (Snip);389;GetHitLocation (Edit);390;IsPC1stPerson (pc1st) (Edit);391;PurgeCellBuffers (pcb) (Snip);392;PushActorAway (Snip);393;SetActorsAI (Snip);394;ClearOwnership (Snip);395;GetCauseofDeath (Edit);396;IsLimbGone (Edit);397;IsWeaponInList (Edit);398;PlayIdle (Snip);399;ApplyImageSpaceModifier (imod) (Snip);400;RemoveImageSpaceModifier (rimod) (Snip);401;IsBribedbyPlayer (Edit);402;GetRelationshipRank (Edit);403;SetRelationshipRank (Snip);404;SetCellImageSpace (Snip);405;ShowChargenMenu (scgm) (Snip);406;GetVATSValue (Edit);407;IsKiller (Edit);408;IsKillerObject (Edit);409;GetFactionCombatReaction (Edit);410;UseWeapon (Snip);411;EvaluateSpellConditions (esc) (Snip);412;ToggleMotionBlur (tmb) (Snip);413;Exists (Edit);414;GetGroupMemberCount (Edit);415;GetGroupTargetCount (Edit);416;SetObjectiveCompleted (Snip);417;SetObjectiveDisplayed (Snip);418;GetObjectiveCompleted (Snip);419;GetObjectiveDisplayed (Snip);420;SetImageSpace (Snip);421;PipboyRadio (prad) (Snip);422;RemovePerk (Snip);423;DisableAllActors (disaa) (Snip);424;GetIsFormType (Snip);425;GetIsVoiceType (Edit);426;GetPlantedExplosive (Edit);427;CompleteAllObjectives (Snip);428;IsScenePackageRunning (Edit);429;GetHealthPercentage (Edit);430;SetAudioMultithreading (sam) (Snip);431;GetIsObjectType (Edit);432;ShowChargenMenuParams (scgmp) (Snip);433;GetDialogueEmotion (Edit);434;GetDialogueEmotionValue (Edit);435;ExitGame (exit) (Snip);436;GetIsCreatureType (Edit);437;PlayerCreatePotion (Snip);438;PlayerEnchantObject (Snip);439;ShowWarning (Snip);440;EnterTrigger (Snip);441;MarkForDelete (Snip);442;SetPlayerAIDriven (Snip);443;GetInCurrentLocFormList (Edit);444;GetInZone (Edit);445;GetVelocity (Edit);446;GetGraphVariableFloat (Edit);447;HasPerk (Edit);448;GetFactionRelation (Edit);449;IsLastIdlePlayed (Edit);450;SetNPCRadio (snr) (Snip);451;SetPlayerTeammate (Snip);452;GetPlayerTeammate (Edit);453;GetPlayerTeammateCount (Edit);454;OpenActorContainer (Snip);455;ClearFactionPlayerEnemyFlag (Snip);456;ClearActorsFactionsPlayerEnemyFlag (Snip);457;GetActorCrimePlayerEnemy (Edit);458;GetCrimeGold (Edit);459;SetCrimeGold (Snip);460;ModCrimeGold (Snip);461;GetPlayerGrabbedRef (Snip);462;IsPlayerGrabbedRef (Edit);463;PlaceLeveledActorAtMe (Snip);464;GetKeywordItemCount (Edit);465;ShowLockpickMenu (slpm) (Snip);466;GetBroadcastState (Snip);467;SetBroadcastState (Snip);468;StartRadioConversation (Snip);469;GetDestructionStage (Edit);470;ClearDestruction (Snip);471;CastImmediateOnSelf (cios) (Snip);472;GetIsAlignment (Edit);473;ResetQuest (Snip);474;SetQuestDelay (Snip);475;IsProtected (Edit);476;GetThreatRatio (Edit);477;MatchFaceGeometry (Snip);478;GetIsUsedItemEquipType (Edit);479;GetPlayerName (Snip);480;FireWeapon (Snip);481;PayCrimeGold (Snip);482;UnusedFunction2 (Snip);483;MatchRace (Snip);484;SetPCYoung (Snip);485;SexChange (Snip);486;IsCarryable (Edit);487;GetConcussed (Edit);488;SetZoneRespawns (Snip);489;SetVATSTarget (Snip);490;GetMapMarkerVisible (Edit);491;ResetInventory (Snip);492;PlayerKnows (Edit);493;GetPermanentActorValue (GetPermAV) (Edit);494;GetKillingBlowLimb (Edit);495;GoToJail (Snip);496;CanPayCrimeGold (Edit);497;ServeTime (Snip);498;GetDaysInJail (Edit);499;EPAlchemyGetMakingPoison (Edit);500;EPAlchemyEffectHasKeyword (Edit);501;ShowAllMapMarkers (tmm) (Snip);502;GetAllowWorldInteractions (Edit);503;ResetAI (Snip);504;SetRumble (Snip);505;SetNoActivationSound (Snip);506;ClearNoActivationSound (Snip);507;GetLastHitCritical (Edit);508;AddMusic (Snip);509;UnusedFunction3 (Snip);510;UnusedFunction4 (Snip);511;SetPCToddler (Snip);512;IsCombatTarget (Edit);513;TriggerScreenBlood (tsb) (Snip);514;GetVATSRightAreaFree (Edit);515;GetVATSLeftAreaFree (Edit);516;GetVATSBackAreaFree (Edit);517;GetVATSFrontAreaFree (Edit);518;GetLockIsBroken (Edit);519;IsPS3 (Edit);520;IsWin32 (Edit);521;GetVATSRightTargetVisible (Edit);522;GetVATSLeftTargetVisible (Edit);523;GetVATSBackTargetVisible (Edit);524;GetVATSFrontTargetVisible (Edit);525;AttachAshPile (Snip);526;SetCriticalStage (Snip);527;IsInCriticalStage (Edit);528;RemoveFromAllFactions (Snip);529;GetXPForNextLevel (Edit);530;ShowLockpickMenuDebug (slpmd) (Snip);531;ForceSave (Snip);532;GetInfamy (Edit);533;GetInfamyViolent (Edit);534;GetInfamyNonViolent (Edit);535;UnusedFunction5 (Snip);536;Sin (Snip);537;Cos (Snip);538;Tan (Snip);539;Sqrt (Snip);540;Log (Snip);541;Abs (Snip);542;GetQuestCompleted (getqc) (Edit);543;UnusedFunction6 (Snip);544;PipBoyRadioOff (Snip);545;AutoDisplayObjectives (Snip);546;IsGoreDisabled (Edit);547;FadeSFX (fsfx) (Snip);548;SetMinimalUse (Snip);549;IsSceneActionComplete (Edit);550;ShowQuestStages (SQS) (Snip);551;GetSpellUsageNum (Edit);552;ForceRadioStationUpdate (frsu) (Snip);553;GetActorsInHigh (Edit);554;HasLoaded3D (Edit);555;DisableAllMines (Snip);556;SetLastExtDoorActivated (Snip);557;KillQuestUpdates (KQU) (Snip);558;IsImageSpaceActive (Snip);559;HasKeyword (Edit);560;HasRefType (Edit);561;LocationHasKeyword (Edit);562;LocationHasRefType (Edit);563;CreateEvent (Snip);564;GetIsEditorLocation (Edit);565;GetIsAliasRef (Edit);566;GetIsEditorLocAlias (Edit);567;IsSprinting (Edit);568;IsBlocking (Edit);569;HasEquippedSpell (hasSpell) (Edit);570;GetCurrentCastingType (getCasting) (Edit);571;GetCurrentDeliveryType (getDelivery) (Edit);572;EquipSpell (Snip);573;GetAttackState (Edit);574;GetAliasedRef (Snip);575;GetEventData (Edit);576;IsCloserToAThanB (Edit);577;EquipShout (Snip);578;GetEquippedShout (Edit);579;IsBleedingOut (Edit);580;UnlockWord (Snip);581;TeachWord (Snip);582;AddToContainer (Snip);583;GetRelativeAngle (Edit);584;SendAnimEvent (sae) (Snip);585;Shout (Snip);586;AddShout (Snip);587;RemoveShout (Snip);588;GetMovementDirection (Edit);589;IsInScene (Edit);590;GetRefTypeDeadCount (Edit);591;GetRefTypeAliveCount (Edit);592;ApplyHavokImpulse (Snip);593;GetIsFlying (Edit);594;IsCurrentSpell (Edit);595;SpellHasKeyword (Edit);596;GetEquippedItemType (Edit);597;GetLocationAliasCleared (Edit);598;SetLocationAliasCleared (Snip);599;GetLocAliasRefTypeDeadCount (Edit);600;GetLocAliasRefTypeAliveCount (Edit);601;IsWardState (Edit);602;IsInSameCurrentLocAsRef (Edit);603;IsInSameCurrentLocAsRefAlias (Edit);604;LocAliasIsLocation (Edit);605;GetKeywordDataForLocation (Edit);606;SetKeywordDataForLocation (Snip);607;GetKeywordDataForAlias (Edit);608;SetKeywordDataForAlias (Snip);609;LocAliasHasKeyword (Edit);610;IsNullPackageData (Edit);611;GetNumericPackageData (Edit);612;IsFurnitureAnimType (Edit);613;IsFurnitureEntryType (Edit);614;GetHighestRelationshipRank (Edit);615;GetLowestRelationshipRank (Edit);616;HasAssociationTypeAny (Edit);617;HasFamilyRelationshipAny (Edit);618;GetPathingTargetOffset (Edit);619;GetPathingTargetAngleOffset (Edit);620;GetPathingTargetSpeed (Edit);621;GetPathingTargetSpeedAngle (Edit);622;GetMovementSpeed (Edit);623;GetInContainer (Edit);624;IsLocationLoaded (Edit);625;IsLocAliasLoaded (Edit);626;IsDualCasting (Edit);627;DualCast (Snip);628;GetVMQuestVariable (Edit);629;GetVMScriptVariable (Edit);630;IsEnteringInteractionQuick (Edit);631;IsCasting (Edit);632;GetFlyingState (Edit);633;SetFavorState (Snip);634;IsInFavorState (Edit);635;HasTwoHandedWeaponEquipped (Edit);636;IsExitingInstant (Edit);637;IsInFriendStateWithPlayer (Edit);638;GetWithinDistance (Edit);639;GetActorValuePercent (Edit);640;IsUnique (Edit);641;GetLastBumpDirection (Edit);642;CameraShake (Snip);643;IsInFurnitureState (Edit);644;GetIsInjured (Edit);645;GetIsCrashLandRequest (Edit);646;GetIsHastyLandRequest (Edit);647;UpdateQuestInstanceGlobal (Snip);648;SetAllowFlying (Snip);649;IsLinkedTo (Edit);650;GetKeywordDataForCurrentLocation (Edit);651;GetInSharedCrimeFaction (Edit);652;GetBribeAmount (Snip);653;GetBribeSuccess (Edit);654;GetIntimidateSuccess (Edit);655;GetArrestedState (Edit);656;GetArrestingActor (Edit);657;ClearArrestState (Snip);658;EPTemperingItemIsEnchanted (Edit);659;EPTemperingItemHasKeyword (Edit);660;GetReceivedGiftValue (Snip);661;GetGiftGivenValue (Snip);662;ForceLocIntoAlias (Snip);663;GetReplacedItemType (Edit);664;SetHorseActor (Snip);665;PlayReferenceEffect (pre) (Snip);666;StopReferenceEffect (sre) (Snip);667;PlayShaderParticleGeometry (pspg) (Snip);668;StopShaderParticleGeometry (sspg) (Snip);669;ApplyImageSpaceModifierCrossFade (imodcf) (Snip);670;RemoveImageSpaceModifierCrossFade (rimodcf) (Snip);671;IsAttacking (Edit);672;IsPowerAttacking (Edit);673;IsLastHostileActor (Edit);674;GetGraphVariableInt (Edit);675;GetCurrentShoutVariation (Edit);676;PlayImpactEffect (pie) (Snip);677;ShouldAttackKill (Edit);678;SendStealAlarm (steal) (Snip);679;GetActivatorHeight (Edit);680;EPMagic_IsAdvanceSkill (Edit);681;WornHasKeyword (Edit);682;GetPathingCurrentSpeed (Edit);683;GetPathingCurrentSpeedAngle (Edit);684;KnockAreaEffect (kae) (Snip);685;InterruptCast (Snip);686;AddFormToFormList (Snip);687;RevertFormList (Snip);688;AddFormToLeveledList (Snip);689;RevertLeveledList (Snip);690;EPModSkillUsage_AdvanceObjectHasKeyword (Edit);691;EPModSkillUsage_IsAdvanceAction (Edit);692;EPMagic_SpellHasKeyword (Edit);693;GetNoBleedoutRecovery (Edit);694;SetNoBleedoutRecovery (Snip);695;EPMagic_SpellHasSkill (Edit);696;IsAttackType (Edit);697;IsAllowedToFly (Edit);698;HasMagicEffectKeyword (Edit);699;IsCommandedActor (Edit);700;IsStaggered (Edit);701;IsRecoiling (Edit);702;IsExitingInteractionQuick (Edit);703;IsPathing (Edit);704;GetShouldHelp (Edit);705;HasBoundWeaponEquipped (Edit);706;GetCombatTargetHasKeyword (Edit);707;UpdateLevel (Snip);708;GetCombatGroupMemberCount (gcgmc) (Edit);709;IsIgnoringCombat (Edit);710;GetLightLevel (gll) (Edit);711;SavePCFace (spf) (Snip);712;SpellHasCastingPerk (Edit);713;IsBeingRidden (Edit);714;IsUndead (Edit);715;GetRealHoursPassed (Edit);716;UnequipAll (Snip);717;IsUnlockedDoor (Edit);718;IsHostileToActor (Edit);719;GetTargetHeight (Edit);720;IsPoison (Edit);721;WornApparelHasKeywordCount (Edit);722;GetItemHealthPercent (Edit);723;EffectWasDualCast (Edit);724;GetKnockedStateEnum (Edit);725;DoesNotExist (Edit);726;CanFlyHere (Edit);731"/>
 			<Element name="Unknown" type="ushort"/>
-			<Element name="Parameter #1" type="formid" hexview="1" desc="uint/float/formID"/>
-			<Element name="Parameter #2" type="formid" hexview="1" desc="uint/float/formID"/>
-			<Element name="Run on" type="uint" hexview="1" options="Subject;0;Target;1;Reference;2;Combat Target;3;Linked Reference;4;Quest Alias;5;Package Data;6;Event Data;7"/>
-			<Element name="Reference" type="formid" hexview="1" desc="uint/formID"/>
-			<Element name="Parameter #3" type="uint" hexview="1"/>
+			<Element name="Parameter #1" type="formid" hexview="1" hexviewwithdec="1" desc="uint/float/formID"/>
+			<Element name="Parameter #2" type="formid" hexview="1" hexviewwithdec="1" desc="uint/float/formID"/>
+			<Element name="Run on" type="uint" hexview="1" hexviewwithdec="1" options="Subject;0;Target;1;Reference;2;Combat Target;3;Linked Reference;4;Quest Alias;5;Package Data;6;Event Data;7"/>
+			<Element name="Reference" type="formid" hexview="1" hexviewwithdec="1" desc="uint/formID"/>
+			<Element name="Parameter #3" type="int" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<!-- I haven't seen CIS1/CIS2 in Skyrim yet -->
 		<Subrecord name="CIS1" desc="Graph Variable" optional="1">
@@ -113,9 +113,9 @@
 			</Subrecord>
 			<Subrecord name="DMDT" desc="Replacer Alternative DDSs" optional="1">
 				<!-- same as MODT -->
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="DMDS" desc="Alternate TexData for Replacer Model" optional="1">
@@ -184,9 +184,9 @@
 		</Subrecord>
 		<Subrecord name="MODT" desc="Model Texture Data (DDS referenced in NIF)" optional="1">
 			<!-- Snip doesn't support arranging this yet -->
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Group id="MODS" optional="1"/>
@@ -196,33 +196,33 @@
 	</Group>
 	<Group id="MO2Textures" desc="Model Texture Data (DDS referenced in NIF)">
 		<Subrecord name="MO2T" desc="Texture Files Hashes" optional="1">
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="MO3Textures" desc="Model Texture Data (DDS referenced in NIF)">
 		<Subrecord name="MO3T" desc="Texture Files Hashes" optional="1">
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="MO4Textures" desc="Model Texture Data (DDS referenced in NIF)">
 		<Subrecord name="MO4T" desc="Texture Files Hashes" optional="1">
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="MO5Textures" desc="Model Texture Data (DDS referenced in NIF)">
 		<Subrecord name="MO5T" desc="Texture Files Hashes" optional="1">
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Total # of Textures Used by Model" type="uint"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
@@ -598,7 +598,7 @@
 	<Group id="BODYDATA" optional="1">
 		<Subrecord name="BODT" desc="Body Template" optional="1">
 			<Element name="BodyParts" type="uint" flags="Head;Hair;Chest;Hands;Forearms;Amulet;Ring;Feet;Calves;Shield;Tail;Long Hair;Forehead (Circlet);Ears;Dragon Head;Dragon Left Wing;Dragon Right Wing;Dragon Body;Unknown19;Unknown20;Decapitated Head;Unknown22;Unknown23;Unknown24;Unknown25;Unknown26;Unknown27;Unknown28;Unknown29;Unknown30;Unknown31;Unknown32"/>
-			<Element name="Flags" type="uint" hexview="1" flags="Unknown1;Unknown2;Unknown3;Unknown4;NonPlayable;Unknown6;Unknown7;Unknown8;Unknown9;Unknown10;Unknown11;Unknown12;Unknown13;Unknown14;Unknown15;Unknown16;Unknown17;Unknown18;Unknown19;Unknown20;Unknown21;Unknown22;Unknown23;Unknown24;Unknown25;Unknown26;Unknown27;Unknown28;Unknown29;Unknown30;Unknown31;Unknown32"/>
+			<Element name="Flags" type="uint" hexview="1" hexviewwithdec="1" flags="Unknown1;Unknown2;Unknown3;Unknown4;NonPlayable;Unknown6;Unknown7;Unknown8;Unknown9;Unknown10;Unknown11;Unknown12;Unknown13;Unknown14;Unknown15;Unknown16;Unknown17;Unknown18;Unknown19;Unknown20;Unknown21;Unknown22;Unknown23;Unknown24;Unknown25;Unknown26;Unknown27;Unknown28;Unknown29;Unknown30;Unknown31;Unknown32"/>
 			<Element name="Armor type?" type="uint" options="Light Armor;0;Heavy Armor;1;Clothing;2"/>
 		</Subrecord>
 		<Subrecord name="BOD2" desc="Body Template" optional="1">
@@ -635,7 +635,7 @@
 			<Element name="Red" type="float" desc="Multiply by 255"/>
 			<Element name="Green" type="float" desc="Multiply by 255"/>
 			<Element name="Blue" type="float" desc="Multiply by 255"/>
-			<Element name="Unknown" type="float" hexview="1"/>
+			<Element name="Unknown" type="float" hexview="1" hexviewwithdec="1"/>
 			<Element name="Primitive Type" type="uint" options="None;0;Box;1;Sphere;2;Portal Box;3;Unknown;4"/>
 		</Subrecord>
 	</Group>
@@ -858,11 +858,11 @@
 		</Subrecord>
 		<!-- OFST might never show up. Added just in case for examination -->
 		<Subrecord name="OFST" desc="Offset" optional="1">
-			<Element name="Value" type="blob" hexview="1"/>
+			<Element name="Value" type="blob" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<!-- DELE might never show up. Added just in case for examination -->
 		<Subrecord name="DELE" desc="Deleted Records" optional="1">
-			<Element name="Value" type="blob" hexview="1"/>
+			<Element name="Value" type="blob" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="CNAM" desc="Author of the Plugin" optional="1">
 			<Element name="Author" type="string"/>
@@ -889,7 +889,7 @@
 			<Element name="Version #" type="uint"/>
 		</Subrecord>
 		<Subrecord name="INCC" desc="Inter Versioning Information" optional="1">
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 	</Record>
   <!-- condid="1" for GMST attached to EDID -->
@@ -1748,10 +1748,10 @@
 		  End -->
       
       <!-- Old Routine
-			<Element name="Skills or SPEL FormID" type="uint" hexview="1" options="None;0;OneHanded;6;TwoHanded;7;Marksman;8;Block;9;Smithing;10;HeavyArmor;11;LightArmor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speechcraft;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Fame;60;Infamy;61;None(Don't Use);4294967295"/>
+			<Element name="Skills or SPEL FormID" type="uint" hexview="1" hexviewwithdec="1" options="None;0;OneHanded;6;TwoHanded;7;Marksman;8;Block;9;Smithing;10;HeavyArmor;11;LightArmor;12;Pickpocket;13;Lockpicking;14;Sneak;15;Alchemy;16;Speechcraft;17;Alteration;18;Conjuration;19;Destruction;20;Illusion;21;Restoration;22;Enchanting;23;Fame;60;Infamy;61;None(Don't Use);4294967295"/>
 		  End -->
       
-      <Element name="Skills or SPEL FormID" type="uint" hexview="1"/>
+      <Element name="Skills or SPEL FormID" type="uint" hexview="1" hexviewwithdec="1"/>
       <Element name="Value" type="uint"/>
 			<Element name="Weight" type="float"/>
 		</Subrecord>
@@ -2670,7 +2670,7 @@
 			<Element name="(CK/Upd always 93/94/6F, Van has 91)" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 			<Element name="(always 0)" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 			<Element name="Sight FOV" type="float"/>
-			<Element name="(always 0)" type="uint" hexview="1"/>
+			<Element name="(always 0)" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Base VATS ToHit Chance" type="byte"/>
 			<Element name="Animation Attack Anim" type="byte" options="AttackLeft;26;AttackRight;32;Attack3;38;Attack4;44;Attack5;50;Attack6;56;Attack7;62;Attack8;68;AttackLoop;74;AttackSpin;80;AttackSpin2;86;PlaceMine;97;PlaceMine2;103;AttackThrow;109;AttackThrow2;115;AttackThrow3;121;AttackThrow4;127;AttackThrow5;133;Default;255"/>
 			<Element name="# of Projectiles" type="byte"/>
@@ -2746,10 +2746,10 @@
 		<Group id="OBND" optional="1"/>
 		<Subrecord name="ACBS" desc="Traits and Stats tabs (ULAGEPRUN - UserLevel, AutoCalc, Gender, Essential, PresetCharGen, Respawn, Unique, NoAffectOnStealthMeter)" optional="1">
 			<!-- 3unknown bytes, 1 ushort -->
-			<Element name="UL-A-G-E-P-R-U-N" type="byte" hexview="1" flags="Female;Essential;Preset;Respawn;AutoCalc;Unique;NotAffectStealth;UserLevel"/>
-			<Element name="Summon-Protected" type="byte" hexview="1" flags=";;;Protected;;;Summonable"/>
-			<Element name="OGAnim-NoBleed-SimpAct" type="byte" hexview="1" flags="Doesn'tBleed;;BleedoutOverride;OppositeGenderAnims;SimpleActor"/>
-			<Element name="Invulnerable-IsGhost" type="byte" hexview="1" flags=";;;;;IsGhost;;Invulnerable"/>
+			<Element name="UL-A-G-E-P-R-U-N" type="byte" hexview="1" hexviewwithdec="1" flags="Female;Essential;Preset;Respawn;AutoCalc;Unique;NotAffectStealth;UserLevel"/>
+			<Element name="Summon-Protected" type="byte" hexview="1" hexviewwithdec="1" flags=";;;Protected;;;Summonable"/>
+			<Element name="OGAnim-NoBleed-SimpAct" type="byte" hexview="1" hexviewwithdec="1" flags="Doesn'tBleed;;BleedoutOverride;OppositeGenderAnims;SimpleActor"/>
+			<Element name="Invulnerable-IsGhost" type="byte" hexview="1" hexviewwithdec="1" flags=";;;;;IsGhost;;Invulnerable"/>
 			<Element name="Spell Points" type="ushort"/>
 			<Element name="Fatigue" type="ushort"/>
 			<Element name="Base Level" type="byte" desc="Forces Level"/>
@@ -4053,7 +4053,7 @@
 			<Element name="Fog Near, Night G" type="byte"/>
 			<Element name="Fog Near, Night B" type="byte"/>
 			<Element name="Unknown" type="byte"/>
-			<Element name="Cloud Layer (are ALWAYS zeroes)" type="uint" hexview="1"/>
+			<Element name="Cloud Layer (are ALWAYS zeroes)" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="" type="float"/>
 			<Element name="" type="float"/>
 			<Element name="" type="float"/>
@@ -4696,11 +4696,11 @@
 		<!-- Snip can't handle element-groupings yet, NVPP -->
 		<Group id="EDID" optional="1"/>
 		<Subrecord name="NVER" desc="Standard Flag" optional="1">
-			<Element name="(always 0C 00 00 00)" type="uint" hexview="1"/>
+			<Element name="(always 0C 00 00 00)" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="NVMI" desc="NavMesh Data (if UNSORTED DATA exists, below Zpos will be inaccurate)" optional="1" repeat="1">
 			<Element name="Actual NAVM FormID" type="formid" reftype="NAVM"/>
-			<Element name="(all are 00 20 or 40)" type="uint" hexview="1"/>
+			<Element name="(all are 00 20 or 40)" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="NAVM Xpos" type="float"/>
 			<Element name="NAVM Ypos" type="float"/>
 			<Element name="NAVM Zpos" type="float"/>
@@ -4710,16 +4710,16 @@
 			<Element name="# of Preferred Merges" type="uint"/>
 			<Element name="Linked Doors" type="uint"/>
 			<Element name="Island Flag" type="byte" options="Non-Island;0;Island;1"/>
-			<Element name="(always A5E9A03C)" type="uint" hexview="1"/>
+			<Element name="(always A5E9A03C)" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Linked-To NAVM or CELL FormID" type="formid"/>
-			<Element name="Cell-Grid or CELL FormID" type="uint" hexview="1"/>
+			<Element name="Cell-Grid or CELL FormID" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NVPP" desc="Cumulative NavMesh Data" optional="1">
-			<Element name="Unknown" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NVSI" desc="Cumulative NavMesh Data" optional="1">
-			<Element name="Unknown" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Record>
 	<Record name="CELL" desc="Cell">
@@ -5173,7 +5173,7 @@
 				<Element name="WRLD FormID" type="formid" reftype="WRLD"/>
 			</Subrecord>
 			<Subrecord name="PNAM" desc="Sharable Data Check-boxes">
-				<Element name="Check-boxes" type="ushort" hexview="1" flags="Use Land Data;Use LOD Data;Don''t Use Map Data;Use Water Data;Use Climate Data;Unknown 6;Use Sky Cell;Unknown 8;Unknown 9;Unknown 10;Unknown 11;Unknown 12;Unknown 13;Unknown 14;Unknown 15;Unknown 16"/>
+				<Element name="Check-boxes" type="ushort" hexview="1" hexviewwithdec="1" flags="Use Land Data;Use LOD Data;Don''t Use Map Data;Use Water Data;Use Climate Data;Unknown 6;Use Sky Cell;Unknown 8;Unknown 9;Unknown 10;Unknown 11;Unknown 12;Unknown 13;Unknown 14;Unknown 15;Unknown 16"/>
 			</Subrecord>
 		</Group>
 		<Subrecord name="CNAM" desc="Climate Data (CLMT)" optional="1">
@@ -5398,9 +5398,9 @@
       <Subrecord name="XLIG" desc="Light Data" optional="1">
         <Element name="FOV 90+/-" type="float"/>
         <Element name="Fade 1.35+/-" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1"/>
+        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
         <Element name="Shadow Depth Bias" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1"/>
+        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
       </Subrecord>
       <Group id="XEMI" optional="1"/>
     </Group>
@@ -5412,9 +5412,9 @@
       <Subrecord name="XLIG" desc="Light Data" optional="1">
         <Element name="FOV 90+/-" type="float"/>
         <Element name="Fade 1.35+/-" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1"/>
+        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
         <Element name="Shadow Depth Bias" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1"/>
+        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
       </Subrecord>
     </Group>
     <Group id="XAPD" optional="1"/>
@@ -5424,13 +5424,13 @@
     <!--        -->
 		<Subrecord name="XTEL" desc="Door Teleport" optional="1">
 			<Element name="Door REFR FormID" type="formid" reftype="REFR"/>
-			<Element name="X Position" type="float"/>
-			<Element name="Y Position" type="float"/>
-			<Element name="Z Position" type="float"/>
-			<Element name="X Rotation" type="float"/>
-			<Element name="Y Rotation" type="float"/>
-			<Element name="Z Rotation" type="float"/>
-			<Element name="Flags" type="uint" flags="No Alarm"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Flags" type="uint" flags="No Alarm" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="XTNM" desc="MessageBox (MESG)" optional="1">
 			<Element name="FormID" type="formid" reftype="MESG" />
@@ -5445,8 +5445,8 @@
     </Group>
 		<Subrecord name="XNDP" desc="door navMesh?" optional="1" >
 			<Element name="NAVM FormID" type="formid" reftype="NAVM"/>
-			<Element name="Unknown" type="ushort"/>
-			<Element name="Unknown" type="ushort"/>
+ 			<Element name="x1" type="short" hexview="1" hexviewwithdec="1"/>
+			<Element name="y1" type="short" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
     <!--        -->
 		<Subrecord name="XMBO" desc="Object Bounds" optional="1">
@@ -5472,8 +5472,8 @@
     </Group>
 		<Subrecord name="XLOC" desc="Lock Information" optional="1">
 			<Element name="Level" type="byte" options="Novice;1;Apprentice;25;Adept;50;Expert;75;Master;100;Requires Key;255"/>
-			<Element name="Unknown 1" type="byte"  hexview="1"/>
-			<Element name="Unknown 2" type="ushort"  hexview="1"/>
+			<Element name="Unknown 1" type="byte"  hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown 2" type="ushort"  hexview="1" hexviewwithdec="1"/>
 			<Element name="KEYM FormID" type="formid" reftype="KEYM"/>
 			<Element name="Flags" type="byte" flags="1;2;Leveled Lock;4;5;6;7;8"/>
 			<Element name="Unknown 3" type="byte" />
@@ -5484,9 +5484,6 @@
 		</Subrecord>
 		<Group id="XLRL" optional="1"/>
     <!-- Begin Misc -->
-		<Subrecord name="XHTW" desc="Head-Tracking Weight" optional="1">
-			<Element name="Head-Tracking" type="float"/>
-		</Subrecord>
 		<Subrecord name="XFVC" desc="Favor Cost" optional="1">
 			<Element name="Value" type="float" />
 		</Subrecord>
@@ -5499,7 +5496,7 @@
 		<Group id="XSCL" optional="1"/>
     <!-- End Misc -->
 		<Subrecord name="XMRK" desc="Map Data Marker" optional="1"/>
-    <!-- Map Marker Data Data -->
+    <!-- Map Marker Data -->
 		<Subrecord name="FNAM" desc="Marker Data" optional="1">
 			<Element name="Flags" type="byte" flags="Visible;Can Travel To;Show All Hidden"/>
 		</Subrecord>
@@ -5507,10 +5504,21 @@
 		<Subrecord name="TNAM" desc="Marker Data" optional="1">
 			<Element name="Marker Type" type="ushort" options="City;1;Town;2;Settlement;3;Cave;4;Camp;5;Fort;6;Nordic Ruins;7;Dwemer Ruin;8;Shipwreck;9;Grove;10;Landmark;11;Dragon Lair;12;Farm;13;Wood Mill;14;Mine;15;Imperial Camp;16;Stormcloak Camp;17;Doomstone;18;Wheat Mill;19;Smelter;20;Stable;21;Imperial Tower;22;Clearing;23;Pass;24;Altar;25;Rock;26;Lighthouse;27;Orc Stronghold;28;Giant Camp;29;Shack;30;Nordic Tower;31;Nordic Dwelling;32;Docks;33;Shrine;34;Riften Castle;35;Riften Capitol;36;Windhelm Castle;37;Windhelm Capitol;38;Whiterun Castle;39;Whiterun Capitol;40;Solitude Castle;41;Solitude Capitol;42;Markarth Castle;43;Markarth Capitol;44;Winterhold Castle;45;Winterhold Capitol;46;Morthal Castle;47;Morthal Capitol;48;Falkreath Castle;49;Falkreath Capitol;50;Dawnstar Castle;51;Dawnstar Capitol;52"/>
 		</Subrecord>
-    <!-- End Map Marker Data Data -->
-		<Subrecord name="XRDS" desc="Light Related" optional="1">
-			<Element name="Unknown float" type="float"/>
-		</Subrecord>
+    <!-- End Map Marker Data -->
+    <!-- Extra Tab in the CK -->
+    <Group id="ExtraData1" optional="1">
+      <Subrecord name="XRDS" desc="Extra Data" optional="1">
+        <Element name="Radius" type="float"/>
+      </Subrecord>
+      <Group id="XLKR" optional="1" repeat="1"/>
+      <Subrecord name="XHTW" desc="Head-Tracking Weight" optional="1">
+        <Element name="Head-Tracking" type="float"/>
+      </Subrecord>
+			<Subrecord name="XFVC" desc="Favor Cost" optional="1">
+				<Element name="Favor Cost" type="float"/>
+			</Subrecord>
+    </Group>
+    <!-- End Extra Data -->
 		<Group id="XLCN" optional="1"/>
 		<Subrecord name="XLCM" desc="XLCM" optional="1">
 			<Element name="Unknown 4bytes" type="uint" />
@@ -5564,6 +5572,9 @@
       <Subrecord name="XRDS" desc="Light Related?" optional="1">
         <Element name="Radius" type="float"/>
       </Subrecord>
+			<Subrecord name="XFVC" desc="Favor Cost" optional="1">
+				<Element name="Favor Cost" type="float"/>
+			</Subrecord>
       <Group id="XLRL" optional="1"/>
     </Group>
 
@@ -5716,7 +5727,7 @@
 		<Group id="EDID" optional="1"/>
 		<Group id="VMAD" optional="1"/>
 		<Group id="NAME" optional="1"/>
-		<Group optional="1" repeat="1">
+		<Group id="MainPattern" optional="1" repeat="1">
 			<!-- these change position depending when created -->
 			<Group id="FACTOWN" optional="1"/>
 			<Group id="XAPD" optional="1"/>
@@ -5725,6 +5736,7 @@
 			<Group id="XESP" optional="1"/>
 			<Group id="XLCM" optional="1"/>
 			<Group id="XLCN" optional="1"/>
+      <Group id="XLKR" optional="1"/>
 			<Group id="XLRL" optional="1"/>
 			<Group id="XLRT" optional="1"/>
 			<Subrecord name="XFVC" desc="Favor Cost" optional="1">
@@ -5751,7 +5763,7 @@
 				<Element name="G" type="float"/>
 				<Element name="B" type="float"/>
 			</Subrecord>
-			<Subrecord name="XPRD" desc="XPRD">
+			<Subrecord name="XPRD" desc="XPRD" optional="1">
 				<Element name="f" type="float"/>
 			</Subrecord>
 			<Subrecord name="XPPA" desc="(buffer/flag)" optional="1" />
@@ -5777,16 +5789,16 @@
 	<Record name="NAVM" desc="NavMesh Reference">
 		<!-- COMPRESSED; Snip doesn't fully support arranging this yet -->
 		<Subrecord name="NVNM" desc="NavMesh Geometry" optional="1">
-			<Element name="Unknown" type="blob"/>
+      <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="ONAM" desc="? (STAT)" optional="1">
-			<Element name="FormID" type="formid" reftype="STAT" repeat="1" optional="1"/>
+			<Element name="FormID" type="formid" reftype="STAT" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="PNAM" desc="PNAM" optional="1">
-			<Element name="Unknown" type="blob"/>
+      <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="NNAM" desc="NNAM" optional="1">
-			<Element name="Unknown" type="blob"/>
+      <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Record>
 	<Record name="PHZD" desc="Placed Hazard">
@@ -6837,7 +6849,6 @@
 	<Record name="EXPL" desc="Explosion">
 		<!-- localized; Snip doesn't support arranging this yet -->
 		<Group id="EDID" optional="1"/>
-		<!-- VMAD May not be Valid, needs further research. -->
 		<Group id="VMAD" optional="1"/>
 		<Group id="OBND" optional="1"/>
 		<Group id="FULL" optional="1"/>
@@ -10080,14 +10091,14 @@
 			<Element name="Directional Fade" type="float"/>
 			<Element name="Fog Clip Distance" type="float"/>
 			<Element name="Fog Power" type="float"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 			<Element name="Fog Color Far R" type="byte"/>
 			<Element name="Fog Color Far G" type="byte"/>
 			<Element name="Fog Color Far B" type="byte"/>
@@ -10095,7 +10106,7 @@
 			<Element name="Fog Max" type="float"/>
 			<Element name="Light Fade Start" type="float"/>
 			<Element name="Light Fade End" type="float"/>
-			<Element name="Unknown" type="uint" hexview="1"/>
+			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="DALC" desc="Direct Ambient and Specular Colors" optional="1">
 			<Element name="DirAmb X+ R" type="byte"/>
