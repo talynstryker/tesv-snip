@@ -4,6 +4,7 @@ namespace TESVSnip.Domain.Model
     using System.Collections;
     using System.Collections.Generic;
     using System.IO;
+    using System.IO.MemoryMappedFiles;
     using System.Linq;
     using System.Runtime.InteropServices;
     using System.Runtime.Serialization;
@@ -12,6 +13,8 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Domain.Data.RecordStructure;
     using TESVSnip.Framework.Persistence;
     using TESVSnip.Framework.Services;
+
+    using mmfh = TESVSnip.Domain.MemoryMappedFileHelper;
 
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
@@ -44,8 +47,86 @@ namespace TESVSnip.Domain.Model
             this.UpdateShortDescription();
         }
 
+        internal GroupRecord(uint Size, bool isOblivion, string[] recFilter, bool filterAll)
+        {
+            Name = "GRUP";
+            this.data = mmfh.ReadBytes(4); //br.ReadBytes(4);
+            this.groupType = mmfh.ReadUInt32(); //br.ReadUInt32();
+            this.dateStamp = mmfh.ReadUInt32(); //br.ReadUInt32();
+            string contentType = this.groupType == 0 ? Encoding.Instance.GetString(this.data) : string.Empty;
+            if (!isOblivion)
+            {
+                this.flags = mmfh.ReadUInt32(); //br.ReadUInt32();
+            }
+
+            uint amountRead = 0;
+            while (amountRead < Size - (isOblivion ? 20 : 24))
+            {
+                string s = ReadRecName(); //ReadRecName(br);
+                uint recsize = mmfh.ReadUInt32(); //br.ReadUInt32();
+                if (s == "GRUP")
+                {
+                    try
+                    {
+                        bool skip = filterAll || (recFilter != null && Array.IndexOf(recFilter, contentType) >= 0);
+                        //var gr = new GroupRecord(recsize, br, Oblivion, recFilter, skip);
+                        var gr = new GroupRecord(recsize, isOblivion, recFilter, skip);
+                        if (!filterAll)
+                        {
+                            this.AddRecord(gr);
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        MessageBox.Show(e.Message);
+                    }
+                    finally
+                    {
+                        amountRead += recsize;
+                    }
+                }
+                else
+                {
+                    bool skip = filterAll || (recFilter != null && Array.IndexOf(recFilter, s) >= 0);
+                    if (skip)
+                    {
+                        long size = recsize + (isOblivion ? 12 : 16);
+
+                        // if ((br.ReadUInt32() & 0x00040000) > 0) size += 4;
+                        mmfh.FilePointer += (int)size; //br.BaseStream.Position += size; // just read past the data
+                        amountRead += (uint)(recsize + (isOblivion ? 20 : 24));
+                    }
+                    else
+                    {
+                        try
+                        {
+                            //var r = new Record(s, recsize, br, Oblivion);
+                            var r = new Record(s, recsize, isOblivion);
+                            this.AddRecord(r);
+                        }
+                        catch (Exception e)
+                        {
+                            MessageBox.Show(e.Message);
+                        }
+                        finally
+                        {
+                            amountRead += (uint)(recsize + (isOblivion ? 20 : 24));
+                        }
+                    }
+                }
+            }
+
+            this.UpdateShortDescription();
+            if (amountRead != (Size - (isOblivion ? 20 : 24)))
+            {
+                throw new TESParserException(
+                    string.Format("Record block did not match the size specified in the group header! Header Size={0:D} Group Size={1:D}", Size - (isOblivion ? 20 : 24), amountRead));
+            }
+        }
+
         internal GroupRecord(uint Size, BinaryReader br, bool Oblivion, string[] recFilter, bool filterAll)
         {
+            //TODO: Remove if MemoryMappedFile OK
             Name = "GRUP";
             this.data = br.ReadBytes(4);
             this.groupType = br.ReadUInt32();

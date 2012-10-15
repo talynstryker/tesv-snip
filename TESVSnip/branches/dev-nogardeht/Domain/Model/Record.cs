@@ -16,6 +16,7 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Framework.Collections;
     using TESVSnip.Framework.Persistence;
     using System.IO.MemoryMappedFiles;
+    using mmfh = TESVSnip.Domain.MemoryMappedFileHelper;
 
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
@@ -52,63 +53,134 @@ namespace TESVSnip.Domain.Model
             this.FixSubrecordOwner();
         }
 
-        internal Record(string name, uint dataSize, MemoryMappedViewAccessor reader, ref int positionInFile, bool oblivion)
+        internal Record(string name, uint dataSize, bool oblivion)
         {
-            int offset = 0;
             this.dataSize = dataSize;
+            uint size = 0;
+            byte[] buffer = null;
+            byte[] bufferInflated = null;
+            UInt16 myRealSize = 0;
 
             this.SubRecords = new AdvancedList<SubRecord>(1) { AllowSorting = false };
             Name = name;
-            this.Flags1 = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
-            this.FormID = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
-            this.Flags2 = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+
+//Then a 32 bit integer, String of 4 bytes.
+//Then a 32 bit integer, Data Size
+//Then a 32 bit integer, Flags
+//Then a 32 bit integer, A FormID
+//Then a 32 bit integer, Version Control Info 1
+//Then a 16 bit integer, Form Version
+//Then a 16 bit integer, Version Control Info 2
+
+            this.Flags1 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
+            this.FormID = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32(); 
+            this.Flags2 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
             if (!oblivion)
             {
-                this.Flags3 = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
+                //this.Flags3 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
+                this.Flags3 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
+                //myRealSize = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(); //possible realsize if compressed
             }
 
             var compressed = (this.Flags1 & 0x00040000) != 0;
             uint amountRead = 0;
 
             var realSize = dataSize;
+
+            int offset = 0;
             if (compressed)
             {
-                realSize = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset); //recordReader.ReadUInt32();
-                dataSize -= 4;
+                offset = 0;
+
+                buffer = mmfh.AllocateBufferOfByte(dataSize - 4);
+                mmfh.FileMap.ReadArray<byte>(mmfh.FilePointer + 4, buffer, 0, (int) dataSize - 4);
+                mmfh.FilePointer += dataSize;
+                //realSize = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
+                //dataSize -= 4;
+                //mmfh.FilePointer -= 4;
+            }
+            else
+            {
+
+                //using (var stream = new MemoryStream(recordReader.ReadBytes((int)dataSize)))
+                //{
+                buffer = mmfh.AllocateBufferOfByte(dataSize);
+                //mmfh.FreeBufferOfByte(ref buffer);
+                //buffer = mmfh.AllocateBufferOfByte(dataSize);
+                mmfh.FileMap.ReadArray<byte>(mmfh.FilePointer, buffer, offset, (int) dataSize);
+                mmfh.FilePointer += buffer.Length;
             }
 
-            //using (var stream = new MemoryStream(recordReader.ReadBytes((int)dataSize)))
-            byte[] buffer = new byte[dataSize];
-            reader.ReadArray<byte>(positionInFile, buffer, offset, (int) dataSize);
-            //{
             //    using (var dataReader = compressed ? ZLib.Decompress(stream, (int)realSize) : new BinaryReader(stream))
             //    {
-            //        while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
-            uint maxSize = (uint) positionInFile + dataSize;
+            //realSize = 0;
+            if(compressed)
+            {
+                try
+                {
+                    //ZLib.Decompress(stream, (int) realSize);    
+                    //File.WriteAllBytes(@"c:\buffer.bin", buffer);
+                    //bufferInflated = ZLib.Decompress2(buffer, (int)realSize);
+                    bufferInflated = ZLib.DecompressIonic(ref buffer, (int)realSize);
+                    realSize = (uint) bufferInflated.Length;
+                    mmfh.FreeBufferOfByte(ref buffer);
+                    buffer = mmfh.AllocateBufferOfByte(realSize);
+                    System.Buffer.BlockCopy(bufferInflated, 0, buffer, 0, buffer.Length);
+                    mmfh.FreeBufferOfByte(ref bufferInflated);
+                    //File.WriteAllBytes(@"c:\bufferInflated.bin", buffer);
 
-            while (positionInFile < maxSize)
+                }
+                catch (Exception e)
+                {
+                    
+                    throw;
+                }
+
+            }
+  
+            //        while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
+            //uint maxSize = (uint) positionInFile + dataSize;
+            int maxSize = buffer.Length;
+            int positionInBuffer = 0;
+            //mmfh.FilePointer += maxSize;
+
+          while (amountRead < maxSize)
                     {
             //            var type = ReadRecName(dataReader);
-                        var type = ReadRecName(reader, ref positionInFile, ref offset);
-                        uint size;
+                        //var type = ReadRecName(ref reader, ref positionInFile);
+                        var type = ReadRecName(ref buffer, ref offset);
+                        //uint size;
+                        size = 0;
                         if (type == "XXXX")
                         {
-                            TESVSnip.Domain.MemoryMapped.ReadUInt16(reader, ref positionInFile, ref offset);
-                            size = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref positionInFile, ref offset);
-                            type = ReadRecName(reader, ref positionInFile, ref offset);
-                            TESVSnip.Domain.MemoryMapped.ReadUInt16(reader, ref positionInFile, ref offset);
+                            //TESVSnip.Domain.MemoryMapped.ReadUInt16(ref reader, ref positionInFile);
+                            TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(buffer, ref offset);
+
+                            //size = TESVSnip.Domain.MemoryMapped.ReadUInt32(ref reader, ref positionInFile);
+                            size = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(buffer, ref offset);
+
+                            //type = ReadRecName(ref reader, ref positionInFile);
+                            type = ReadRecName(ref buffer, ref offset);
+
+                            //TESVSnip.Domain.MemoryMapped.ReadUInt16(ref reader, ref positionInFile);
+                            TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(buffer, ref offset);
                         }
                         else
                         {
-                            size = TESVSnip.Domain.MemoryMapped.ReadUInt16(reader, ref positionInFile, ref offset);
+                            //size = TESVSnip.Domain.MemoryMapped.ReadUInt16(ref reader, ref positionInFile);
+                            size = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(buffer, ref offset);
                         }
 
-                        var record = new SubRecord(this, type, reader, ref positionInFile, size);
+                        //var record = new SubRecord(this, type, reader, ref positionInFile, size);
+                        var record = new SubRecord(this, type, buffer, ref offset, size);
                         this.SubRecords.Add(record);
                         amountRead += (uint)record.Size2;
                     }
+
             //    }
             //}
+
+            mmfh.FreeBufferOfByte(ref buffer);
 
             if (amountRead > realSize)
             {

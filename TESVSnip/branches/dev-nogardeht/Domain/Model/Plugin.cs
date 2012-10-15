@@ -15,6 +15,8 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Framework.Persistence;
     using TESVSnip.Framework.Services;
 
+    using mmfh = TESVSnip.Domain.MemoryMappedFileHelper;
+
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
     public sealed class Plugin : BaseRecord, IDeserializationCallback, IGroupRecord
@@ -42,8 +44,8 @@ namespace TESVSnip.Domain.Model
 
         private BaseRecord parent;
 
-        private int _offsetFile;
-        private int _positionInFile;
+        //pointer position in plugin
+        //private int _positionInFile;
 
         public Plugin(byte[] data, string name)
         {
@@ -73,30 +75,14 @@ namespace TESVSnip.Domain.Model
 
         internal Plugin(string FilePath, bool headerOnly, string[] recFilter)
         {
-            _offsetFile = 0;
             Name = Path.GetFileName(FilePath);
             PluginPath = Path.GetDirectoryName(FilePath);
             var fi = new FileInfo(FilePath);
 
-            //-- Try MappingFile
-            int length = (int)fi.Length;
-            int offset = 0;
-            //byte[] buffer;
+            if (TESVSnip.Domain.MemoryMappedFileHelper.Open(fi)) 
+                this.LoadPluginData(headerOnly, recFilter);
 
-            using (var mmf = MemoryMappedFile.CreateFromFile(FilePath, FileMode.Open, null, length))
-            {
-                // Create reader to mmf
-                using (var reader = mmf.CreateViewAccessor(offset, length, MemoryMappedFileAccess.Read))
-                {
-                    // Read from MMF
-                    //buffer = new byte[length];
-                    //reader.ReadArray<byte>(0, buffer, 0, length);
-                    this.LoadPluginData(reader, headerOnly, recFilter);
-                }
-            }
-
-            //-- Try MappingFile
-
+            //TODO: Remove if MemoryMappedFile OK
             //using (var br = new BinaryReader(fi.OpenRead()))
             //{
             //    this.LoadPluginData(br, headerOnly, recFilter);
@@ -852,40 +838,39 @@ namespace TESVSnip.Domain.Model
             }
         }
 
-        private void LoadPluginData(MemoryMappedViewAccessor reader, bool headerOnly, string[] recFilter)
+        private void LoadPluginData(bool headerOnly, string[] recFilter)
         {
             bool oldHoldUpdates = HoldUpdates;
             try
             {
                 string s;
                 uint recsize;
-                bool IsOblivion = false;
+                bool isOblivion = false;
 
                 this.Filtered = recFilter != null && recFilter.Length > 0;
 
                 HoldUpdates = true;
 
-                _positionInFile = 0;
-                _offsetFile = 0;
+                mmfh.FilePointer = 0; //init position at the begin of file
 
-                s = ReadRecName(reader, ref _positionInFile, ref _offsetFile);
+                s = ReadRecName();
                 if (s != "TES4")
                 {
                     throw new Exception("File is not a valid TES4 plugin (Missing TES4 record)");
                 }
 
                 // Check for file version by checking the position of the HEDR field in the file. (ie. how big are the record header.)
-                _positionInFile = 20;//br.BaseStream.Position = 20;
+                mmfh.FilePointer = 20; //br.BaseStream.Position = 20;
 
-                s = ReadRecName(reader, ref _positionInFile, ref _offsetFile);
+                s = ReadRecName();
                 if (s == "HEDR")
-                {                    
+                {
                     // Record Header is 20 bytes
-                    IsOblivion = true;
+                    isOblivion = true;
                 }
                 else
                 {
-                    s = ReadRecName(reader, ref _positionInFile, ref _offsetFile);
+                    s = ReadRecName();
                     if (s != "HEDR")
                     {
                         throw new Exception("File is not a valid TES4 plugin (Missing HEDR subrecord in the TES4 record)");
@@ -894,63 +879,69 @@ namespace TESVSnip.Domain.Model
                     // Record Header is 24 bytes. Or the file is illegal
                 }
 
-                _positionInFile = 4; //br.BaseStream.Position = 4;
-                //recsize = br.ReadUInt32();
-                recsize = TESVSnip.Domain.MemoryMapped.ReadUInt32(reader, ref _positionInFile, ref _offsetFile);
+                mmfh.FilePointer = 4; //br.BaseStream.Position = 4;
+                recsize = mmfh.ReadUInt32(); //recsize = br.ReadUInt32();
                 try
                 {
-                    //this.AddRecord(new Record("TES4", recsize, br, IsOblivion));
-                    this.AddRecord(new Record("TES4", recsize, reader, ref _positionInFile, IsOblivion));
+                    //this.AddRecord(new Record("TES4", recsize, br, isOblivion));
+                    //this.AddRecord(new Record("TES4", recsize, ref reader, ref _positionInFile, isOblivion));
+                    this.AddRecord(new Record("TES4", recsize, isOblivion));
                 }
                 catch (Exception e)
                 {
                     MessageBox.Show(e.Message);
                 }
 
-                //if (!headerOnly)
-                //{
-                //    while (br.PeekChar() != -1)
-                //    {
-                //        s = ReadRecName(br);
-                //        recsize = br.ReadUInt32();
-                //        if (s == "GRUP")
-                //        {
-                //            try
-                //            {
-                //                this.AddRecord(new GroupRecord(recsize, br, IsOblivion, recFilter, false));
-                //            }
-                //            catch (Exception e)
-                //            {
-                //                MessageBox.Show(e.Message);
-                //            }
-                //        }
-                //        else
-                //        {
-                //            bool skip = recFilter != null && Array.IndexOf(recFilter, s) >= 0;
-                //            if (skip)
-                //            {
-                //                long size = recsize + (IsOblivion ? 8 : 12);
-                //                if ((br.ReadUInt32() & 0x00040000) > 0)
-                //                {
-                //                    size += 4; // Add 4 bytes for compressed record since the decompressed size is not included in the record size.
-                //                }
+                if (!headerOnly)
+                {
+                    ////    while (br.PeekChar() != -1)
+                    while (mmfh.FilePointer < mmfh.FileMap.Capacity)
+                    {
+                        s = ReadRecName(); //s = ReadRecName(br);
+                        //mmfh.FilePointer = mmfh.FileMap.Capacity;
+                        recsize = mmfh.ReadUInt32(); //recsize = br.ReadUInt32();
+                            if (s == "GRUP")
+                            {
+                                try
+                                {
+                                    //this.AddRecord(new GroupRecord(recsize, br, IsOblivion, recFilter, false));
+                                    this.AddRecord(new GroupRecord(recsize, isOblivion, recFilter, false));
+                                }
+                                catch (Exception e)
+                                {
+                                    MessageBox.Show(e.Message);
+                                }
+                            }
+                            else
+                            {
+                                bool skip = recFilter != null && Array.IndexOf(recFilter, s) >= 0;
+                                if (skip)
+                                {
+                                    long size = recsize + (isOblivion ? 8 : 12);
+                                    //if ((br.ReadUInt32() & 0x00040000) > 0)
+                                    //if ((TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(ref reader, ref _positionInFile) & 0x00040000) > 0)
+                                    if ((mmfh.ReadUInt32() & 0x00040000) > 0) 
+                                    {
+                                        size += 4; // Add 4 bytes for compressed record since the decompressed size is not included in the record size.
+                                    }
 
-                //                br.BaseStream.Position += size; // just position past the data
-                //            }
-                //            else
-                //            {
-                //                try
-                //                {
-                //                    this.AddRecord(new Record(s, recsize, br, IsOblivion));
-                //                }
-                //                catch (Exception e)
-                //                {
-                //                    MessageBox.Show(e.Message);
-                //                }
-                //            }
-                //        }
-                //    }
-                //}
+                                    mmfh.FilePointer += (int)size; //br.BaseStream.Position += size; // just position past the data
+                                }
+                                else
+                                {
+                                    try
+                                    {
+                                        //this.AddRecord(new Record(s, recsize, br, isOblivion));
+                                        this.AddRecord(new Record(s, recsize, isOblivion));
+                                    }
+                                    catch (Exception e)
+                                    {
+                                        MessageBox.Show(e.Message);
+                                    }
+                                }
+                            }
+                    }
+                }
             }
             finally
             {
@@ -1012,6 +1003,7 @@ namespace TESVSnip.Domain.Model
                 {
                     while (br.PeekChar() != -1)
                     {
+
                         s = ReadRecName(br);
                         recsize = br.ReadUInt32();
                         if (s == "GRUP")

@@ -95,8 +95,17 @@ namespace TESVSnip.Domain.Model
             this.Owner = rec;
             Name = name;
             this.Data = new byte[size];
-            TESVSnip.Domain.MemoryMapped.Read(reader, this.Data, ref positionInFile, size);
-            // br.Read(this.Data, 0, this.Data.Length);
+            TESVSnip.Domain.MemoryMappedFileHelper.Read(ref reader, this.Data, ref positionInFile, size);
+        }
+
+        internal SubRecord(Record rec, string name, byte[] buffer, ref int offset, uint size)
+        {
+            this.Owner = rec;
+            Name = name;
+            this.Data = new byte[size];
+
+            //TESVSnip.Domain.MemoryMapped.Read(ref reader, this.Data, ref positionInFile, size);
+            TESVSnip.Domain.MemoryMappedFileHelper.Read(ref buffer, ref this.Data, ref offset,  size);
         }
 
         internal SubRecord(Record rec, string name, BinaryReader br, uint size)
