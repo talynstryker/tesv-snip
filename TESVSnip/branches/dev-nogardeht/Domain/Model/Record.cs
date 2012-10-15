@@ -92,8 +92,8 @@ namespace TESVSnip.Domain.Model
             {
                 offset = 0;
 
-                buffer = mmfh.AllocateBufferOfByte(dataSize - 4);
-                mmfh.FileMap.ReadArray<byte>(mmfh.FilePointer + 4, buffer, 0, (int) dataSize - 4);
+                buffer = mmfh.AllocateBufferOfByte(dataSize - 4); //+4 because i think the first 4 octets is for uncompressed size
+                mmfh.FileMap.ReadArray<byte>(mmfh.FilePointer + 4, buffer, 0, (int)dataSize - 4); //mmfh.FilePointer + 4 bypass first 4 octets that is the uncompressed size -- 22288
                 mmfh.FilePointer += dataSize;
                 //realSize = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
                 //dataSize -= 4;
