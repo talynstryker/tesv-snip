@@ -1627,6 +1627,8 @@ namespace TESVSnip.UI.Forms
     {
         try
         {
+            Stopwatch sw = Stopwatch.StartNew();
+
             foreach (string s in fileNames)
             {
                 this.LoadPlugin(s);
@@ -1635,6 +1637,10 @@ namespace TESVSnip.UI.Forms
 
             this.FixMasters();
             this.PluginTree.UpdateRoots();
+
+            sw.Stop();
+            TimeSpan t = TimeSpan.FromMilliseconds(sw.ElapsedMilliseconds);
+            Debug.WriteLine(t.ToString());
         }
         catch (Exception ex)
         {

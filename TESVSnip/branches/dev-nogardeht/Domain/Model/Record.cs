@@ -1,3 +1,5 @@
+using System.Windows.Forms;
+
 namespace TESVSnip.Domain.Model
 {
     using System;
@@ -15,8 +17,6 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Domain.Services;
     using TESVSnip.Framework.Collections;
     using TESVSnip.Framework.Persistence;
-    using System.IO.MemoryMappedFiles;
-    using mmfh = TESVSnip.Domain.MemoryMappedFileHelper;
 
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
@@ -28,17 +28,13 @@ namespace TESVSnip.Domain.Model
 
         public readonly AdvancedList<SubRecord> SubRecords;
 
-        [Persistable]
-        public uint Flags1;
+        [Persistable] public uint Flags1;
 
-        [Persistable]
-        public uint Flags2;
+        [Persistable] public uint Flags2;
 
-        [Persistable]
-        public uint Flags3;
+        [Persistable] public uint Flags3;
 
-        [Persistable]
-        public uint FormID;
+        [Persistable] public uint FormID;
 
         private readonly uint dataSize;
 
@@ -53,212 +49,146 @@ namespace TESVSnip.Domain.Model
             this.FixSubrecordOwner();
         }
 
-        internal Record(string name, uint dataSize, bool oblivion)
-        {
-            this.dataSize = dataSize;
-            uint size = 0;
-            byte[] buffer = null;
-            byte[] bufferInflated = null;
-            UInt16 myRealSize = 0;
-
-            this.SubRecords = new AdvancedList<SubRecord>(1) { AllowSorting = false };
-            Name = name;
-
-//Then a 32 bit integer, String of 4 bytes.
-//Then a 32 bit integer, Data Size
-//Then a 32 bit integer, Flags
-//Then a 32 bit integer, A FormID
-//Then a 32 bit integer, Version Control Info 1
-//Then a 16 bit integer, Form Version
-//Then a 16 bit integer, Version Control Info 2
-
-            this.Flags1 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
-            this.FormID = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32(); 
-            this.Flags2 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
-            if (!oblivion)
-            {
-                //this.Flags3 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
-                this.Flags3 = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
-                //myRealSize = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(); //possible realsize if compressed
-            }
-
-            var compressed = (this.Flags1 & 0x00040000) != 0;
-            uint amountRead = 0;
-
-            var realSize = dataSize;
-
-            int offset = 0;
-            if (compressed)
-            {
-                offset = 0;
-
-                buffer = mmfh.AllocateBufferOfByte(dataSize - 4); //+4 because i think the first 4 octets is for uncompressed size
-                mmfh.FileMap.ReadArray<byte>(mmfh.FilePointer + 4, buffer, 0, (int)dataSize - 4); //mmfh.FilePointer + 4 bypass first 4 octets that is the uncompressed size -- 22288
-                mmfh.FilePointer += dataSize;
-                //realSize = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(); //recordReader.ReadUInt32();
-                //dataSize -= 4;
-                //mmfh.FilePointer -= 4;
-            }
-            else
-            {
-
-                //using (var stream = new MemoryStream(recordReader.ReadBytes((int)dataSize)))
-                //{
-                buffer = mmfh.AllocateBufferOfByte(dataSize);
-                //mmfh.FreeBufferOfByte(ref buffer);
-                //buffer = mmfh.AllocateBufferOfByte(dataSize);
-                mmfh.FileMap.ReadArray<byte>(mmfh.FilePointer, buffer, offset, (int) dataSize);
-                mmfh.FilePointer += buffer.Length;
-            }
-
-            //    using (var dataReader = compressed ? ZLib.Decompress(stream, (int)realSize) : new BinaryReader(stream))
-            //    {
-            //realSize = 0;
-            if(compressed)
-            {
-                try
-                {
-                    //ZLib.Decompress(stream, (int) realSize);    
-                    //File.WriteAllBytes(@"c:\buffer.bin", buffer);
-                    //bufferInflated = ZLib.Decompress2(buffer, (int)realSize);
-                    bufferInflated = ZLib.DecompressIonic(ref buffer, (int)realSize);
-                    realSize = (uint) bufferInflated.Length;
-                    mmfh.FreeBufferOfByte(ref buffer);
-                    buffer = mmfh.AllocateBufferOfByte(realSize);
-                    System.Buffer.BlockCopy(bufferInflated, 0, buffer, 0, buffer.Length);
-                    mmfh.FreeBufferOfByte(ref bufferInflated);
-                    //File.WriteAllBytes(@"c:\bufferInflated.bin", buffer);
-
-                }
-                catch (Exception e)
-                {
-                    
-                    throw;
-                }
-
-            }
-  
-            //        while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
-            //uint maxSize = (uint) positionInFile + dataSize;
-            int maxSize = buffer.Length;
-            int positionInBuffer = 0;
-            //mmfh.FilePointer += maxSize;
-
-          while (amountRead < maxSize)
-                    {
-            //            var type = ReadRecName(dataReader);
-                        //var type = ReadRecName(ref reader, ref positionInFile);
-                        var type = ReadRecName(ref buffer, ref offset);
-                        //uint size;
-                        size = 0;
-                        if (type == "XXXX")
-                        {
-                            //TESVSnip.Domain.MemoryMapped.ReadUInt16(ref reader, ref positionInFile);
-                            TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(buffer, ref offset);
-
-                            //size = TESVSnip.Domain.MemoryMapped.ReadUInt32(ref reader, ref positionInFile);
-                            size = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(buffer, ref offset);
-
-                            //type = ReadRecName(ref reader, ref positionInFile);
-                            type = ReadRecName(ref buffer, ref offset);
-
-                            //TESVSnip.Domain.MemoryMapped.ReadUInt16(ref reader, ref positionInFile);
-                            TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(buffer, ref offset);
-                        }
-                        else
-                        {
-                            //size = TESVSnip.Domain.MemoryMapped.ReadUInt16(ref reader, ref positionInFile);
-                            size = TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt16(buffer, ref offset);
-                        }
-
-                        //var record = new SubRecord(this, type, reader, ref positionInFile, size);
-                        var record = new SubRecord(this, type, buffer, ref offset, size);
-                        this.SubRecords.Add(record);
-                        amountRead += (uint)record.Size2;
-                    }
-
-            //    }
-            //}
-
-            mmfh.FreeBufferOfByte(ref buffer);
-
-            if (amountRead > realSize)
-            {
-                Debug.Print(" * ERROR: SUB-RECORD {0} DATA DOESN'T MATCH THE SIZE SPECIFIED IN THE HEADER: DATA-SIZE={1} REAL-SIZE={2} AMOUNT-READ={3}", name, dataSize, realSize, amountRead);
-                throw new TESParserException(
-                    string.Format("Subrecord block did not match the size specified in the record header: ExpectedSize={0} ReadSize={1} DataSize={2}", realSize, amountRead, dataSize));
-            }
-
-            this.descNameOverride = this.DefaultDescriptiveName;
-            this.UpdateShortDescription();
-
-            // br.BaseStream.Position+=Size;
-        }
-
         internal Record(string name, uint dataSize, BinaryReader recordReader, bool oblivion)
         {
-            //TODO: Remove if MemoryMappedFile OK
-            this.dataSize = dataSize;
-
-            this.SubRecords = new AdvancedList<SubRecord>(1) { AllowSorting = false };
-            Name = name;
-            this.Flags1 = recordReader.ReadUInt32();
-            this.FormID = recordReader.ReadUInt32();
-            this.Flags2 = recordReader.ReadUInt32();
-            if (!oblivion)
-            {
-                this.Flags3 = recordReader.ReadUInt32();
-            }
-
-            var compressed = (this.Flags1 & 0x00040000) != 0;
+            bool compressed = false;
             uint amountRead = 0;
+            uint realSize = 0;
+            uint dataSizeInParam = dataSize;
+            MemoryStream stream = null;
+            BinaryReader dataReader = null;
+            SubRecord record = null;
+          long ws;
 
-            var realSize = dataSize;
-            if (compressed)
+            try
             {
-                realSize = recordReader.ReadUInt32();
-                dataSize -= 4;
-            }
+                this.dataSize = dataSize;
 
-            using (var stream = new MemoryStream(recordReader.ReadBytes((int)dataSize)))
-            {
-                using (var dataReader = compressed ? ZLib.Decompress(stream, (int)realSize) : new BinaryReader(stream))
+                this.SubRecords = new AdvancedList<SubRecord>(1) {AllowSorting = false};
+                Name = name;
+                this.Flags1 = recordReader.ReadUInt32();
+                this.FormID = recordReader.ReadUInt32();
+                this.Flags2 = recordReader.ReadUInt32();
+                if (!oblivion)
                 {
-                    while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
-                    {
-                        var type = ReadRecName(dataReader);
-                        uint size;
-                        if (type == "XXXX")
-                        {
-                            dataReader.ReadUInt16();
-                            size = dataReader.ReadUInt32();
-                            type = ReadRecName(dataReader);
-                            dataReader.ReadUInt16();
-                        }
-                        else
-                        {
-                            size = dataReader.ReadUInt16();
-                        }
-
-                        var record = new SubRecord(this, type, dataReader, size);
-                        this.SubRecords.Add(record);
-                        amountRead += (uint)record.Size2;
-                    }
+                    this.Flags3 = recordReader.ReadUInt32();
                 }
-            }
 
-            if (amountRead > realSize)
+                compressed = (this.Flags1 & 0x00040000) != 0;
+                amountRead = 0;
+                realSize = dataSize;
+                if (compressed)
+                {
+                    realSize = recordReader.ReadUInt32();
+                    dataSize -= 4;
+                }
+
+                //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
+                //{
+                //using (var dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream))
+                //{
+              try
+              {
+                stream = new MemoryStream(recordReader.ReadBytes((int)dataSize));
+                //ws = Environment.WorkingSet;
+              }
+              catch (Exception ex)
+              {
+                //TESVSnip.Domain.SaveReadStream.SaveStreamToDisk(stream);
+                ws = Environment.WorkingSet;
+                throw;
+              }
+              
+                //dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream);
+                dataReader = compressed ? ZLib.DecompressSmaugVersion2(stream, (int) realSize) : new BinaryReader(stream);
+ 
+                if (dataReader == null) return; //TODO: Error with decompress
+
+                while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
+                {
+                    string type = ReadRecName(dataReader); //var type = ReadRecName(dataReader);
+                    uint size = 0;
+                    if (type == "XXXX")
+                    {
+                        dataReader.ReadUInt16();
+                        size = dataReader.ReadUInt32();
+                        type = ReadRecName(dataReader);
+                        dataReader.ReadUInt16();
+                    }
+                    else
+                    {
+                        size = dataReader.ReadUInt16();
+                    }
+
+                    record = new SubRecord(this, type, dataReader, size); //var record = new SubRecord(this, type, dataReader, size);
+                    SubRecords.Add(record);
+                    amountRead += (uint) record.Size2;
+                }
+
+                //} //using (var dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream))
+                if (dataReader != null)
+                {
+                    dataReader.Close();
+                    dataReader.Dispose();
+                    dataReader = null;
+                }
+
+                if (amountRead > realSize)
+                {
+                    Debug.Print(
+                        " * ERROR: SUB-RECORD {0} DATA DOESN'T MATCH THE SIZE SPECIFIED IN THE HEADER: DATA-SIZE={1} REAL-SIZE={2} AMOUNT-READ={3}",
+                        name, dataSize, realSize, amountRead);
+                    throw new TESParserException(
+                        string.Format(
+                            "Subrecord block did not match the size specified in the record header: ExpectedSize={0} ReadSize={1} DataSize={2}",
+                            realSize, amountRead, dataSize));
+                }
+
+
+                this.descNameOverride = this.DefaultDescriptiveName;
+                this.UpdateShortDescription();
+
+                // br.BaseStream.Position+=Size;
+
+                //} //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
+                if (stream != null)
+                {
+                    stream.Close();
+                    stream.Dispose();
+                    stream = null;
+                }
+
+
+                //if (Environment.WorkingSet >= 1400000000)
+                //  GC.Collect();
+
+            }
+            catch
+                (Exception ex)
             {
-                Debug.Print(" * ERROR: SUB-RECORD {0} DATA DOESN'T MATCH THE SIZE SPECIFIED IN THE HEADER: DATA-SIZE={1} REAL-SIZE={2} AMOUNT-READ={3}", name, dataSize, realSize, amountRead);
-                throw new TESParserException(
-                    string.Format("Subrecord block did not match the size specified in the record header: ExpectedSize={0} ReadSize={1} DataSize={2}", realSize, amountRead, dataSize));
+                string errMsg =
+                    "Message: " + ex.Message +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "StackTrace: " + ex.StackTrace +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "Source: " + ex.Source +
+                    Environment.NewLine +
+                    Environment.NewLine +
+                    "GetType: " + ex.GetType().ToString();
+
+                System.Windows.Forms.Clipboard.SetDataObject(errMsg, true);
+
+                // Create an EventLog instance and assign its source.
+                EventLog myLog = new EventLog();
+                myLog.Source = "ThreadException";
+                myLog.WriteEntry(errMsg);
+
+                MessageBox.Show(errMsg, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
-
-            this.descNameOverride = this.DefaultDescriptiveName;
-            this.UpdateShortDescription();
-
-            // br.BaseStream.Position+=Size;
         }
+
 
         private Record(SerializationInfo info, StreamingContext context)
             : base(info, context)
@@ -268,7 +198,7 @@ namespace TESVSnip.Domain.Model
                 serializationItems = new Dictionary<Record, SubRecord[]>();
             }
 
-            serializationItems[this] = info.GetValue("SubRecords", typeof(SubRecord[])) as SubRecord[];
+            serializationItems[this] = info.GetValue("SubRecords", typeof (SubRecord[])) as SubRecord[];
             this.SubRecords = new AdvancedList<SubRecord>(1);
             this.descNameOverride = this.DefaultDescriptiveName;
             this.UpdateShortDescription();
@@ -280,7 +210,7 @@ namespace TESVSnip.Domain.Model
             this.SubRecords.AllowSorting = false;
             foreach (var sr in r.SubRecords.OfType<SubRecord>())
             {
-                this.SubRecords.Add((SubRecord)sr.Clone());
+                this.SubRecords.Add((SubRecord) sr.Clone());
             }
 
             this.Flags1 = r.Flags1;
@@ -295,10 +225,7 @@ namespace TESVSnip.Domain.Model
 
         public override string DescriptiveName
         {
-            get
-            {
-                return this.descNameOverride();
-            }
+            get { return this.descNameOverride(); }
 
             // set { base.DescriptiveName = value; }
         }
@@ -401,7 +328,7 @@ namespace TESVSnip.Domain.Model
 
             rb.Append("Type: ").FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 2).AppendFormat("{0}", Name).AppendLine();
             rb.Append("FormID: ").FontStyle(FontStyle.Bold).FontSize(rb.DefaultFontSize + 2).ForeColor(KnownColor.DarkRed).AppendFormat("{0:X8}", this.FormID).AppendLine();
-            
+
             if (this.Flags1 != 0)
             {
                 rb.AppendLineFormat("Flags 1: {0:X8} : ({1})", this.Flags1, FlagDefs.GetRecFlags1Desc(this.Flags1));
@@ -521,62 +448,73 @@ namespace TESVSnip.Domain.Model
 
         public override void UpdateShortDescription()
         {
-            if (Name == "REFR")
+            try
             {
-                // temporary hack for references
-                var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
-                string desc = (edid != null) ? string.Format(" ({0})", edid.GetStrData()) : string.Empty;
-
-                // var name = SubRecords.FirstOrDefault( x => x.Name == "NAME" );
-                var data = this.SubRecords.FirstOrDefault(x => x.Name == "DATA");
-                if (data != null)
+                if (Name == "REFR")
                 {
-                    desc = string.Format(" [{1},{2}]\t{0}", desc, (int)(data.GetValue<float>(0) / 4096.0f), (int)(data.GetValue<float>(4) / 4096.0f));
-                }
+                    // temporary hack for references
+                    var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
+                    string desc = (edid != null) ? string.Format(" ({0})", edid.GetStrData()) : string.Empty;
 
-                descriptiveName = desc;
-            }
-            else if (Name == "ACHR")
-            {
-                // temporary hack for references
-                var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
-                string desc = (edid != null) ? string.Format(" ({0})", edid.GetStrData()) : string.Empty;
-                var data = this.SubRecords.FirstOrDefault(x => x.Name == "DATA");
-                if (data != null)
-                {
-                    desc = string.Format(" [{1},{2}]\t{0}", desc, (int)(data.GetValue<float>(0) / 4096.0f), (int)(data.GetValue<float>(4) / 4096.0f));
-                }
+                    // var name = SubRecords.FirstOrDefault( x => x.Name == "NAME" );
+                    var data = this.SubRecords.FirstOrDefault(x => x.Name == "DATA");
+                    if (data != null)
+                    {
+                        desc = string.Format(" [{1},{2}]\t{0}", desc, (int) (data.GetValue<float>(0)/4096.0f),
+                                             (int) (data.GetValue<float>(4)/4096.0f));
+                    }
 
-                descriptiveName = desc;
-            }
-            else if (Name == "CELL")
-            {
-                var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
-                string desc = (edid != null) ? desc = " (" + edid.GetStrData() + ")" : string.Empty;
-
-                var xclc = this.SubRecords.FirstOrDefault(x => x.Name == "XCLC");
-                if (xclc != null)
-                {
-                    desc = string.Format(" [{1:F0},{2:F0}]\t{0}", desc, xclc.GetValue<int>(0), xclc.GetValue<int>(4));
+                    descriptiveName = desc;
                 }
                 else
-                {
-                    desc = string.Format(" [Intr]\t{0}", desc);
-                }
+                    if (Name == "ACHR")
+                    {
+                        // temporary hack for references
+                        var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
+                        string desc = (edid != null) ? string.Format(" ({0})", edid.GetStrData()) : string.Empty;
+                        var data = this.SubRecords.FirstOrDefault(x => x.Name == "DATA");
+                        if (data != null)
+                        {
+                            desc = string.Format(" [{1},{2}]\t{0}", desc, (int) (data.GetValue<float>(0)/4096.0f),
+                                                 (int) (data.GetValue<float>(4)/4096.0f));
+                        }
 
-                descriptiveName = desc;
+                        descriptiveName = desc;
+                    }
+                    else
+                        if (Name == "CELL")
+                        {
+                            var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
+                            string desc = (edid != null) ? desc = " (" + edid.GetStrData() + ")" : string.Empty;
+
+                            var xclc = this.SubRecords.FirstOrDefault(x => x.Name == "XCLC");
+                            if (xclc != null)
+                            {
+                                desc = string.Format(" [{1:F0},{2:F0}]\t{0}", desc, xclc.GetValue<int>(0), xclc.GetValue<int>(4));
+                            }
+                            else
+                            {
+                                desc = string.Format(" [Intr]\t{0}", desc);
+                            }
+
+                            descriptiveName = desc;
+                        }
+                        else
+                        {
+                            var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
+                            if (edid != null)
+                            {
+                                descriptiveName = " (" + edid.GetStrData() + ")";
+                            }
+                            else
+                            {
+                                descriptiveName = string.Empty;
+                            }
+                        }
             }
-            else
+            catch (Exception ex)
             {
-                var edid = this.SubRecords.FirstOrDefault(x => x.Name == "EDID");
-                if (edid != null)
-                {
-                    descriptiveName = " (" + edid.GetStrData() + ")";
-                }
-                else
-                {
-                    descriptiveName = string.Empty;
-                }
+                string msg = ex.Message;
             }
         }
 
@@ -690,7 +628,7 @@ namespace TESVSnip.Domain.Model
                     subRecord.SaveData(dataWriter);
                 }
 
-                realSize = (uint)stream.Length;
+                realSize = (uint) stream.Length;
 
                 if (Properties.Settings.Default.UseDefaultRecordCompression)
                 {
@@ -705,7 +643,7 @@ namespace TESVSnip.Domain.Model
                 }
             }
 
-            var dataSize = (uint)data.Length;
+            var dataSize = (uint) data.Length;
             var flags = this.Flags1 & ~0x00040000U;
             if (compressed)
             {
@@ -713,7 +651,7 @@ namespace TESVSnip.Domain.Model
                 flags |= 0x00040000;
 
                 Debug.WriteLineIf(
-                    this.dataSize != dataSize, 
+                    this.dataSize != dataSize,
                     string.Format(
                         "COMPRESSED RECORD [NAME={0} AT POSITION={1}] SIZE DIFFERS FROM ORIGINAL: ORIGINAL={2} ACTUAL={3}, RAW RECORD SIZE={4}", Name, position, this.dataSize, dataSize, realSize));
             }
@@ -744,17 +682,18 @@ namespace TESVSnip.Domain.Model
                     return false;
                 }
             }
-            else if (ss.Condition == CondType.Missing)
-            {
-                if (conditions.ContainsKey(ss.CondID))
+            else
+                if (ss.Condition == CondType.Missing)
                 {
-                    return false;
+                    if (conditions.ContainsKey(ss.CondID))
+                    {
+                        return false;
+                    }
+                    else
+                    {
+                        return true;
+                    }
                 }
-                else
-                {
-                    return true;
-                }
-            }
 
             Conditional cond;
             if (!conditions.TryGetValue(ss.CondID, out cond))
@@ -799,7 +738,7 @@ namespace TESVSnip.Domain.Model
 
                 case ElementValueType.Float:
                     {
-                        float i = (float)cond.value, i2;
+                        float i = (float) cond.value, i2;
                         if (!float.TryParse(ss.CondOperand, out i2))
                         {
                             return false;
@@ -829,7 +768,7 @@ namespace TESVSnip.Domain.Model
                 case ElementValueType.IString:
                 case ElementValueType.String:
                     {
-                        var s = (string)cond.value;
+                        var s = (string) cond.value;
                         switch (ss.Condition)
                         {
                             case CondType.Equal:
@@ -849,7 +788,7 @@ namespace TESVSnip.Domain.Model
 
                 case ElementValueType.LString:
                     {
-                        int i = (int)cond.value, i2;
+                        int i = (int) cond.value, i2;
                         if (!int.TryParse(ss.CondOperand, out i2))
                         {
                             return false;
@@ -973,79 +912,81 @@ namespace TESVSnip.Domain.Model
                             continue;
                         }
                     }
-                    else if (result == LoopContext.LoopEvalResult.Success)
-                    {
-                        if (ssb.repeat == 0)
+                    else
+                        if (result == LoopContext.LoopEvalResult.Success)
                         {
-                            ++context.ssidx;
-                        }
-                        else
-                        {
-                            ++context.matches;
-                        }
+                            if (ssb.repeat == 0)
+                            {
+                                ++context.ssidx;
+                            }
+                            else
+                            {
+                                ++context.matches;
+                            }
 
-                        context.idx = newcontext.idx;
-                        continue;
-                    }
+                            context.idx = newcontext.idx;
+                            continue;
+                        }
 
                     break;
                 }
-                else if (ssb is SubrecordStructure)
-                {
-                    var ss = (SubrecordStructure)ssb;
-                    if (ss.Condition != CondType.None && !MatchRecordCheckCondition(conditions, ss))
+                else
+                    if (ssb is SubrecordStructure)
                     {
-                        ++context.ssidx;
-                        continue;
-                    }
-
-                    if (sb.Name == ss.name && (ss.size == 0 || ss.size == sb.Size))
-                    {
-                        sb.AttachStructure(ss);
-                        if (ss.ContainsConditionals)
+                        var ss = (SubrecordStructure) ssb;
+                        if (ss.Condition != CondType.None && !MatchRecordCheckCondition(conditions, ss))
                         {
-                            foreach (var elem in this.EnumerateElements(sb))
+                            ++context.ssidx;
+                            continue;
+                        }
+
+                        if (sb.Name == ss.name && (ss.size == 0 || ss.size == sb.Size))
+                        {
+                            sb.AttachStructure(ss);
+                            if (ss.ContainsConditionals)
                             {
-                                if (elem != null && elem.Structure != null)
+                                foreach (var elem in this.EnumerateElements(sb))
                                 {
-                                    var es = elem.Structure;
-                                    if (es.CondID != 0)
+                                    if (elem != null && elem.Structure != null)
                                     {
-                                        conditions[es.CondID] = new Conditional(elem.Type, elem.Value);
+                                        var es = elem.Structure;
+                                        if (es.CondID != 0)
+                                        {
+                                            conditions[es.CondID] = new Conditional(elem.Type, elem.Value);
+                                        }
                                     }
                                 }
                             }
-                        }
 
-                        ++context.idx;
-                        if (ss.repeat == 0)
-                        {
-                            ++context.ssidx;
-                            context.matches = 0;
-                        }
-                        else
-                        {
-                            // keep ss context and try again
-                            ++context.matches;
-                        }
+                            ++context.idx;
+                            if (ss.repeat == 0)
+                            {
+                                ++context.ssidx;
+                                context.matches = 0;
+                            }
+                            else
+                            {
+                                // keep ss context and try again
+                                ++context.matches;
+                            }
 
-                        continue;
-                    }
-                    else
-                    {
-                        if (ss.optional > 0 || (ss.repeat > 0 && context.matches > 0))
-                        {
-                            ++context.ssidx;
-                            context.matches = 0;
                             continue;
                         }
                         else
                         {
-                            // true failure
-                            break;
+                            if (ss.optional > 0 || (ss.repeat > 0 && context.matches > 0))
+                            {
+                                ++context.ssidx;
+                                context.matches = 0;
+                                continue;
+                            }
+                            else
+                            {
+                                // true failure
+                                break;
+                            }
                         }
                     }
-                }
             }
 
             return LoopContext.LoopEvalResult.Failed;
