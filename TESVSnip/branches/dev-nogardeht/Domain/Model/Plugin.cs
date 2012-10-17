@@ -5,7 +5,6 @@ namespace TESVSnip.Domain.Model
     using System.Collections.Generic;
     using System.Globalization;
     using System.IO;
-    using System.IO.MemoryMappedFiles;
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Windows.Forms;
@@ -14,8 +13,6 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Framework;
     using TESVSnip.Framework.Persistence;
     using TESVSnip.Framework.Services;
-
-    using mmfh = TESVSnip.Domain.MemoryMappedFileHelper;
 
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
@@ -43,9 +40,6 @@ namespace TESVSnip.Domain.Model
         private FileSystemWatcher fsw;
 
         private BaseRecord parent;
-
-        //pointer position in plugin
-        //private int _positionInFile;
 
         public Plugin(byte[] data, string name)
         {
@@ -78,15 +72,10 @@ namespace TESVSnip.Domain.Model
             Name = Path.GetFileName(FilePath);
             PluginPath = Path.GetDirectoryName(FilePath);
             var fi = new FileInfo(FilePath);
-
-            if (TESVSnip.Domain.MemoryMappedFileHelper.Open(fi)) 
-                this.LoadPluginData(headerOnly, recFilter);
-
-            //TODO: Remove if MemoryMappedFile OK
-            //using (var br = new BinaryReader(fi.OpenRead()))
-            //{
-            //    this.LoadPluginData(br, headerOnly, recFilter);
-            //}
+            using (var br = new BinaryReader(fi.OpenRead()))
+            {
+                this.LoadPluginData(br, headerOnly, recFilter);
+            }
 
             this.FileName = Path.GetFileNameWithoutExtension(FilePath);
             if (!headerOnly)
@@ -220,34 +209,51 @@ namespace TESVSnip.Domain.Model
 
         public override void AddRecord(BaseRecord br)
         {
-            //TODO: Remove if MemoryMappedFile OK
+          try
+          {
             var r = br as Rec;
             if (r == null)
             {
-                throw new TESParserException("Record to add was not of the correct type." + Environment.NewLine + "Plugins can only hold Groups or Records.");
+              throw new TESParserException("Record to add was not of the correct type." + Environment.NewLine + "Plugins can only hold Groups or Records.");
             }
 
             r.Parent = this;
             this.records.Add(r);
             this.InvalidateCache();
             FireRecordListUpdate(this, this);
+          }
+          catch (Exception ex)
+          {
+            
+            throw;
+          }
+
         }
 
         public override void AddRecords(IEnumerable<BaseRecord> br)
         {
+          try
+          {
             if (br.Count(r => !(r is Record || r is GroupRecord)) > 0)
             {
-                throw new TESParserException("Record to add was not of the correct type.\nPlugins can only hold records or other groups.");
+              throw new TESParserException("Record to add was not of the correct type.\nPlugins can only hold records or other groups.");
             }
 
             foreach (var r in br)
             {
-                r.Parent = this;
+              r.Parent = this;
             }
 
             this.records.AddRange(br.OfType<Rec>());
             FireRecordListUpdate(this, this);
             this.InvalidateCache();
+          }
+          catch (Exception ex)
+          {
+            
+            throw;
+          }
+
         }
 
         public void Clear()
@@ -838,118 +844,6 @@ namespace TESVSnip.Domain.Model
             }
         }
 
-        private void LoadPluginData(bool headerOnly, string[] recFilter)
-        {
-            bool oldHoldUpdates = HoldUpdates;
-            try
-            {
-                string s;
-                uint recsize;
-                bool isOblivion = false;
-
-                this.Filtered = recFilter != null && recFilter.Length > 0;
-
-                HoldUpdates = true;
-
-                mmfh.FilePointer = 0; //init position at the begin of file
-
-                s = ReadRecName();
-                if (s != "TES4")
-                {
-                    throw new Exception("File is not a valid TES4 plugin (Missing TES4 record)");
-                }
-
-                // Check for file version by checking the position of the HEDR field in the file. (ie. how big are the record header.)
-                mmfh.FilePointer = 20; //br.BaseStream.Position = 20;
-
-                s = ReadRecName();
-                if (s == "HEDR")
-                {
-                    // Record Header is 20 bytes
-                    isOblivion = true;
-                }
-                else
-                {
-                    s = ReadRecName();
-                    if (s != "HEDR")
-                    {
-                        throw new Exception("File is not a valid TES4 plugin (Missing HEDR subrecord in the TES4 record)");
-                    }
-
-                    // Record Header is 24 bytes. Or the file is illegal
-                }
-
-                mmfh.FilePointer = 4; //br.BaseStream.Position = 4;
-                recsize = mmfh.ReadUInt32(); //recsize = br.ReadUInt32();
-                try
-                {
-                    //this.AddRecord(new Record("TES4", recsize, br, isOblivion));
-                    //this.AddRecord(new Record("TES4", recsize, ref reader, ref _positionInFile, isOblivion));
-                    this.AddRecord(new Record("TES4", recsize, isOblivion));
-                }
-                catch (Exception e)
-                {
-                    MessageBox.Show(e.Message);
-                }
-
-                if (!headerOnly)
-                {
-                    ////    while (br.PeekChar() != -1)
-                    while (mmfh.FilePointer < mmfh.FileMap.Capacity)
-                    {
-                        s = ReadRecName(); //s = ReadRecName(br);
-                        //mmfh.FilePointer = mmfh.FileMap.Capacity;
-                        recsize = mmfh.ReadUInt32(); //recsize = br.ReadUInt32();
-                            if (s == "GRUP")
-                            {
-                                try
-                                {
-                                    //this.AddRecord(new GroupRecord(recsize, br, IsOblivion, recFilter, false));
-                                    this.AddRecord(new GroupRecord(recsize, isOblivion, recFilter, false));
-                                }
-                                catch (Exception e)
-                                {
-                                    MessageBox.Show(e.Message);
-                                }
-                            }
-                            else
-                            {
-                                bool skip = recFilter != null && Array.IndexOf(recFilter, s) >= 0;
-                                if (skip)
-                                {
-                                    long size = recsize + (isOblivion ? 8 : 12);
-                                    //if ((br.ReadUInt32() & 0x00040000) > 0)
-                                    //if ((TESVSnip.Domain.MemoryMappedFileHelper.ReadUInt32(ref reader, ref _positionInFile) & 0x00040000) > 0)
-                                    if ((mmfh.ReadUInt32() & 0x00040000) > 0) 
-                                    {
-                                        size += 4; // Add 4 bytes for compressed record since the decompressed size is not included in the record size.
-                                    }
-
-                                    mmfh.FilePointer += (int)size; //br.BaseStream.Position += size; // just position past the data
-                                }
-                                else
-                                {
-                                    try
-                                    {
-                                        //this.AddRecord(new Record(s, recsize, br, isOblivion));
-                                        this.AddRecord(new Record(s, recsize, isOblivion));
-                                    }
-                                    catch (Exception e)
-                                    {
-                                        MessageBox.Show(e.Message);
-                                    }
-                                }
-                            }
-                    }
-                }
-            }
-            finally
-            {
-                HoldUpdates = oldHoldUpdates;
-                FireRecordListUpdate(this, this);
-            }
-        }
-
         private void LoadPluginData(BinaryReader br, bool headerOnly, string[] recFilter)
         {
             bool oldHoldUpdates = HoldUpdates;
@@ -1003,7 +897,6 @@ namespace TESVSnip.Domain.Model
                 {
                     while (br.PeekChar() != -1)
                     {
-
                         s = ReadRecName(br);
                         recsize = br.ReadUInt32();
                         if (s == "GRUP")

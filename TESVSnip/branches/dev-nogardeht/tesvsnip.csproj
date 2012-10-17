@@ -86,7 +86,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Domain\MemoryMapped.cs" />
     <Compile Include="Domain\Data\RecordStructure\Conditional.cs" />
     <Compile Include="Domain\Data\RecordStructure\CondType.cs" />
     <Compile Include="Domain\Data\RecordStructure\ElementStructure.cs" />
@@ -151,6 +150,7 @@
     <Compile Include="Domain\Services\Options.cs" />
     <Compile Include="Domain\Services\Settings.cs" />
     <Compile Include="Domain\Services\ZLib.cs" />
+    <Compile Include="Domain\Services\ZLibMemoryStreamWrapper.cs" />
     <Compile Include="Framework\Collections\AdvancedList.cs" />
     <Compile Include="Framework\Collections\PropertyComparer.cs" />
     <Compile Include="Framework\Collections\PropertyComparerCollection.cs" />
@@ -209,19 +209,6 @@
     </Compile>
     <Compile Include="Vendor\Controls\History.cs" />
     <Compile Include="Vendor\Controls\nativemethods.cs" />
-    <Compile Include="Vendor\DotNetZip\CommonSrc\CRC32.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Deflate.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\DeflateStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\GZipStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Inflate.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\InfTree.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ParallelDeflateOutputStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Tree.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\Zlib.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibBaseStream.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibCodec.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibConstants.cs" />
-    <Compile Include="Vendor\DotNetZip\Zlib\ZlibStream.cs" />
     <Compile Include="Vendor\DotZLib\AdlerChecksum.cs" />
     <Compile Include="Vendor\DotZLib\ChecksumGenerator.cs" />
     <Compile Include="Vendor\DotZLib\ChecksumGeneratorBase.cs" />
@@ -788,9 +775,6 @@
     <Content Include="TranslateUI\Tools\ResEx\ResExSetup1.5Beta.exe" />
     <Content Include="TranslateUI\Tools\xmlDbEditor\xmlDbEditor.exe" />
     <Content Include="TranslateUI\Tools\xmlDbEditor\xmlDbEditor.pdb" />
-    <Content Include="Vendor\DotNetZip\Zlib\LICENSE.jzlib.txt" />
-    <Content Include="Vendor\DotNetZip\Zlib\License.zlib.txt" />
-    <Content Include="Vendor\DotNetZip\Zlib\Zlib DLL.csproj" />
     <Content Include="Vendor\DotZLib\LICENSE_1_0.txt" />
     <Content Include="Vendor\DotZLib\readme.txt" />
     <Content Include="Vendor\ObjectListView\CustomDictionary.xml" />
@@ -810,6 +794,9 @@
     <Content Include="Vendor\ObjectListView\Resources\sort-descending1.png" />
     <Content Include="zlib1.dll">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zlib123.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\bookmark_add.png" />
     <None Include="Resources\14_layer_deletelayer.png" />

@@ -7,8 +7,6 @@ namespace TESVSnip.Domain.Model
     using System.Linq;
     using System.Runtime.Serialization;
     using System.Text;
-    using System.IO.MemoryMappedFiles;
-    using mmfh = TESVSnip.Domain.MemoryMappedFileHelper;
 
     using RTF;
 
@@ -210,42 +208,25 @@ namespace TESVSnip.Domain.Model
             }
         }
 
-        /// ********************
-        /// *** ReadRecName
-        /// ********************
-
-        protected static string ReadRecName()
-        {
-            mmfh.FileMap.ReadArray(mmfh.FilePointer, RecByte, 0, 4);
-            mmfh.FilePointer += 4;
-            return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
-        }
-
-        protected static string ReadRecName(ref byte[] buffer, ref int offset)
-        {
-            Buffer.BlockCopy(buffer, offset, RecByte, 0, 4);
-            offset += 4;
-            return string.Empty + ((char) RecByte[0]) + ((char) RecByte[1]) + ((char) RecByte[2]) + ((char) RecByte[3]);
-        }
-
-        protected static string ReadRecName(ref MemoryMappedViewAccessor reader, ref int positionInFile)
-        {
-            reader.ReadArray(positionInFile, RecByte, 0, 4);
-            positionInFile += 4;
-            return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
-        }
-
         protected static string ReadRecName(BinaryReader br)
         {
-            //TODO: Remove if MemoryMappedFile OK
-            br.Read(RecByte, 0, 4);
-            return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
+            try
+            {
+                br.Read(RecByte, 0, 4);
+                //if (System.Environment.WorkingSet > 1400155904)
+                //  GC.Collect();
+                return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
+
+
+            }
+            catch (Exception ex)
+            {
+                string errMsg = "Message: " + ex.Message;
+                throw;
+            }
+
         }
 
-        /// ********************
-        /// *** ReadRecName
-        /// ********************
-        /// 
         protected static void WriteString(BinaryWriter bw, string s)
         {
             var b = new byte[s.Length];
