@@ -48,10 +48,7 @@ namespace TESVSnip.Domain.Model
 
         public virtual string DescriptiveName
         {
-            get
-            {
-                return this.Name;
-            }
+            get { return this.Name; }
         }
 
         [Persistable]
@@ -64,10 +61,7 @@ namespace TESVSnip.Domain.Model
 
         public virtual IList Records
         {
-            get
-            {
-                return emptyList;
-            }
+            get { return emptyList; }
         }
 
         /// <summary>
@@ -213,18 +207,12 @@ namespace TESVSnip.Domain.Model
             try
             {
                 br.Read(RecByte, 0, 4);
-                //if (System.Environment.WorkingSet > 1400155904)
-                //  GC.Collect();
-                return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
-
-
+                return string.Empty + ((char) RecByte[0]) + ((char) RecByte[1]) + ((char) RecByte[2]) + ((char) RecByte[3]);
             }
             catch (Exception ex)
             {
-                string errMsg = "Message: " + ex.Message;
-                throw;
+                throw new TESParserException("BaseRecord.ReadRecName: " + Environment.NewLine + ex.Message);
             }
-
         }
 
         protected static void WriteString(BinaryWriter bw, string s)
@@ -232,7 +220,7 @@ namespace TESVSnip.Domain.Model
             var b = new byte[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
-                b[i] = (byte)s[i];
+                b[i] = (byte) s[i];
             }
 
             bw.Write(b, 0, s.Length);

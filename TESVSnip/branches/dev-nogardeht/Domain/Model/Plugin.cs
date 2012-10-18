@@ -189,7 +189,6 @@ namespace TESVSnip.Domain.Model
             }
 
             var sbrMaster = new SubRecord();
-            sbrMaster = new SubRecord();
             sbrMaster.Name = "DATA";
             sbrMaster.SetData(new byte[] { 0, 0, 0, 0, 0, 0, 0, 0 });
             brcTES4.InsertRecord(idx, sbrMaster);

@@ -46,78 +46,18 @@ namespace TESVSnip.Domain.Services
         public static BinaryReader Decompress(Stream input, int expectedSize = 0)
         {
             Byte[] buffer = null;
-            try
-            {
-
-                if (input == null)
-                {
-                    throw new ArgumentNullException("input");
-                }
-
-                buffer = new byte[input.Length];
-                input.Read(buffer, 0, (int) input.Length);
-
-                return Decompress(buffer, expectedSize);
-
-            }
-            catch (Exception ex)
-            {
-                if (buffer != null)
-                    File.WriteAllBytes("c:\\DecompressStream_input.txt", buffer);
-                return null;
-                throw;
-            }
-        }
-
-        private static BinaryReader Decompress(byte[] buffer, int expectedSize = 0)
-        {
-            if (buffer == null)
-            {
-                throw new ArgumentNullException("buffer");
-            }
-            MemoryStream output = null;
-
-            try
-            {
-                output = new MemoryStream(expectedSize);
-            }
-            catch (Exception ex)
-            {
-                return null;
-                throw;
-            }
-
-            try
-            {
-                using (var inflater = new Inflater())
-                {
-                    inflater.DataAvailable += output.Write;
-                    inflater.Add(buffer, 0, buffer.Length);
-                }
-
-                output.Position = 0;
-                return new BinaryReader(output);
-            }
-            catch
-            {
-                File.WriteAllBytes("c:\\buffer.txt", buffer);
-                output.Dispose();
-                throw;
-            }
-        }
-
-        public static BinaryReader DecompressSmaugVersion2(Stream input, int expectedSize = 0)
-        {
-            Byte[] buffer = null;
             uint numBytesAddressing = (uint) input.Length;
-            MemoryStream output = new MemoryStream(expectedSize);
-            Inflater inflater = new Inflater();
+            MemoryStream output = null;
+            Inflater inflater = null;
+            BinaryReader br = null;
 
             try
             {
-                inflater.DataAvailable += output.Write;
+                inflater = new Inflater();
+                output = new MemoryStream(expectedSize);
+                br = new BinaryReader(input);
 
-                BinaryReader br = new BinaryReader(input);
+                inflater.DataAvailable += output.Write;
                 br.BaseStream.Seek(0, SeekOrigin.Begin);
 
                 while (numBytesAddressing > 0u)
@@ -129,20 +69,25 @@ namespace TESVSnip.Domain.Services
 
                 inflater.Finish(); //flush zlib buffer
 
-                br.Close();
-                br.Dispose();
-
                 output.Seek(0, SeekOrigin.Begin);
 
-                inflater.Dispose();
-
-                return new BinaryReader(output);
             }
             catch (Exception ex)
             {
                 MessageBox.Show("Error DecompressSmaugVersion2: \n" + ex, "Decompress", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw;
             }
+            finally
+            {
+                if (inflater != null) inflater.Dispose();
+                if (br != null)
+                {
+                    br.Close();
+                    br.Dispose();
+                }
+            }
+
+            return new BinaryReader(output);
         }
 
         /// <summary>
