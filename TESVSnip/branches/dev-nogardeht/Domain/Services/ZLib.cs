@@ -118,7 +118,20 @@ namespace TESVSnip.Domain.Services
 
         private static CompressLevel RetrieveCompressionLevel(ushort flags)
         {
-            //ushort num = (ushort)((65280 & flags) >> 8 | (int)(255 & flags) << 8);
+        //             * zlib header info
+        // */
+        //$this->cmf = $reader->getUI8();
+        //$cm = $this->cmf & 0x0f;
+        //if ($cm != 8) { // CM
+        //    new Exception("unknown compression method=$cm");
+        //}
+        //$this->flg = $reader->getUI8();
+        //if ($this->flg & 0x20) {
+        //    $this->dictid = $reader->getUI32BE();
+        //}
+        /*
+         * 
+
             var bit6 = (flags & (1 << 6 - 1)) != 0;
             var bit7 = (flags & (1 << 7 - 1)) != 0;
 
