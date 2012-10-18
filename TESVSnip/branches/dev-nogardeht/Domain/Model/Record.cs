@@ -58,7 +58,7 @@ namespace TESVSnip.Domain.Model
             MemoryStream stream = null;
             BinaryReader dataReader = null;
             SubRecord record = null;
-          long ws;
+            long ws;
 
             try
             {
@@ -87,22 +87,21 @@ namespace TESVSnip.Domain.Model
                 //{
                 //using (var dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream))
                 //{
-              try
-              {
-                stream = new MemoryStream(recordReader.ReadBytes((int)dataSize));
-                //ws = Environment.WorkingSet;
-              }
-              catch (Exception ex)
-              {
-                //TESVSnip.Domain.SaveReadStream.SaveStreamToDisk(stream);
-                ws = Environment.WorkingSet;
-                throw;
-              }
-              
-                //dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream);
-                dataReader = compressed ? ZLib.DecompressSmaugVersion2(stream, (int) realSize) : new BinaryReader(stream);
- 
-                if (dataReader == null) return; //TODO: Error with decompress
+                try
+                {
+                    stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
+                }
+                catch (Exception ex)
+                {
+                    throw new TESParserException("Record.Record: ZLib inflate error");
+                }
+                dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream);
+
+                if (dataReader == null)
+                {
+                    throw new TESParserException("Record.Record: ZLib inflate error");
+
+                }
 
                 while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
                 {
@@ -163,8 +162,7 @@ namespace TESVSnip.Domain.Model
                 //  GC.Collect();
 
             }
-            catch
-                (Exception ex)
+            catch (Exception ex)
             {
                 string errMsg =
                     "Message: " + ex.Message +
@@ -188,7 +186,6 @@ namespace TESVSnip.Domain.Model
                 MessageBox.Show(errMsg, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
             }
         }
-
 
         private Record(SerializationInfo info, StreamingContext context)
             : base(info, context)

@@ -210,7 +210,7 @@ namespace TESVSnip.Domain.Model
           }
           catch (Exception ex)
           {
-            throw;
+              throw new TESParserException("GroupRecord.AddRecord: " + ex.Message);
           }
         }
 
