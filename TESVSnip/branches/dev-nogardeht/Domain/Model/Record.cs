@@ -13,6 +13,8 @@ namespace TESVSnip.Domain.Model
 
     using RTF;
 
+    using TESVSnip.DotZLib;
+
     using TESVSnip.Domain.Data.RecordStructure;
     using TESVSnip.Domain.Services;
     using TESVSnip.Framework.Collections;
@@ -37,6 +39,7 @@ namespace TESVSnip.Domain.Model
         [Persistable] public uint FormID;
 
         private readonly uint dataSize;
+        private CompressLevel compressLevel = CompressLevel.None;
 
         private readonly Func<string> descNameOverride;
 
@@ -95,7 +98,7 @@ namespace TESVSnip.Domain.Model
                 {
                     throw new TESParserException("Record.Record: ZLib inflate error");
                 }
-                dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream);
+                dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int) realSize) : new BinaryReader(stream);
 
                 if (dataReader == null)
                 {
