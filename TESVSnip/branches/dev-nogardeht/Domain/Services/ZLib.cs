@@ -52,7 +52,6 @@ namespace TESVSnip.Domain.Services
         public static byte[] Compress(Stream input, CompressLevel compressLevel)
         {
             uint maxBytesAddressing = (uint) input.Length;
-            uint currentBytesAddressing = 0;
             Deflater deflater = null;
             MemoryStream output = null;
             BinaryReader br = null;
@@ -66,11 +65,11 @@ namespace TESVSnip.Domain.Services
                 deflater.DataAvailable += output.Write;
                 br.BaseStream.Seek(0, SeekOrigin.Begin);
 
-                while (currentBytesAddressing <= maxBytesAddressing)
+                while (maxBytesAddressing > 0)
                 {
-                    uint numBytes = Math.Min(currentBytesAddressing, 8192);
+                    uint numBytes = Math.Min(maxBytesAddressing, 8192);
                     deflater.Add(br.ReadBytes((int) numBytes));
-                    currentBytesAddressing += numBytes;
+                    maxBytesAddressing -= numBytes;
                 }
 
                 deflater.Finish(); //flush zlib buffer
