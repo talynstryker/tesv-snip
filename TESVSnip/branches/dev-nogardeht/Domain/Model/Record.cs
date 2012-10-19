@@ -331,7 +331,7 @@ namespace TESVSnip.Domain.Model
 
             if (this.Flags1 != 0)
             {
-                rb.AppendLineFormat("Flags 1: {0:X8} : ({1})", this.Flags1, FlagDefs.GetRecFlags1Desc(this.Flags1));
+                rb.AppendLineFormat("Flags 1: {0:X8} : ({1} : Level = {2})", this.Flags1, FlagDefs.GetRecFlags1Desc(this.Flags1), compressLevel.ToString());
             }
             else
                 rb.AppendLineFormat("Flags 1: {0:X8}", this.Flags1);
@@ -637,10 +637,8 @@ namespace TESVSnip.Domain.Model
                 }
 
                 data = stream.ToArray();
-                if (compressed)
-                {
-                    data = ZLib.Compress(data);
-                }
+                if (compressed & compressLevel != CompressLevel.None)
+                    data = ZLib.Compress(stream, compressLevel); //data = ZLib.Compress(data);
             }
 
             var dataSize = (uint) data.Length;
