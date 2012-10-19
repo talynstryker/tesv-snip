@@ -1640,7 +1640,7 @@ namespace TESVSnip.UI.Forms
 
             sw.Stop();
             TimeSpan t = TimeSpan.FromMilliseconds(sw.ElapsedMilliseconds);
-            toolStripStatusLabel.Text = string.Format(TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_LoadPlugInIn"), t.ToString());
+            toolStripStatusLabel.Text = string.Format(TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_LoadPluginIn"), t.ToString());
         }
         catch (Exception ex)
         {

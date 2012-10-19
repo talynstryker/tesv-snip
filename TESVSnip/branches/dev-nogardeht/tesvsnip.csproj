@@ -150,7 +150,6 @@
     <Compile Include="Domain\Services\Options.cs" />
     <Compile Include="Domain\Services\Settings.cs" />
     <Compile Include="Domain\Services\ZLib.cs" />
-    <Compile Include="Domain\Services\ZLibMemoryStreamWrapper.cs" />
     <Compile Include="Framework\Collections\AdvancedList.cs" />
     <Compile Include="Framework\Collections\PropertyComparer.cs" />
     <Compile Include="Framework\Collections\PropertyComparerCollection.cs" />

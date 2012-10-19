@@ -251,7 +251,7 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="MSG_StartParsingLoadedPlugIn" xml:space="preserve">
     <value>Start parsing loaded PlugIn...</value>
   </data>
-  <data name="MSG_LoadPlugInIn" xml:space="preserve">
+  <data name="MSG_LoadPluginIn" xml:space="preserve">
     <value>Load PlugIn in {0}.</value>
   </data>
   <data name="TESSNIP_MainView_fileToolStripMenuItem" xml:space="preserve">
@@ -301,5 +301,17 @@ Duration of process between 15 and 35 seconds.</value>
   </data>
   <data name="UI_File_OpenSavePluginInSkyrimFolder" xml:space="preserve">
     <value>In Skyrim Folder</value>
+  </data>
+  <data name="MSG_ErrorWtihNewLine" xml:space="preserve">
+    <value>Error : \n {0}</value>
+  </data>
+  <data name="MSG_ZLib_Compress" xml:space="preserve">
+    <value>Compress</value>
+  </data>
+  <data name="MSG_ZLib_Decompress" xml:space="preserve">
+    <value>Decompress</value>
+  </data>
+  <data name="MSG_ZLib_OutputBufferEmpty" xml:space="preserve">
+    <value>Compression error. Output buffer is empty !"</value>
   </data>
 </root>
