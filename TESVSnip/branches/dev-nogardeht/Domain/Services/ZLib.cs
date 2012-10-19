@@ -43,9 +43,8 @@ namespace TESVSnip.Domain.Services
             }
         }
 
-        public static BinaryReader Decompress(Stream input, int expectedSize = 0)
+        public static BinaryReader Decompress(Stream input, out CompressLevel compressLevel, int expectedSize = 0)
         {
-            Byte[] buffer = null;
             uint numBytesAddressing = (uint) input.Length;
             MemoryStream output = null;
             Inflater inflater = null;
@@ -58,6 +57,9 @@ namespace TESVSnip.Domain.Services
                 br = new BinaryReader(input);
 
                 inflater.DataAvailable += output.Write;
+
+                br.BaseStream.Seek(0, SeekOrigin.Begin);
+                compressLevel = RetrieveCompressionLevel(br);
                 br.BaseStream.Seek(0, SeekOrigin.Begin);
 
                 while (numBytesAddressing > 0u)
@@ -105,6 +107,17 @@ namespace TESVSnip.Domain.Services
         /// bit  5       FDICT   (preset dictionary)
         /// bits 6 to 7  FLEVEL  (compression level)
         /// 
+        ///       FLEVEL (Compression level)
+        /// These flags are available for use by specific compression
+        /// methods.  The "deflate" method (CM = 8) sets these flags as
+        /// follows:
+        ///
+        ///   0 - compressor used fastest algorithm
+        ///   1 - compressor used fast algorithm
+        ///   2 - compressor used default algorithm
+        ///   3 - compressor used maximum compression, slowest algorithm
+        /// 
+        ///  ZLib enumeration
         /// 	public enum CompressLevel
         /// 	{
         /// 	Default = -1,
@@ -112,31 +125,39 @@ namespace TESVSnip.Domain.Services
         /// 	Best = 9,
         /// 	Fastest = 1
         /// 	}
+        /// 
+        /// http://code.activestate.com/lists/python-list/204644/
+        /// Two bytes, that's not really a lot of known plaintext, but every little bit might be a liability, I guess.
         /// </summary>
-        /// <param name="byteSwappedHeader"></param>
-        /// <returns></returns>
-
-        private static CompressLevel RetrieveCompressionLevel(ushort flags)
+        private static CompressLevel RetrieveCompressionLevel(BinaryReader br)
         {
+            int cmf = br.ReadBytes(1)[0];
+            int flg = br.ReadBytes(1)[0];
+            CompressLevel flevel;
 
-            //**
+            flg = (flg & 0xC0); // Mask : 11000000 = 192 = 0xC0
+            flg = flg >> 6;
 
-            //ushort num = (ushort)((65280 & flags) >> 8 | (int)(255 & flags) << 8);
+            switch (flg)
+            {
+                case 0:
+                    flevel = CompressLevel.None;
+                    break;
+                case 1:
+                    flevel = CompressLevel.Fastest;
+                    break;
+                case 2:
+                    flevel = CompressLevel.Default;
+                    break;
+                case 3:
+                    flevel = CompressLevel.Best;
+                    break;
+                default:
+                    flevel = CompressLevel.Best;
+                    break;
+            }
 
-            //**
-            //ushort num = (ushort)((65280 & flags) >> 8 | (int)(255 & flags) << 8);
-            var bit6 = (flags & (1 << 6 - 1)) != 0;
-            var bit7 = (flags & (1 << 7 - 1)) != 0;
-
-            //switch ((ushort)(num >> 6 & 3))
-            //{
-            //    case 2:
-            //        return CompressLevel.Default;
-            //    case 3:
-            return CompressLevel.Best;
-            //    default:
-            //        throw new Exception("Unknown Zlib header format or unexpected compression level");
-            //}
+            return flevel;
         }
 
     }
