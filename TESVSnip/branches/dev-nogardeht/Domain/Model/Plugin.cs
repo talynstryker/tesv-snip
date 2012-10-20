@@ -221,7 +221,7 @@ namespace TESVSnip.Domain.Model
             this.InvalidateCache();
             FireRecordListUpdate(this, this);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
             
             throw;
@@ -247,7 +247,7 @@ namespace TESVSnip.Domain.Model
             FireRecordListUpdate(this, this);
             this.InvalidateCache();
           }
-          catch (Exception ex)
+          catch (Exception)
           {
             
             throw;
