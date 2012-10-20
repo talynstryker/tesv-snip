@@ -61,9 +61,8 @@ namespace TESVSnip.Framework
             tc.b4 = b4;
             return tc.f;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -75,9 +74,8 @@ namespace TESVSnip.Framework
           {
             return (T)GetObject<T>(new ArraySegment<byte>(data, offset, data.Length - offset));
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
 
@@ -132,9 +130,8 @@ namespace TESVSnip.Framework
 
             return default(T);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -145,9 +142,8 @@ namespace TESVSnip.Framework
           {
             return (T) GetObject<T>(data);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -159,9 +155,8 @@ namespace TESVSnip.Framework
             result = GetObject<T>(new ArraySegment<byte>(data, offset, data.Length - offset));
             return true;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -221,9 +216,8 @@ namespace TESVSnip.Framework
 
             return new ArraySegment<byte>(new byte[0]);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -241,9 +235,8 @@ namespace TESVSnip.Framework
 
             return false;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -266,9 +259,8 @@ namespace TESVSnip.Framework
             tc.b4 = data[offset + 3];
             return tc.f;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -290,9 +282,8 @@ namespace TESVSnip.Framework
 
             return default(float);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -307,9 +298,8 @@ namespace TESVSnip.Framework
             tc.b4 = b4;
             return tc.i;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
  
@@ -330,9 +320,8 @@ namespace TESVSnip.Framework
 
             return 0;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -348,9 +337,8 @@ namespace TESVSnip.Framework
             tc.b4 = b4;
             return tc.si;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -371,9 +359,8 @@ namespace TESVSnip.Framework
 
             return 0;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -394,9 +381,8 @@ namespace TESVSnip.Framework
 
             return 0;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -410,9 +396,8 @@ namespace TESVSnip.Framework
             tc.b2 = b2;
             return tc.s;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
   
@@ -431,9 +416,8 @@ namespace TESVSnip.Framework
 
             return default(ushort);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -447,9 +431,8 @@ namespace TESVSnip.Framework
             tc.b2 = b2;
             return tc.ss;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
   
@@ -469,9 +452,8 @@ namespace TESVSnip.Framework
 
             return default(short);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -487,9 +469,8 @@ namespace TESVSnip.Framework
 
             return default(byte);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -507,9 +488,8 @@ namespace TESVSnip.Framework
 
             return default(sbyte);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -526,9 +506,8 @@ namespace TESVSnip.Framework
             bytes[3] = tc.b4;
             return bytes;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -540,9 +519,8 @@ namespace TESVSnip.Framework
             tc.f = f;
             return UpdateBytes();
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
    
@@ -556,9 +534,8 @@ namespace TESVSnip.Framework
             tc.i = i;
             return UpdateBytes();
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -571,9 +548,8 @@ namespace TESVSnip.Framework
             tc.si = si;
             return UpdateBytes();
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -585,9 +561,8 @@ namespace TESVSnip.Framework
             tc.ss = ss;
             return new[] { tc.b1, tc.b2 };
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -600,9 +575,8 @@ namespace TESVSnip.Framework
             tc.s = ss;
             return new[] { tc.b1, tc.b2 };
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -626,9 +600,8 @@ namespace TESVSnip.Framework
             data[offset + 2] = tc.b3;
             data[offset + 3] = tc.b4;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -645,9 +618,8 @@ namespace TESVSnip.Framework
             data[offset + 2] = tc.b3;
             data[offset + 3] = tc.b4;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -660,9 +632,8 @@ namespace TESVSnip.Framework
             data[offset + 0] = tc.b1;
             data[offset + 1] = tc.b2;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -676,9 +647,8 @@ namespace TESVSnip.Framework
             data[offset + 0] = tc.b1;
             data[offset + 1] = tc.b2;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
  
@@ -702,9 +672,8 @@ namespace TESVSnip.Framework
 
             return isValid && data.Array[data.Count - 1] == 0;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-
             throw;
           }
         }
@@ -727,9 +696,8 @@ namespace TESVSnip.Framework
 
             return sb.ToString();
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
    
@@ -747,9 +715,8 @@ namespace TESVSnip.Framework
 
             return string.Empty;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -767,9 +734,8 @@ namespace TESVSnip.Framework
 
             return string.Empty;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -783,9 +749,8 @@ namespace TESVSnip.Framework
             int len = data.Count > 0 && data.Array[data.Count - 1] == 0 ? data.Count - 1 : data.Count;
             return Encoding.Instance.GetString(data.Array, data.Offset, len);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -803,9 +768,8 @@ namespace TESVSnip.Framework
 
             return sb.ToString();
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -817,9 +781,8 @@ namespace TESVSnip.Framework
           {
             return GetHexData(data.Array, data.Offset, data.Count);
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -843,9 +806,8 @@ namespace TESVSnip.Framework
             data[len] = 0;
             return data;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -869,9 +831,8 @@ namespace TESVSnip.Framework
             Array.Copy(Encoding.Instance.GetBytes(str), 0, data, 2, len);
             return data;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -895,9 +856,8 @@ namespace TESVSnip.Framework
             Array.Copy(Encoding.Instance.GetBytes(str), 0, data, 4, len);
             return data;
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
 
@@ -909,9 +869,8 @@ namespace TESVSnip.Framework
           {
             return new[] { i };
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
    
@@ -923,9 +882,8 @@ namespace TESVSnip.Framework
           {
             return new[] { (byte)i };
           }
-          catch (Exception ex)
+          catch (Exception)
           {
-            
             throw;
           }
     

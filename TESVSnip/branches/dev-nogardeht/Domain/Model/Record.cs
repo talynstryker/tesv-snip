@@ -61,7 +61,7 @@ namespace TESVSnip.Domain.Model
             MemoryStream stream = null;
             BinaryReader dataReader = null;
             SubRecord record = null;
-            long ws;
+            //long ws;
 
             try
             {
@@ -93,12 +93,13 @@ namespace TESVSnip.Domain.Model
                 try
                 {
                     stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
+                    dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
                     throw new TESParserException("Record.Record: ZLib inflate error");
                 }
-                dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int) realSize) : new BinaryReader(stream);
+                
 
                 if (dataReader == null)
                 {
@@ -153,12 +154,7 @@ namespace TESVSnip.Domain.Model
                 // br.BaseStream.Position+=Size;
 
                 //} //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
-                if (stream != null)
-                {
-                    stream.Close();
-                    stream.Dispose();
-                    stream = null;
-                }
+
 
 
                 //if (Environment.WorkingSet >= 1400000000)
@@ -187,6 +183,14 @@ namespace TESVSnip.Domain.Model
                 myLog.WriteEntry(errMsg);
 
                 MessageBox.Show(errMsg, "Fatal Error", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            }
+            finally
+            {
+                if (stream != null)
+                {
+                    stream.Close();
+                    stream.Dispose();
+                }
             }
         }
 

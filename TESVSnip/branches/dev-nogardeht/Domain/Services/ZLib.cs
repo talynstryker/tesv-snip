@@ -125,11 +125,14 @@ namespace TESVSnip.Domain.Services
                 output = new MemoryStream(expectedSize);
                 br = new BinaryReader(input);
 
+                br.BaseStream.Seek(0, SeekOrigin.Begin);
+                output.Seek(0, SeekOrigin.Begin);
+
                 inflater.DataAvailable += output.Write;
 
-                br.BaseStream.Seek(0, SeekOrigin.Begin);
-                compressLevel = RetrieveCompressionLevel(br);
-                br.BaseStream.Seek(0, SeekOrigin.Begin);
+                //br.BaseStream.Seek(0, SeekOrigin.Begin);
+                //compressLevel = RetrieveCompressionLevel(br);
+                //br.BaseStream.Seek(0, SeekOrigin.Begin);
 
                 while (numBytesAddressing > 0u)
                 {
@@ -161,12 +164,14 @@ namespace TESVSnip.Domain.Services
 
             if (output != null)
                 return new BinaryReader(output);
-
-            MessageBox.Show(
-                TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_OutputBufferEmpty"),
-                TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_Decompress"),
-                MessageBoxButtons.OK, MessageBoxIcon.Error);
-            return null;
+            else
+            {
+                MessageBox.Show(
+                    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_OutputBufferEmpty"),
+                    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_Decompress"),
+                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return null;
+            }
         }
 
         /// <summary>
