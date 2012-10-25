@@ -960,10 +960,15 @@ namespace TESVSnip.Domain.Model
             }
             finally
             {
-                //if (snipStreamWrapper != null) snipStreamWrapper.CloseFile();
-                snipStreamWrapper = null;
+                Clipboard.SetText("CompressedRecords:" + Environment.NewLine +
+                                  string.Join<string>(string.Empty, ZLibStreamWrapper.CompressedRecords) +
+                                  "AllRecords:" + Environment.NewLine +
+                                  string.Join<string>(string.Empty, ZLibStreamWrapper.AllRecords) +
+                                  "Max Size:" +
+                                  ZLibStreamWrapper.MaxOutputBufferPosition.ToString(CultureInfo.InvariantCulture));
                 ZLibStreamWrapper.ReleaseBuffers();
                 ZLib.ReleaseInflater();
+                snipStreamWrapper = null;
                 HoldUpdates = oldHoldUpdates;
                 FireRecordListUpdate(this, this);
             }

@@ -17,14 +17,15 @@
 
         private void LoadSettings_Load(object sender, EventArgs e)
         {
-            this.rdoDefaultCompressRecords.Checked = Settings.Default.UseDefaultRecordCompression;
             this.rdoNeverCompressRecords.Checked = !Settings.Default.UseDefaultRecordCompression;
+            this.rdoDefaultCompressRecords.Checked = Settings.Default.UseDefaultRecordCompression;
+            this.rdoPluginCompressRecords.Checked = Settings.Default.UsePlunginRecordCompression;
             this.chkEnableAutoCompress.Checked = Settings.Default.EnableAutoCompress;
             this.chkEnableCompressLimit.Checked = Settings.Default.EnableCompressionLimit;
             this.txtCompressLimit.Text = Settings.Default.CompressionLimit.ToString();
 
             // Groups
-            var records = Settings.Default.AutoCompressRecords != null ? Settings.Default.AutoCompressRecords.Trim().Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
+            var records = Settings.Default.AutoCompressRecordsOld != null ? Settings.Default.AutoCompressRecordsOld.Trim().Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
             var allGroups = Settings.Default.AllESMRecords != null
                                 ? Settings.Default.AllESMRecords.Trim().Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries).ToList()
                                 : new List<string>();
@@ -53,10 +54,11 @@
         private void btnOk_Click(object sender, EventArgs e)
         {
             Settings.Default.UseDefaultRecordCompression = this.rdoDefaultCompressRecords.Checked;
+            Settings.Default.UsePlunginRecordCompression = this.rdoPluginCompressRecords.Checked;
             Settings.Default.EnableCompressionLimit = this.chkEnableCompressLimit.Checked;
             Settings.Default.CompressionLimit = uint.Parse(this.txtCompressLimit.Text);
             Settings.Default.EnableAutoCompress = this.chkEnableAutoCompress.Checked;
-            Settings.Default.AutoCompressRecords = string.Join(";", this.listRecordFilter.CheckedItems.Cast<string>().ToArray());
+            Settings.Default.AutoCompressRecordsOld = string.Join(";", this.listRecordFilter.CheckedItems.Cast<string>().ToArray());
             Settings.Default.Save();
         }
 
@@ -80,6 +82,11 @@
         }
 
         private void rdoNeverCompressRecords_CheckedChanged(object sender, EventArgs e)
+        {
+            this.UpdateState();
+        }
+
+        private void rdoPluginCompressRecords_CheckedChanged(object sender, EventArgs e)
         {
             this.UpdateState();
         }

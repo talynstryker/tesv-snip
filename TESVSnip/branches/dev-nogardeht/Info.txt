@@ -1,4 +1,16 @@
-﻿BinaryReader.BaseStream Property
+﻿Update SanitizeOrder List
+Update AllESMRecords setting
+Update AutoCompressRecords setting
+Add new option : Compress Settings : Plugin Compress Records (i.e. Use Compression Level Defined in Plugin)
+Add new option menu : Set config to default for reset user.config file
+Adjust ZLib wrapper buffer size
+
+TODO: 
+  test save plugin
+  use new compression option
+
+-------------
+BinaryReader.BaseStream Property
 .NET Framework 4
 
 public virtual Stream BaseStream { get; }
