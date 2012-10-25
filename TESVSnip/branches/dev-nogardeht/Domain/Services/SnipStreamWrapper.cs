@@ -1,10 +1,9 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Globalization;
+using System.IO;
 
 namespace TESVSnip.Domain.Services
 {
-    using System;
-    using System.IO;
-
     /// <summary>
     /// ZLibStreamWrapper
     /// </summary>
@@ -12,9 +11,8 @@ namespace TESVSnip.Domain.Services
     {
         public FileStream SnipStream;
         private readonly long _streamSize;
-        private byte[] _bytes1 = new byte[1];
-        private byte[] _bytes2 = new byte[2];
-        private byte[] _bytes4 = new byte[4];
+        private readonly byte[] _bytes2 = new byte[2];
+        private readonly byte[] _bytes4 = new byte[4];
 
         /// <summary>
         /// Create new instance of SnipStreamWrapper
@@ -25,19 +23,6 @@ namespace TESVSnip.Domain.Services
             SnipStream = fs;
             _streamSize = SnipStream.Length;
             SnipStream.Seek(0, SeekOrigin.Begin);
-        }
-
-        /// <summary>
-        /// close the file
-        /// </summary>
-        public void CloseFile()
-        {
-            if (SnipStream != null)
-            {
-                SnipStream.Close();
-                SnipStream.Dispose();
-            }
-            SnipStream = null;
         }
 
         /// <summary>
@@ -53,6 +38,18 @@ namespace TESVSnip.Domain.Services
             }
         }
 
+        /// <summary>
+        /// close the file
+        /// </summary>
+        public void CloseFile()
+        {
+            if (SnipStream != null)
+            {
+                SnipStream.Close();
+                SnipStream.Dispose();
+            }
+            SnipStream = null;
+        }
         /// <summary>
         /// End Of file
         /// </summary>
