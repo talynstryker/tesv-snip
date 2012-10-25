@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
@@ -17,21 +18,50 @@ namespace TESVSnip.Domain.Services
     /// </summary>
     public static class ZLibStreamWrapper
     {
-        private const int MaxBufferSize = 31457280; //50 Mb =52428800 bytes     30 Mb = 31457280 bytes
+        private const int MaxBufferSize = 5242880; //50 Mb =52428800 bytes     30 Mb = 31457280 bytes  5 Mb = 5242880
 
         public static byte[] InputBuffer;
         public static byte[] OutputBuffer;
 
-        private static readonly byte[] _bytes2 = new byte[2];
-        private static readonly byte[] _bytes4 = new byte[4];
+        private static readonly byte[] Bytes2 = new byte[2];
+        private static readonly byte[] Bytes4 = new byte[4];
+
+        public static List<string> CompressedRecords { get; private set; } //list of compressed records
+        public static List<string> AllRecords { get; private set; } //list of all records
 
         public static uint InputBufferLength { get; private set; }
 
         public static uint InputBufferPosition { get; private set; }
 
+        public static uint MaxOutputBufferPosition { get; private set; } //for calculate an optimized buffer size
+
         public static uint OutputBufferLength { get; private set; }
 
         public static uint OutputBufferPosition { get; private set; }
+
+        /// <summary>
+        /// Add a new record in list of compressed records
+        /// </summary>
+        public static void AddRecordToCompressedRecordsList(string recordName)
+        {
+            if (CompressedRecords.IndexOf(recordName, 0) == -1)
+            {
+                CompressedRecords.Add(recordName);
+                CompressedRecords.Add(Environment.NewLine);
+            }
+        }
+
+        /// <summary>
+        /// Add a new record in list of compressed records
+        /// </summary>
+        public static void AddRecordToRecordsList(string recordName)
+        {
+            if (AllRecords.IndexOf(recordName, 0) == -1)
+            {
+                AllRecords.Add(recordName);
+                AllRecords.Add(Environment.NewLine);
+            }
+        }
 
         /// <summary>
         /// Allocate the buffers size
@@ -41,6 +71,12 @@ namespace TESVSnip.Domain.Services
             if (InputBuffer != null | OutputBuffer != null) ReleaseBuffers();
             InputBuffer = new byte[MaxBufferSize];
             OutputBuffer = new byte[MaxBufferSize];
+            if (CompressedRecords == null) CompressedRecords = new List<string>();
+            CompressedRecords.Clear();
+            if (AllRecords == null) AllRecords = new List<string>();
+            AllRecords.Clear();
+            MaxOutputBufferPosition = 0;
+            ResetBuffer();
         }
 
         /// <summary>
@@ -52,9 +88,6 @@ namespace TESVSnip.Domain.Services
             OutputBufferLength = 0;
             InputBufferPosition = 0;
             OutputBufferPosition = 0;
-
-            //Array.Clear(InputBuffer, 0, MaxBufferSize);
-            //Array.Clear(OutputBuffer, 0, MaxBufferSize);
         }
 
         /// <summary>
@@ -118,12 +151,12 @@ namespace TESVSnip.Domain.Services
             }
 
             Clear();
-            var numBytesAddressing = (int) bytesToRead;
+            var numBytesAddressing = (int)bytesToRead;
             var offset = 0;
             while (numBytesAddressing > 0u)
             {
-                var numBytes = (uint) Math.Min(numBytesAddressing, 8192u); //8192u 65536u
-                int bytesRead = fs.Read(InputBuffer, offset, (int) numBytes);
+                var numBytes = (uint)Math.Min(numBytesAddressing, 8192u); //8192u 65536u
+                int bytesRead = fs.Read(InputBuffer, offset, (int)numBytes);
                 offset += bytesRead;
                 numBytesAddressing -= bytesRead;
             }
@@ -179,9 +212,9 @@ namespace TESVSnip.Domain.Services
                 throw new TESParserException(msg);
             }
 
-            Array.Copy(OutputBuffer, OutputBufferPosition, _bytes2, 0, 2);
+            Array.Copy(OutputBuffer, OutputBufferPosition, Bytes2, 0, 2);
             OutputBufferPosition += 2;
-            return _bytes2;
+            return Bytes2;
         }
 
         /// <summary>
@@ -200,9 +233,9 @@ namespace TESVSnip.Domain.Services
                 throw new TESParserException(msg);
             }
 
-            Array.Copy(OutputBuffer, OutputBufferPosition, _bytes4, 0, 4);
+            Array.Copy(OutputBuffer, OutputBufferPosition, Bytes4, 0, 4);
             OutputBufferPosition += 4;
-            return _bytes4;
+            return Bytes4;
         }
 
         /// <summary>
@@ -218,12 +251,12 @@ namespace TESVSnip.Domain.Services
 
             if (bufferType == BufferType.Output)
             {
-                newPosition = (uint) (OutputBufferPosition + count);
+                newPosition = (uint)(OutputBufferPosition + count);
                 bufferSize = OutputBufferLength;
             }
             else
             {
-                newPosition = (uint) (InputBufferPosition + count);
+                newPosition = (uint)(InputBufferPosition + count);
                 bufferSize = InputBufferLength;
             }
 
@@ -243,12 +276,12 @@ namespace TESVSnip.Domain.Services
             if (bufferType == BufferType.Output)
             {
                 Array.Copy(OutputBuffer, OutputBufferPosition, b, 0, count);
-                OutputBufferPosition += (uint) count;
+                OutputBufferPosition += (uint)count;
             }
             else
             {
                 Array.Copy(InputBuffer, InputBufferPosition, b, 0, count);
-                InputBufferPosition += (uint) count;
+                InputBufferPosition += (uint)count;
             }
 
             return b;
@@ -285,6 +318,20 @@ namespace TESVSnip.Domain.Services
             GC.Collect();
         }
 
+        /// <summary>
+        /// Reset input/Output buffer with zero
+        /// </summary>
+        public static void ResetBuffer()
+        {
+            InputBufferLength = 0;
+            OutputBufferLength = 0;
+            InputBufferPosition = 0;
+            OutputBufferPosition = 0;
+            MaxOutputBufferPosition = 0;
+
+            Array.Clear(InputBuffer, 0, MaxBufferSize);
+            Array.Clear(OutputBuffer, 0, MaxBufferSize);
+        }
         /// <summary>
         /// Write in the output buffer the ZLib inflate bytes byte[] data, int startIndex, int count
         /// </summary>
@@ -332,8 +379,9 @@ namespace TESVSnip.Domain.Services
             }
 
             Array.Copy(data, startIndex, OutputBuffer, OutputBufferPosition, count);
-            OutputBufferPosition += (uint) count;
+            OutputBufferPosition += (uint)count;
             OutputBufferLength = OutputBufferPosition;
+            if (OutputBufferPosition > MaxOutputBufferPosition) MaxOutputBufferPosition = OutputBufferPosition;
         }
     }
 }

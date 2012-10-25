@@ -70,6 +70,7 @@ namespace TESVSnip.Domain.Model
 
                 this.SubRecords = new AdvancedList<SubRecord>(1) {AllowSorting = false};
                 Name = name;
+                ZLibStreamWrapper.AddRecordToRecordsList(Name);
                 this.Flags1 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 this.FormID = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 this.Flags2 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
@@ -86,6 +87,7 @@ namespace TESVSnip.Domain.Model
                     realSize = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                     //snipStreamWrapper.JumpTo(-4,SeekOrigin.Current);
                     dataSize -= 4;
+                    ZLibStreamWrapper.AddRecordToCompressedRecordsList(Name);
                 }
 
                 //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
