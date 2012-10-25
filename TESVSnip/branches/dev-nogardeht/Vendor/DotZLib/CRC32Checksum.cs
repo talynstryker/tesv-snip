@@ -75,7 +75,7 @@ namespace TESVSnip.DotZLib
             }
         }
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.U4)]
         private static extern uint crc32([MarshalAs(UnmanagedType.U4)] uint crc, [MarshalAs(UnmanagedType.I4)] int data, [MarshalAs(UnmanagedType.U4)] uint length);
     }

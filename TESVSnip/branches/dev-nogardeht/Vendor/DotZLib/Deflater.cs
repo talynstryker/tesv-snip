@@ -110,20 +110,20 @@ namespace TESVSnip.DotZLib
             deflateEnd(ref _ztream);
         }
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int deflate([MarshalAs(UnmanagedType.Struct)] ref ZStream sz, [MarshalAs(UnmanagedType.I4)] int flush);
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int deflateEnd([MarshalAs(UnmanagedType.Struct)] ref ZStream sz);
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int deflateInit_(
             [MarshalAs(UnmanagedType.Struct)] ref ZStream sz, [MarshalAs(UnmanagedType.I4)] int level, [MarshalAs(UnmanagedType.LPStr)] string vs, [MarshalAs(UnmanagedType.I4)] int size);
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int deflateReset([MarshalAs(UnmanagedType.Struct)] ref ZStream sz);
     }

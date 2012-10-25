@@ -18,13 +18,24 @@ namespace TESVSnip.DotZLib
         public Inflater()
             : base()
         {
-            int retval = inflateInit_(ref _ztream, Info.Version, Marshal.SizeOf(_ztream));
-            if (retval != 0)
+            try
             {
-                throw new ZLibException(retval, "Could not initialize inflater");
-            }
+                if(Marshal.SizeOf(_ztream)>kBufferSize)
+                {
+                    string toto = "stop";
+                }
+                int retval = inflateInit_(ref _ztream, Info.Version, Marshal.SizeOf(_ztream));
+                if (retval != 0)
+                {
+                    throw new ZLibException(retval, "Could not initialize inflater");
+                }
 
-            resetOutput();
+                resetOutput();
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         /// <summary>
@@ -107,19 +118,19 @@ namespace TESVSnip.DotZLib
             inflateEnd(ref _ztream);
         }
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int inflate([MarshalAs(UnmanagedType.Struct)] ref ZStream sz, [MarshalAs(UnmanagedType.I4)] int flush);
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int inflateEnd([MarshalAs(UnmanagedType.Struct)] ref ZStream sz);
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int inflateInit_([MarshalAs(UnmanagedType.Struct)] ref ZStream sz, [MarshalAs(UnmanagedType.LPStr)] string vs, [MarshalAs(UnmanagedType.I4)] int size);
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.I4)]
         private static extern int inflateReset([MarshalAs(UnmanagedType.Struct)] ref ZStream sz);
     }

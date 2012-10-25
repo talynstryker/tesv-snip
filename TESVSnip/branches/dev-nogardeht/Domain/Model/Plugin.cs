@@ -14,6 +14,8 @@ namespace TESVSnip.Domain.Model
     using TESVSnip.Framework.Persistence;
     using TESVSnip.Framework.Services;
 
+    using TESVSnip.Domain.Services;
+
     [Persistable(Flags = PersistType.DeclaredOnly)]
     [Serializable]
     public sealed class Plugin : BaseRecord, IDeserializationCallback, IGroupRecord
@@ -43,18 +45,20 @@ namespace TESVSnip.Domain.Model
 
         public Plugin(byte[] data, string name)
         {
-            Name = name;
-            var br = new BinaryReader(new MemoryStream(data));
-            try
-            {
-                this.LoadPluginData(br, false, null);
+            throw new NotImplementedException();
 
-                this.FileName = Path.GetFileNameWithoutExtension(name);
-            }
-            finally
-            {
-                br.Close();
-            }
+            //Name = name;
+            //var br = new BinaryReader(new MemoryStream(data));
+            //try
+            //{
+            //    this.LoadPluginData(br, false, null);
+
+            //    this.FileName = Path.GetFileNameWithoutExtension(name);
+            //}
+            //finally
+            //{
+            //    br.Close();
+            //}
         }
 
         public Plugin()
@@ -71,10 +75,21 @@ namespace TESVSnip.Domain.Model
         {
             Name = Path.GetFileName(FilePath);
             PluginPath = Path.GetDirectoryName(FilePath);
-            var fi = new FileInfo(FilePath);
-            using (var br = new BinaryReader(fi.OpenRead()))
+            FileInfo fi = new FileInfo(FilePath);
+            //TODO: Création du BinaryReader ou FileStream
+            //using (var br = new BinaryReader(fi.OpenRead()))
+            //{
+            //    this.LoadPluginData(br, headerOnly, recFilter);
+            //}
+
+            FileStream fs = new FileStream(fi.FullName, FileMode.Open);
+            try
             {
-                this.LoadPluginData(br, headerOnly, recFilter);
+                this.LoadPluginData(fs, headerOnly, recFilter);
+            }
+            finally
+            {
+                fs.Close();
             }
 
             this.FileName = Path.GetFileNameWithoutExtension(FilePath);
@@ -843,11 +858,17 @@ namespace TESVSnip.Domain.Model
             }
         }
 
-        private void LoadPluginData(BinaryReader br, bool headerOnly, string[] recFilter)
+        private void LoadPluginData(FileStream fs, bool headerOnly, string[] recFilter) //LoadPluginData(BinaryReader br, bool headerOnly, string[] recFilter)
         {
             bool oldHoldUpdates = HoldUpdates;
+            SnipStreamWrapper snipStreamWrapper = null;
+
             try
             {
+                ZLibStreamWrapper.AllocateBuffers();
+                snipStreamWrapper = new SnipStreamWrapper(fs);
+                //BinaryReader br = new BinaryReader(fs);
+
                 string s;
                 uint recsize;
                 bool IsOblivion = false;
@@ -856,23 +877,23 @@ namespace TESVSnip.Domain.Model
 
                 HoldUpdates = true;
 
-                s = ReadRecName(br);
+                s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
                 if (s != "TES4")
                 {
                     throw new Exception("File is not a valid TES4 plugin (Missing TES4 record)");
                 }
 
                 // Check for file version by checking the position of the HEDR field in the file. (ie. how big are the record header.)
-                br.BaseStream.Position = 20;
-                s = ReadRecName(br);
+                snipStreamWrapper.JumpTo(20, SeekOrigin.Begin); //br.BaseStream.Position = 20;
+                s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
                 if (s == "HEDR")
                 {
                     // Record Header is 20 bytes
                     IsOblivion = true;
                 }
-                else
+                else 
                 {
-                    s = ReadRecName(br);
+                    s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
                     if (s != "HEDR")
                     {
                         throw new Exception("File is not a valid TES4 plugin (Missing HEDR subrecord in the TES4 record)");
@@ -881,11 +902,11 @@ namespace TESVSnip.Domain.Model
                     // Record Header is 24 bytes. Or the file is illegal
                 }
 
-                br.BaseStream.Position = 4;
-                recsize = br.ReadUInt32();
+                snipStreamWrapper.JumpTo(4, SeekOrigin.Begin); //br.BaseStream.Position = 4;
+                recsize = snipStreamWrapper.ReadUInt32(); //recsize = br.ReadUInt32();
                 try
                 {
-                    this.AddRecord(new Record("TES4", recsize, br, IsOblivion));
+                    this.AddRecord(new Record("TES4", recsize, snipStreamWrapper, IsOblivion));
                 }
                 catch (Exception e)
                 {
@@ -894,15 +915,15 @@ namespace TESVSnip.Domain.Model
 
                 if (!headerOnly)
                 {
-                    while (br.PeekChar() != -1)
+                    while (!snipStreamWrapper.Eof())  //while (br.PeekChar() != -1)
                     {
-                        s = ReadRecName(br);
-                        recsize = br.ReadUInt32();
+                        s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
+                        recsize = snipStreamWrapper.ReadUInt32(); //recsize = br.ReadUInt32();
                         if (s == "GRUP")
                         {
                             try
                             {
-                                this.AddRecord(new GroupRecord(recsize, br, IsOblivion, recFilter, false));
+                                this.AddRecord(new GroupRecord(recsize, snipStreamWrapper, IsOblivion, recFilter, false)); //this.AddRecord(new GroupRecord(recsize, br, IsOblivion, recFilter, false));
                             }
                             catch (Exception e)
                             {
@@ -915,18 +936,18 @@ namespace TESVSnip.Domain.Model
                             if (skip)
                             {
                                 long size = recsize + (IsOblivion ? 8 : 12);
-                                if ((br.ReadUInt32() & 0x00040000) > 0)
+                                if ((snipStreamWrapper.ReadUInt32() & 0x00040000) > 0) //if ((br.ReadUInt32() & 0x00040000) > 0)
                                 {
                                     size += 4; // Add 4 bytes for compressed record since the decompressed size is not included in the record size.
                                 }
 
-                                br.BaseStream.Position += size; // just position past the data
+                                snipStreamWrapper.JumpTo((int)size, SeekOrigin.Current);  //br.BaseStream.Position += size; // just position past the data
                             }
                             else
                             {
                                 try
                                 {
-                                    this.AddRecord(new Record(s, recsize, br, IsOblivion));
+                                    this.AddRecord(new Record(s, recsize, snipStreamWrapper, IsOblivion)); //this.AddRecord(new Record(s, recsize, br, IsOblivion));
                                 }
                                 catch (Exception e)
                                 {
@@ -939,6 +960,10 @@ namespace TESVSnip.Domain.Model
             }
             finally
             {
+                //if (snipStreamWrapper != null) snipStreamWrapper.CloseFile();
+                snipStreamWrapper = null;
+                ZLibStreamWrapper.ReleaseBuffers();
+                ZLib.ReleaseInflater();
                 HoldUpdates = oldHoldUpdates;
                 FireRecordListUpdate(this, this);
             }

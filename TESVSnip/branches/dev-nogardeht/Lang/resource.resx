@@ -302,7 +302,7 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="UI_File_OpenSavePluginInSkyrimFolder" xml:space="preserve">
     <value>In Skyrim Folder</value>
   </data>
-  <data name="MSG_ErrorWtihNewLine" xml:space="preserve">
+  <data name="MSG_ErrorWithNewLine" xml:space="preserve">
     <value>Error : \n {0}</value>
   </data>
   <data name="MSG_ZLib_Compress" xml:space="preserve">

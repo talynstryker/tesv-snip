@@ -1,3 +1,5 @@
+using TESVSnip.Domain.Services;
+
 namespace TESVSnip.Domain.Model
 {
     using System;
@@ -95,6 +97,15 @@ namespace TESVSnip.Domain.Model
             Name = name;
             this.Data = new byte[size];
             br.Read(this.Data, 0, this.Data.Length);
+        }
+
+        internal SubRecord(Record rec, string name, uint size)
+        {
+            this.Owner = rec;
+            Name = name;
+            //this.Data = new byte[size];
+            this.Data = ZLibStreamWrapper.ReadBytes((int) size, BufferType.Output);
+            //br.Read(this.Data, 0, this.Data.Length);
         }
 
         private SubRecord(SerializationInfo info, StreamingContext context)

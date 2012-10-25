@@ -133,11 +133,11 @@ namespace TESVSnip.DotZLib
             return -1;
         }
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         [return: MarshalAs(UnmanagedType.U4)]
         private static extern uint zlibCompileFlags();
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl, CharSet = CharSet.Ansi)]
         [return: MarshalAs(UnmanagedType.LPStr)]
         private static extern string zlibVersion();
     }

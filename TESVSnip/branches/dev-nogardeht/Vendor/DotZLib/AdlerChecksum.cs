@@ -75,7 +75,7 @@ namespace TESVSnip.DotZLib
             }
         }
 
-        [DllImport("ZLIB1.dll", CallingConvention = CallingConvention.Cdecl)]
+        [DllImport("zlib123.dll", CallingConvention = CallingConvention.Cdecl)]
         private static extern uint adler32(uint adler, int data, uint length);
     }
 }

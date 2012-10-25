@@ -1,0 +1,14 @@
+﻿BinaryReader.BaseStream Property
+.NET Framework 4
+
+public virtual Stream BaseStream { get; }
+
+Remarks
+Caution note Caution
+
+Using the underlying stream while reading or while using the BinaryReader can cause data loss and corruption. For example, the same bytes might be read more than once, bytes might be skipped, or character reading might become unpredictable.
+
+See link below
+http://msdn.microsoft.com/en-us/library/system.io.binaryreader.basestream%28v=vs.100%29.aspx
+
+
