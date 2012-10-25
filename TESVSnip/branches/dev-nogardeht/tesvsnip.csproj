@@ -150,6 +150,9 @@
     <Compile Include="Domain\Services\Options.cs" />
     <Compile Include="Domain\Services\Settings.cs" />
     <Compile Include="Domain\Services\ZLib.cs" />
+    <Compile Include="Domain\Services\SnipStreamWrapper.cs" />
+    <Compile Include="Domain\Services\ZLibStreamWrapper.cs" />
+    <Compile Include="Domain\Services\ZLibStreamWrapper2.cs" />
     <Compile Include="Framework\Collections\AdvancedList.cs" />
     <Compile Include="Framework\Collections\PropertyComparer.cs" />
     <Compile Include="Framework\Collections\PropertyComparerCollection.cs" />
@@ -665,7 +668,13 @@
       <DependentUpon>TextElement.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="build\tesvsnip.snk" />
+    <None Include="Dawnguard.esm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="Domain\Data\RecordStructure.xsd" />
+    <None Include="Skyrim.esm">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
     <None Include="TranslateUI\Tools\ResEx\ResEx.chm" />
     <None Include="TranslateUI\Tools\ResEx\ResEx.exe.config" />
     <None Include="Vendor\DotZLib\DotZLib.chm" />
@@ -765,6 +774,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="build\buildver.txt" />
+    <Content Include="Info.txt" />
     <Content Include="Lang\ResGen.exe">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
@@ -792,9 +802,12 @@
     <Content Include="Vendor\ObjectListView\Resources\sort-descending.png" />
     <Content Include="Vendor\ObjectListView\Resources\sort-descending1.png" />
     <Content Include="zlib1.dll">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <Content Include="zlib123.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="zlibwapi.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="Resources\bookmark_add.png" />

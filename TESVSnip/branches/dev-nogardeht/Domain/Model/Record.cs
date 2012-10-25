@@ -14,6 +14,7 @@ namespace TESVSnip.Domain.Model
     using RTF;
 
     using TESVSnip.DotZLib;
+    ////using DotZLib127;
 
     using TESVSnip.Domain.Data.RecordStructure;
     using TESVSnip.Domain.Services;
@@ -52,14 +53,14 @@ namespace TESVSnip.Domain.Model
             this.FixSubrecordOwner();
         }
 
-        internal Record(string name, uint dataSize, BinaryReader recordReader, bool oblivion)
+        internal Record(string name, uint dataSize, SnipStreamWrapper snipStreamWrapper, bool oblivion)  //internal Record(string name, uint dataSize, BinaryReader recordReader, bool oblivion) 
         {
             bool compressed = false;
             uint amountRead = 0;
             uint realSize = 0;
             uint dataSizeInParam = dataSize;
-            MemoryStream stream = null;
-            BinaryReader dataReader = null;
+            //MemoryStream stream = null;
+            //BinaryReader dataReader = null;
             SubRecord record = null;
             //long ws;
 
@@ -69,12 +70,12 @@ namespace TESVSnip.Domain.Model
 
                 this.SubRecords = new AdvancedList<SubRecord>(1) {AllowSorting = false};
                 Name = name;
-                this.Flags1 = recordReader.ReadUInt32();
-                this.FormID = recordReader.ReadUInt32();
-                this.Flags2 = recordReader.ReadUInt32();
+                this.Flags1 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
+                this.FormID = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
+                this.Flags2 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 if (!oblivion)
                 {
-                    this.Flags3 = recordReader.ReadUInt32();
+                    this.Flags3 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 }
 
                 compressed = (this.Flags1 & 0x00040000) != 0;
@@ -82,7 +83,8 @@ namespace TESVSnip.Domain.Model
                 realSize = dataSize;
                 if (compressed)
                 {
-                    realSize = recordReader.ReadUInt32();
+                    realSize = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
+                    //snipStreamWrapper.JumpTo(-4,SeekOrigin.Current);
                     dataSize -= 4;
                 }
 
@@ -92,49 +94,53 @@ namespace TESVSnip.Domain.Model
                 //{
                 try
                 {
-                    stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
-                    dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
+                    ZLibStreamWrapper.CopyTo(snipStreamWrapper.SnipStream, dataSize);
+                    //stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
+                    //dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
+                    if (compressed)
+                        ZLib.Decompress(compressLevel: out compressLevel, expectedSize: (int)realSize);
+                    else
+                        ZLibStreamWrapper.CopyInputBufferToOutputBuffer(dataSize);
                 }
                 catch (Exception)
                 {
                     throw new TESParserException("Record.Record: ZLib inflate error");
                 }
-                
 
-                if (dataReader == null)
+                if (compressed)
+                    if (ZLibStreamWrapper.OutputBufferLength <= 0) //if (dataReader == null)
+                    {
+                        throw new TESParserException("Record.Record: ZLib inflate error. Output buffer is empty.");
+                    }
+
+                while (ZLibStreamWrapper.OutputBufferPosition < ZLibStreamWrapper.OutputBufferLength) //while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
                 {
-                    throw new TESParserException("Record.Record: ZLib inflate error");
-
-                }
-
-                while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
-                {
-                    string type = ReadRecName(dataReader); //var type = ReadRecName(dataReader);
+                    var type = ReadRecName(ZLibStreamWrapper.Read4Bytes()); //var type = ReadRecName(dataReader);
                     uint size = 0;
                     if (type == "XXXX")
                     {
-                        dataReader.ReadUInt16();
-                        size = dataReader.ReadUInt32();
-                        type = ReadRecName(dataReader);
-                        dataReader.ReadUInt16();
+                        ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
+                        size = ZLibStreamWrapper.ReadUInt32(); //dataReader.ReadUInt32();
+                        type = ReadRecName(ZLibStreamWrapper.Read4Bytes()); //ReadRecName(dataReader);
+                        ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
                     }
                     else
                     {
-                        size = dataReader.ReadUInt16();
+                        size = ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
                     }
 
-                    record = new SubRecord(this, type, dataReader, size); //var record = new SubRecord(this, type, dataReader, size);
+                    record = new SubRecord(this, type, size); //record = new SubRecord(this, type, dataReader, size); //var record = new SubRecord(this, type, dataReader, size);
                     SubRecords.Add(record);
                     amountRead += (uint) record.Size2;
                 }
 
                 //} //using (var dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream))
-                if (dataReader != null)
-                {
-                    dataReader.Close();
-                    dataReader.Dispose();
-                    dataReader = null;
-                }
+                //if (dataReader != null)
+                //{
+                //    dataReader.Close();
+                //    dataReader.Dispose();
+                //    dataReader = null;
+                //}
 
                 if (amountRead > realSize)
                 {
@@ -186,11 +192,11 @@ namespace TESVSnip.Domain.Model
             }
             finally
             {
-                if (stream != null)
-                {
-                    stream.Close();
-                    stream.Dispose();
-                }
+                //if (stream != null)
+                //{
+                //    stream.Close();
+                //    stream.Dispose();
+                //}
             }
         }
 

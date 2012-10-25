@@ -1,3 +1,5 @@
+using TESVSnip.Domain.Services;
+
 namespace TESVSnip.Domain.Model
 {
     using System;
@@ -44,31 +46,32 @@ namespace TESVSnip.Domain.Model
             this.UpdateShortDescription();
         }
 
-        internal GroupRecord(uint Size, BinaryReader br, bool Oblivion, string[] recFilter, bool filterAll)
+        //internal GroupRecord(uint Size, BinaryReader br, bool Oblivion, string[] recFilter, bool filterAll)
+        internal GroupRecord(uint Size, SnipStreamWrapper snipStreamWrapper, bool Oblivion, string[] recFilter, bool filterAll)
         {
             GroupRecord gr;
             Name = "GRUP";
-            this.data = br.ReadBytes(4);
-            this.groupType = br.ReadUInt32();
-            this.dateStamp = br.ReadUInt32();
+            this.data = snipStreamWrapper.ReadBytes(4); //br.ReadBytes(4);
+            this.groupType = snipStreamWrapper.ReadUInt32(); //br.ReadUInt32();
+            this.dateStamp = snipStreamWrapper.ReadUInt32(); //br.ReadUInt32();
             string contentType = this.groupType == 0 ? Encoding.Instance.GetString(this.data) : string.Empty;
             if (!Oblivion)
             {
-                this.flags = br.ReadUInt32();
+                this.flags = snipStreamWrapper.ReadUInt32(); //br.ReadUInt32();
             }
 
             uint amountRead = 0;
             while (amountRead < Size - (Oblivion ? 20 : 24))
             {
-                string s = ReadRecName(br);
-                uint recsize = br.ReadUInt32();
+                string s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
+                uint recsize = snipStreamWrapper.ReadUInt32(); //br.ReadUInt32();
                 if (s == "GRUP")
                 {
                     try
                     {
                         bool skip = filterAll || (recFilter != null && Array.IndexOf(recFilter, contentType) >= 0);
                         //var gr = new GroupRecord(recsize, br, Oblivion, recFilter, skip);
-                        gr = new GroupRecord(recsize, br, Oblivion, recFilter, skip);
+                        gr = new GroupRecord(recsize, snipStreamWrapper, Oblivion, recFilter, skip); //gr = new GroupRecord(recsize, br, Oblivion, recFilter, skip);
                         if (!filterAll)
                         {
                             this.AddRecord(gr);
@@ -91,14 +94,14 @@ namespace TESVSnip.Domain.Model
                         long size = recsize + (Oblivion ? 12 : 16);
 
                         // if ((br.ReadUInt32() & 0x00040000) > 0) size += 4;
-                        br.BaseStream.Position += size; // just read past the data
+                        snipStreamWrapper.SnipStream.Seek(size, SeekOrigin.Current); //br.BaseStream.Position += size; // just read past the data
                         amountRead += (uint)(recsize + (Oblivion ? 20 : 24));
                     }
                     else
                     {
                         try
                         {
-                            var r = new Record(s, recsize, br, Oblivion);
+                            var r = new Record(s, recsize, snipStreamWrapper, Oblivion); //var r = new Record(s, recsize, br, Oblivion);
                             this.AddRecord(r);
                         }
                         catch (Exception e)

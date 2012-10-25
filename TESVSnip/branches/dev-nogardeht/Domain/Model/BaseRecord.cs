@@ -207,7 +207,20 @@ namespace TESVSnip.Domain.Model
             try
             {
                 br.Read(RecByte, 0, 4);
-                return string.Empty + ((char) RecByte[0]) + ((char) RecByte[1]) + ((char) RecByte[2]) + ((char) RecByte[3]);
+                return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
+            }
+            catch (Exception ex)
+            {
+                throw new TESParserException("BaseRecord.ReadRecName: " + Environment.NewLine + ex.Message);
+            }
+        }
+
+        protected static string ReadRecName(byte[] rec)
+        {
+            try
+            {
+                Array.Copy(rec, RecByte, 4);
+                return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
             }
             catch (Exception ex)
             {
@@ -220,7 +233,7 @@ namespace TESVSnip.Domain.Model
             var b = new byte[s.Length];
             for (int i = 0; i < s.Length; i++)
             {
-                b[i] = (byte) s[i];
+                b[i] = (byte)s[i];
             }
 
             bw.Write(b, 0, s.Length);

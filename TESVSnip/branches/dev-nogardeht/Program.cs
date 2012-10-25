@@ -111,10 +111,10 @@
                 //AppDomain.CurrentDomain.UnhandledException += OnUnhandledException;
 
                 // Add an event handler for unhandled exception
-                AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(Program.CurrentDomainUnhandledException);
+                AppDomain.CurrentDomain.UnhandledException += Program.CurrentDomainUnhandledException;
 
                 // Add an event handler for handling UI thread exceptions to the event
-                Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(Program.ApplicationThreadException);
+                Application.ThreadException += Program.ApplicationThreadException;
 
                 Settings.Default.Reload();
                 Application.EnableVisualStyles();

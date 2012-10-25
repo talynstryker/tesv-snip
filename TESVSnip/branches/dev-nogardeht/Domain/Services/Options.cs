@@ -123,10 +123,17 @@ namespace TESVSnip.Domain.Services
                 {
                     if (key == null)
                     {
-                        return;
+                        using (var key2 = Registry.LocalMachine.OpenSubKey(@"SOFTWARE\Bethesda Softworks\Skyrim"))
+                        {
+                            if (key2 == null) return;
+                            this.GameDirectory =
+                                key2.GetValue("Installed Path", this.GameDirectory, RegistryValueOptions.None) as string;
+                        }
                     }
+                    else
+                        this.GameDirectory =
+                            key.GetValue("Installed Path", this.GameDirectory, RegistryValueOptions.None) as string;
 
-                    this.GameDirectory = key.GetValue("Installed Path", this.GameDirectory, RegistryValueOptions.None) as string;
                     var gameDirectory = this.GameDirectory;
                     if (gameDirectory != null)
                     {
