@@ -140,7 +140,6 @@
     <Compile Include="Domain\Model\SearchSubrecordXml.cs" />
     <Compile Include="Domain\Model\SubRecord.cs" />
     <Compile Include="Domain\Model\TESParserException.cs" />
-    <Compile Include="Domain\SaveReadStream.cs" />
     <Compile Include="Domain\Scripts\Keywords.cs" />
     <Compile Include="Domain\Scripts\ScriptCompiler.cs" />
     <Compile Include="Domain\Scripts\Token.cs" />
@@ -152,7 +151,6 @@
     <Compile Include="Domain\Services\ZLib.cs" />
     <Compile Include="Domain\Services\SnipStreamWrapper.cs" />
     <Compile Include="Domain\Services\ZLibStreamWrapper.cs" />
-    <Compile Include="Domain\Services\ZLibStreamWrapper2.cs" />
     <Compile Include="Framework\Collections\AdvancedList.cs" />
     <Compile Include="Framework\Collections\PropertyComparer.cs" />
     <Compile Include="Framework\Collections\PropertyComparerCollection.cs" />

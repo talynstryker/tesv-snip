@@ -1,9 +1,4 @@
-﻿// -----------------------------------------------------------------------
-// <copyright file="ZLibStreamWrapper.cs" company="">
-//
-// </copyright>
-// -----------------------------------------------------------------------
-
+﻿using System;
 using System.Globalization;
 using System.IO;
 using System.Windows.Forms;
@@ -11,8 +6,6 @@ using TESVSnip.Domain.Model;
 
 namespace TESVSnip.Domain.Services
 {
-    using System;
-
     public enum BufferType
     {
         Input = 0,
@@ -24,19 +17,20 @@ namespace TESVSnip.Domain.Services
     /// </summary>
     public static class ZLibStreamWrapper
     {
-        private const int MaxBufferSize = 52428800; //50 mo
+        private const int MaxBufferSize = 31457280; //50 Mb =52428800 bytes     30 Mb = 31457280 bytes
 
         public static byte[] InputBuffer;
         public static byte[] OutputBuffer;
 
-        private static byte[] _bytes2 = new byte[2];
-        private static byte[] _bytes4 = new byte[4];
+        private static readonly byte[] _bytes2 = new byte[2];
+        private static readonly byte[] _bytes4 = new byte[4];
 
         public static uint InputBufferLength { get; private set; }
 
+        public static uint InputBufferPosition { get; private set; }
+
         public static uint OutputBufferLength { get; private set; }
 
-        public static uint InputBufferPosition { get; private set; }
         public static uint OutputBufferPosition { get; private set; }
 
         /// <summary>
@@ -50,19 +44,6 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// Release the buffers
-        /// </summary>
-        public static void ReleaseBuffers()
-        {
-            InputBuffer = null;
-            OutputBuffer = null;
-
-            GC.Collect(); 
-            GC.WaitForPendingFinalizers(); 
-            GC.Collect();
-        }
-
-        /// <summary>
         /// Empty input/Output buffer
         /// </summary>
         public static void Clear()
@@ -71,42 +52,9 @@ namespace TESVSnip.Domain.Services
             OutputBufferLength = 0;
             InputBufferPosition = 0;
             OutputBufferPosition = 0;
+
             //Array.Clear(InputBuffer, 0, MaxBufferSize);
             //Array.Clear(OutputBuffer, 0, MaxBufferSize);
-        }
-
-        /// <summary>
-        /// Set position in input buffer
-        /// </summary>
-        /// <param name="position">New position in buffer</param>
-        /// <param name="bufferType">Buffer type (input or output)</param>
-        public static void Position(uint position, BufferType bufferType)
-        {
-            if (position < 0u)
-            {
-                const string msg = "ZLibStreamWrapper.Position: The position cannot be negative.";
-                Clipboard.SetText(msg);
-                throw new TESParserException(msg);
-            }
-
-            uint bufferSize;
-
-            bufferSize = bufferType == BufferType.Output ? OutputBufferLength : InputBufferLength;
-
-            if (position > bufferSize)
-            {
-                string msg =
-                    string.Format(
-                        "ZLibStreamWrapper.SetPositionInInputBuffer: The position cannot be greater than buffer size ({0}).",
-                        bufferSize.ToString(CultureInfo.InvariantCulture));
-                Clipboard.SetText(msg);
-                throw new TESParserException(msg);
-            }
-
-            if (bufferType == BufferType.Output)
-                OutputBufferPosition = position;
-            else
-                InputBufferPosition = position;
         }
 
         /// <summary>
@@ -122,7 +70,7 @@ namespace TESVSnip.Domain.Services
                 throw new TESParserException(msg);
             }
 
-            if (dataSize>MaxBufferSize)
+            if (dataSize > MaxBufferSize)
             {
                 string msg =
                     string.Format(
@@ -175,12 +123,44 @@ namespace TESVSnip.Domain.Services
             while (numBytesAddressing > 0u)
             {
                 var numBytes = (uint) Math.Min(numBytesAddressing, 8192u); //8192u 65536u
-                int bytesRead = fs.Read(InputBuffer, offset, (int)numBytes);
+                int bytesRead = fs.Read(InputBuffer, offset, (int) numBytes);
                 offset += bytesRead;
                 numBytesAddressing -= bytesRead;
             }
 
             InputBufferLength = bytesToRead;
+        }
+
+        /// <summary>
+        /// Set position in input buffer
+        /// </summary>
+        /// <param name="position">New position in buffer</param>
+        /// <param name="bufferType">Buffer type (input or output)</param>
+        public static void Position(uint position, BufferType bufferType)
+        {
+            if (position < 0u)
+            {
+                const string msg = "ZLibStreamWrapper.Position: The position cannot be negative.";
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            uint bufferSize = bufferType == BufferType.Output ? OutputBufferLength : InputBufferLength;
+
+            if (position > bufferSize)
+            {
+                string msg =
+                    string.Format(
+                        "ZLibStreamWrapper.SetPositionInInputBuffer: The position cannot be greater than buffer size ({0}).",
+                        bufferSize.ToString(CultureInfo.InvariantCulture));
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            if (bufferType == BufferType.Output)
+                OutputBufferPosition = position;
+            else
+                InputBufferPosition = position;
         }
 
         /// <summary>
@@ -293,6 +273,19 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
+        /// Release the buffers
+        /// </summary>
+        public static void ReleaseBuffers()
+        {
+            InputBuffer = null;
+            OutputBuffer = null;
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
+        }
+
+        /// <summary>
         /// Write in the output buffer the ZLib inflate bytes byte[] data, int startIndex, int count
         /// </summary>
         /// <param name="startIndex"> </param>
@@ -339,7 +332,7 @@ namespace TESVSnip.Domain.Services
             }
 
             Array.Copy(data, startIndex, OutputBuffer, OutputBufferPosition, count);
-            OutputBufferPosition += (uint)count;
+            OutputBufferPosition += (uint) count;
             OutputBufferLength = OutputBufferPosition;
         }
     }
