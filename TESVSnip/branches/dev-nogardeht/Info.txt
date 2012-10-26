@@ -1,4 +1,18 @@
-﻿Update SanitizeOrder List
+﻿------------------
+--   26-10-2012
+------------------
+Fix bug when loading dawnguard.esm (and other plugin in the same case) if record datasize equal zero.
+Add some detection error.
+Issue 11: [TESVSnip] Generate backups of the original plugin before any change is made.
+       Create backup near TESVSnip.exe like this ..\Backup\PluginName\pluginname.esp.010.bak
+	   History log with version is delayed because it's very longer and not priority
+
+
+
+------------------
+--   25-10-2012
+------------------
+Update SanitizeOrder List
 Update AllESMRecords setting
 Update AutoCompressRecords setting
 Add new option : Compress Settings : Plugin Compress Records (i.e. Use Compression Level Defined in Plugin)

@@ -95,29 +95,46 @@ namespace TESVSnip.Domain.Services
         /// </summary>
         public static void CopyInputBufferToOutputBuffer(uint dataSize)
         {
-            if (InputBufferLength == 0)
+            string msg;
+            try
             {
-                const string msg =
-                    "ZLibStreamWrapper.CopyBufferInputToBufferOupput: Static input buffer is empty.";
-                Clipboard.SetText(msg);
-                throw new TESParserException(msg);
-            }
+                if (InputBufferLength == 0)
+                {
+                    msg = "ZLibStreamWrapper.CopyBufferInputToBufferOupput: Static input buffer is empty.";
+                    Clipboard.SetText(msg);
+                    throw new TESParserException(msg);
+                }
 
-            if (dataSize > MaxBufferSize)
-            {
-                string msg =
-                    string.Format(
+                if (dataSize > MaxBufferSize)
+                {
+                    msg = string.Format(
                         "ZLibStreamWrapper.CopyBufferInputToBufferOupput: Static buffer is too small. DataSize={0}  /  Buffer={1}",
                         dataSize.ToString(CultureInfo.InvariantCulture)
                         , MaxBufferSize.ToString(CultureInfo.InvariantCulture));
+                    Clipboard.SetText(msg);
+                    throw new TESParserException(msg);
+                }
+
+                if (InputBufferLength > 0)
+                    Array.Copy(InputBuffer, OutputBuffer, dataSize);
+
+
+            }
+            catch (Exception ex)
+            {
+                msg = "ZLibStreamWrapper.CopyInputBufferToOutputBuffer" + Environment.NewLine +
+                      "Message: " + ex.Message +
+                      Environment.NewLine +
+                      "StackTrace: " + ex.StackTrace;
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
-
-            Array.Copy(InputBuffer, OutputBuffer, dataSize);
-            OutputBufferLength = InputBufferLength;
-            OutputBufferPosition = 0;
-            InputBufferPosition = 0;
+            finally
+            {
+                OutputBufferLength = InputBufferLength;
+                OutputBufferPosition = 0;
+                InputBufferPosition = 0;
+            }
         }
 
         /// <summary>

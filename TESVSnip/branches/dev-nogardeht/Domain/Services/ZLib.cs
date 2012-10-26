@@ -222,7 +222,7 @@ namespace TESVSnip.Domain.Services
                     _inflater = new Inflater();
                     _inflater.DataAvailable += ZLibStreamWrapper.WriteInOutputBuffer;
                 }
-       
+
                 //output = new MemoryStream(expectedSize);
                 //br = new BinaryReader(input);
                 //br.BaseStream.Seek(0, SeekOrigin.Begin);
@@ -234,7 +234,7 @@ namespace TESVSnip.Domain.Services
                 //};DataAvailableHandler
 
                 //inflater.DataAvailable += ZLibStreamWrapper.WriteInOutputBuffer;
-         
+
 
                 //br.BaseStream.Seek(0, SeekOrigin.Begin);
                 //compressLevel = RetrieveCompressionLevel(br);
@@ -243,7 +243,7 @@ namespace TESVSnip.Domain.Services
                 while (numBytesAddressing > 0u)
                 {
                     uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
-                    _inflater.Add(ZLibStreamWrapper.ReadBytes((int) numBytes, BufferType.Input));
+                    _inflater.Add(ZLibStreamWrapper.ReadBytes((int)numBytes, BufferType.Input));
                     //inflater.Add(br.ReadBytes((int) numBytes));   
                     numBytesAddressing -= numBytes;
                 }
@@ -257,7 +257,7 @@ namespace TESVSnip.Domain.Services
                 _inflater.Finish(); //flush zlib buffer
 
 
- 
+
                 ZLibStreamWrapper.Position(0, BufferType.Output); //output.Seek(0, SeekOrigin.Begin);
             }
             catch (Exception ex)
@@ -268,24 +268,15 @@ namespace TESVSnip.Domain.Services
                     TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_Decompress"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
-            //finally
-            //{
-            //    //if (inflater != null) inflater.Dispose();
-            //    //if (br != null)
-            //    //{
-            //    //    br.Close();
-            //    //    //br.Dispose();
-            //    //}
-            //    //inflater = null;
-            //    //br = null;
-            //}
-
-            if (ZLibStreamWrapper.OutputBufferLength == 0)
+            finally
             {
-                MessageBox.Show(
-                    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_OutputBufferEmpty"),
-                    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_Decompress"),
-                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                if (ZLibStreamWrapper.OutputBufferLength == 0)
+                {
+                    MessageBox.Show(
+                        TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_OutputBufferEmpty"),
+                        TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_Decompress"),
+                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
             }
         }
 

@@ -1835,9 +1835,10 @@ namespace TESVSnip.UI.Forms
             }
 
             var p = this.GetPluginFromNode(this.PluginTree.SelectedRecord);
+            DialogResult result;
             if (p.Filtered)
             {
-                DialogResult result = MessageBox.Show(
+                result = MessageBox.Show(
                     this, Resources.SavePluginWithFilterAppliedInquiry, Resources.WarningText, MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.No)
@@ -1846,10 +1847,9 @@ namespace TESVSnip.UI.Forms
                 }
             }
 
-            // faire les changement ici pour le dossier de sauvegarde
-            //TODO:   toto toto toto toto toto
             if (string.IsNullOrWhiteSpace(p.PluginPath)) p.PluginPath = Options.Value.GameDataDirectory;
-            p.Save(Path.Combine(p.PluginPath, p.Name));
+            string pluginFilPath = Path.Combine(p.PluginPath, p.Name);
+            p.Save(pluginFilPath);
             mruMenu.AddFileAndSaveToRegistry(Path.Combine(p.PluginPath, p.Name));
             this.FixMasters();
         }

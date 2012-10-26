@@ -744,31 +744,27 @@ namespace TESVSnip.Domain.Model
             return value;
         }
 
-        internal void Save(string FilePath)
+        internal void Save(string filePath)
         {
-            this.UpdateRecordCount();
+            UpdateRecordCount();
             bool existed = false;
             BinaryWriter bw;
 
-            // DateTime timestamp = DateTime.Now;
-            if (File.Exists(FilePath))
+            if (File.Exists(filePath))
             {
-                // timestamp = new FileInfo(FilePath).LastWriteTime;
                 existed = true;
-
-                // File.Delete(FilePath);
-                bw = new BinaryWriter(File.OpenWrite(FilePath + ".new"));
+                bw = new BinaryWriter(File.OpenWrite(filePath + ".new"));
             }
             else
             {
-                bw = new BinaryWriter(File.OpenWrite(FilePath));
+                bw = new BinaryWriter(File.OpenWrite(filePath));
             }
 
             try
             {
                 this.SaveData(bw);
-                Name = Path.GetFileName(FilePath);
-                PluginPath = Path.GetDirectoryName(FilePath);
+                Name = Path.GetFileName(filePath);
+                PluginPath = Path.GetDirectoryName(filePath);
             }
             finally
             {
@@ -777,43 +773,57 @@ namespace TESVSnip.Domain.Model
 
             try
             {
+                // ** Create Backup
                 if (existed)
                 {
                     bool backupExists = true;
                     int backupVersion = 0;
+                    string backupFolder = CreateBackupFolder(filePath);
+
                     while (backupExists && backupVersion < 999)
                     {
-                        backupExists = File.Exists(FilePath + string.Format(".{0,3:D3}.bak", backupVersion));
-                        if (backupExists)
-                        {
-                            backupVersion++;
-                        }
+                        backupExists =
+                            File.Exists(Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion));
+                        if (backupExists) backupVersion++;
                     }
 
-                    File.Replace(FilePath + ".new", FilePath, FilePath + string.Format(".{0,3:D3}.bak", backupVersion));
-
-                    // File.Replace(FilePath + ".new", FilePath, FilePath + ".bak");
-
-                    // new FileInfo(FilePath).LastWriteTime = timestamp;  // Do not keep timestamp since it is no longer used for loadorder. Better to be able to see when the plugin was last saved.
+                    File.Replace(filePath + ".new", filePath,
+                                 Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion));
                 }
             }
-            catch
+            catch (Exception ex)
             {
+                string msg = string.Format(ex.Message);
+                MessageBox.Show(
+                    msg,
+                    TranslateUI.TranslateUIGlobalization.RM.GetString("Application_Title"),
+                    MessageBoxButtons.OK,
+                    MessageBoxIcon.Error);
+                Clipboard.SetText(msg);
             }
 
-            // if (StringsDirty)
             var tes4 = this.Records.OfType<Record>().FirstOrDefault(x => x.Name == "TES4");
             if (tes4 != null && (tes4.Flags1 & 0x80) != 0)
             {
                 if (Properties.Settings.Default.SaveStringsFiles)
                 {
-                    string prefix = Path.Combine(Path.Combine(Path.GetDirectoryName(FilePath), "Strings"), Path.GetFileNameWithoutExtension(FilePath));
+                    string prefix = Path.Combine(Path.Combine(Path.GetDirectoryName(filePath), "Strings"), Path.GetFileNameWithoutExtension(filePath));
                     prefix += "_" + Properties.Settings.Default.LocalizationName;
                     this.SaveStrings(prefix);
                 }
             }
 
-            this.StringsDirty = false;
+            StringsDirty = false;
+        }
+
+        private string CreateBackupFolder(string filePath)
+        {
+            string dir = Options.Value.ApplicationDirectory; //Path.GetDirectoryName(filePath);
+            string fileName = Path.GetFileNameWithoutExtension(filePath);
+            dir = Path.Combine(dir, "Backup", fileName);
+            if (!Directory.Exists(dir))
+                Directory.CreateDirectory(dir);
+            return dir;
         }
 
         internal override void SaveData(BinaryWriter writer)

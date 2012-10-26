@@ -1,3 +1,4 @@
+using System.Globalization;
 using System.Windows.Forms;
 
 namespace TESVSnip.Domain.Model
@@ -96,26 +97,43 @@ namespace TESVSnip.Domain.Model
                 //{
                 try
                 {
-                    ZLibStreamWrapper.CopyTo(snipStreamWrapper.SnipStream, dataSize);
-                    //stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
-                    //dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
-                    if (compressed)
-                        ZLib.Decompress(compressLevel: out compressLevel, expectedSize: (int)realSize);
+                    //if (dataSize == 0)
+                    //    throw new TESParserException("Record.Record: ZLib inflate error. Output buffer is empty.");
+
+                    if (dataSize > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
+                    {
+                        ZLibStreamWrapper.CopyTo(snipStreamWrapper.SnipStream, dataSize);
+                        //stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
+                        //dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
+                        if (compressed)
+                        {
+                            Clipboard.SetText(Name + realSize.ToString(CultureInfo.InvariantCulture));
+                            ZLib.Decompress(compressLevel: out compressLevel, expectedSize: (int) realSize);
+                        }
+                        else
+                            ZLibStreamWrapper.CopyInputBufferToOutputBuffer(dataSize);
+                    }
                     else
-                        ZLibStreamWrapper.CopyInputBufferToOutputBuffer(dataSize);
+                    {
+                        ZLibStreamWrapper.Clear();
+                    }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    throw new TESParserException("Record.Record: ZLib inflate error");
+                    throw new TESParserException("Record.Record: ZLib error" + Environment.NewLine +
+                                                 "Message: " + ex.Message +
+                                                 Environment.NewLine +
+                                                 "StackTrace: " + ex.StackTrace);
                 }
 
-                if (compressed)
+                if (compressed & dataSize > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
                     if (ZLibStreamWrapper.OutputBufferLength <= 0) //if (dataReader == null)
                     {
                         throw new TESParserException("Record.Record: ZLib inflate error. Output buffer is empty.");
                     }
 
-                while (ZLibStreamWrapper.OutputBufferPosition < ZLibStreamWrapper.OutputBufferLength) //while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
+                while (ZLibStreamWrapper.OutputBufferPosition < ZLibStreamWrapper.OutputBufferLength)
+                    //while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
                 {
                     var type = ReadRecName(ZLibStreamWrapper.Read4Bytes()); //var type = ReadRecName(dataReader);
                     uint size = 0;
@@ -131,7 +149,8 @@ namespace TESVSnip.Domain.Model
                         size = ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
                     }
 
-                    record = new SubRecord(this, type, size); //record = new SubRecord(this, type, dataReader, size); //var record = new SubRecord(this, type, dataReader, size);
+                    record = new SubRecord(this, type, size);
+                        //record = new SubRecord(this, type, dataReader, size); //var record = new SubRecord(this, type, dataReader, size);
                     SubRecords.Add(record);
                     amountRead += (uint) record.Size2;
                 }
