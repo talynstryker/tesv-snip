@@ -1919,50 +1919,6 @@ namespace TESVSnip.UI.Forms
             }
         }
 
-        private void stringLocalizerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (string.IsNullOrEmpty(Settings.Default.SkyrimLocalizerPath) ||
-                !File.Exists(Settings.Default.SkyrimLocalizerPath))
-            {
-                var result = MessageBox.Show(this,
-                                             "Skyrim String Localizer is not found.\nWould you like to browse for it?",
-                                             "Program Not Found", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
-                if (result == DialogResult.No)
-                {
-                    return;
-                }
-
-                using (var dlg = new OpenFileDialog())
-                {
-                    dlg.Title = "Select Record Structure XML To Merge";
-                    dlg.FileName = "Skyrim String Localizer.exe";
-                    if (dlg.ShowDialog(this) != DialogResult.OK)
-                    {
-                        return;
-                    }
-
-                    Settings.Default.SkyrimLocalizerPath = dlg.FileName;
-                }
-            }
-
-            if (File.Exists(Settings.Default.SkyrimLocalizerPath))
-            {
-                try
-                {
-                    using (var p = new Process())
-                    {
-                        var startInfo = new ProcessStartInfo(Settings.Default.SkyrimLocalizerPath);
-                        p.StartInfo = startInfo;
-                        p.Start();
-                    }
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show(ex.ToString(), Resources.ErrorText, MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
         private void subrecordPanel_DataChanged(object sender, EventArgs e)
         {
             var sr = this.SubrecordList.GetSelectedSubrecord();
@@ -2072,26 +2028,6 @@ namespace TESVSnip.UI.Forms
 
         private void toolsToolStripMenuItem_DropDownOpening(object sender, EventArgs e)
         {
-            bool found = false;
-
-            // stringLocalizerToolStripMenuItem.Checked = false;
-            if (!string.IsNullOrEmpty(Settings.Default.SkyrimLocalizerPath))
-            {
-                if (File.Exists(Settings.Default.SkyrimLocalizerPath))
-                {
-                    found = true;
-                }
-            }
-
-            if (found)
-            {
-                this.stringLocalizerToolStripMenuItem.ToolTipText = "Open the Skyrim String Localizer...";
-            }
-            else
-            {
-                this.stringLocalizerToolStripMenuItem.ToolTipText =
-                    "Skyrim String Localizer is not found.  Select to browse for it...";
-            }
         }
 
         private void uTF8ModeToolStripMenuItem_Click(object sender, EventArgs e)
