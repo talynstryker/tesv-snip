@@ -99,7 +99,6 @@ namespace TESVSnip.UI.Forms {
             this.editStringsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveStringsFilesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.saveStringsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.stringLocalizerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reloadStringsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripMenuItem2 = new System.Windows.Forms.ToolStripSeparator();
             this.internalizeStringReferencesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -513,7 +512,6 @@ namespace TESVSnip.UI.Forms {
             this.editStringsToolStripMenuItem,
             this.saveStringsFilesToolStripMenuItem,
             this.saveStringsToolStripMenuItem,
-            this.stringLocalizerToolStripMenuItem,
             this.reloadStringsToolStripMenuItem,
             this.toolStripMenuItem2,
             this.internalizeStringReferencesToolStripMenuItem,
@@ -600,12 +598,6 @@ namespace TESVSnip.UI.Forms {
             this.saveStringsToolStripMenuItem.Name = "saveStringsToolStripMenuItem";
             resources.ApplyResources(this.saveStringsToolStripMenuItem, "saveStringsToolStripMenuItem");
             this.saveStringsToolStripMenuItem.Click += new System.EventHandler(this.saveStringsToolStripMenuItem_Click);
-            // 
-            // stringLocalizerToolStripMenuItem
-            // 
-            this.stringLocalizerToolStripMenuItem.Name = "stringLocalizerToolStripMenuItem";
-            resources.ApplyResources(this.stringLocalizerToolStripMenuItem, "stringLocalizerToolStripMenuItem");
-            this.stringLocalizerToolStripMenuItem.Click += new System.EventHandler(this.stringLocalizerToolStripMenuItem_Click);
             // 
             // reloadStringsToolStripMenuItem
             // 
@@ -1224,7 +1216,6 @@ namespace TESVSnip.UI.Forms {
         private System.Windows.Forms.ToolStripMenuItem spanishToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem russianToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem editStringsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem stringLocalizerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reloadStringsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveStringsFilesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem expandCollapseToolStripMenuItem;
