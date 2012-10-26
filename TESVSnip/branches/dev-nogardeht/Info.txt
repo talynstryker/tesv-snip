@@ -3,10 +3,18 @@
 ------------------
 Fix bug when loading dawnguard.esm (and other plugin in the same case) if record datasize equal zero.
 Add some detection error.
-Issue 11: [TESVSnip] Generate backups of the original plugin before any change is made.
-       Create backup near TESVSnip.exe like this ..\Backup\PluginName\pluginname.esp.010.bak
-	   History log with version is delayed because it's very longer and not priority
+Fix Issue 11: [TESVSnip] Generate backups of the original plugin before any change is made.
+                         Create backup near TESVSnip.exe like this ..\Backup\PluginName\pluginname.esp.010.bak
+	                     History log with version is delayed because it's very longer and not priority
+Fix bug in HeaderEditor.cs in private static uint GetInt(object i). There is an overflow in bit rotation
+Fix Issue 17: Full Record Editor Error
 
+------------------
+--   26-10-2012
+------------------
+Fix Issue 14: Code review request
+
+http://code.google.com/p/tesv-snip/issues/detail?id=14&sort=-priority&colspec=Summary%20Status%20Priority%20Owner%20Defect%20Docs%20Enhancement%20Review%20Interface%20Other%20Milestone
 
 
 ------------------
