@@ -1661,7 +1661,7 @@ namespace TESVSnip.UI.Forms
                 sw.Stop();
                 TimeSpan t = TimeSpan.FromMilliseconds(sw.ElapsedMilliseconds);
                 toolStripStatusLabel.Text =
-                    string.Format(TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_LoadPluginIn"), t.ToString());
+                    string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString("MSG_LoadPluginIn"), t.ToString());
             }
             catch (Exception ex)
             {
@@ -2155,7 +2155,7 @@ namespace TESVSnip.UI.Forms
             }
             else
             {
-                string msg = string.Format(TranslateUI.TranslateUIGlobalization.RM.GetString("UI_MRU_FileNotExist"),
+                string msg = string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString("UI_MRU_FileNotExist"),
                                            filename);
                 MessageBox.Show(msg, "Tesvsnip", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 mruMenu.RemoveFile(number);

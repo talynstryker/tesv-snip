@@ -22,21 +22,21 @@ namespace TESVSnip.UI.Forms
     /// </summary>
     private void LocalizeApp()
     {
-      TranslateUI.TranslateUIGlobalization.CultureCode = Properties.Settings.Default.CultureCodeUI;
-      TranslateUI.TranslateUIGlobalization.GlobalizeApp();
+      TranslateUI.TranslateUiGlobalization.CultureCode = Properties.Settings.Default.CultureCodeUI;
+      TranslateUI.TranslateUiGlobalization.GlobalizeApp();
 
       AddLanguageUIOption();
 
       //** Mainview - TESSNIP_MainView      
-      fileToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_fileToolStripMenuItem");
-      newToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_newToolStripMenuItem");
-      openNewPluginToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_openNewPluginToolStripMenuItem");
-      saveToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_saveToolStripMenuItem");
-      saveAsToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_saveAsToolStripMenuItem");
-      closeToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_closeToolStripMenuItem");
-      closeAllToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_closeAllToolStripMenuItem");
-      reloadXmlToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_reloadXmlToolStripMenuItem");
-      exitToolStripMenuItem.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("TESSNIP_MainView_exitToolStripMenuItem");
+      fileToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_fileToolStripMenuItem");
+      newToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_newToolStripMenuItem");
+      openNewPluginToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_openNewPluginToolStripMenuItem");
+      saveToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_saveToolStripMenuItem");
+      saveAsToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_saveAsToolStripMenuItem");
+      closeToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_closeToolStripMenuItem");
+      closeAllToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_closeAllToolStripMenuItem");
+      reloadXmlToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_reloadXmlToolStripMenuItem");
+      exitToolStripMenuItem.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_MainView_exitToolStripMenuItem");
     }
 
     private void AddLanguageUIOption()
@@ -60,7 +60,7 @@ namespace TESVSnip.UI.Forms
       ToolStripMenuItem menu = new System.Windows.Forms.ToolStripMenuItem();
       menu.Name = "uiLanguageToolStripMenuItem";
       menu.Tag = "UILanguage";
-      menu.Text = TranslateUI.TranslateUIGlobalization.RM.GetString("UI_Language_MenuName"); 
+      menu.Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("UI_Language_MenuName"); 
       this.optionsToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] { menu });
 
       ToolStripMenuItem[] items = new ToolStripMenuItem[2];
@@ -72,11 +72,11 @@ namespace TESVSnip.UI.Forms
         {
           case 0:
             items[i].Tag = "UIEnglish";
-            items[i].Text = TranslateUI.TranslateUIGlobalization.RM.GetString("UI_Language_English"); //"English";
+            items[i].Text = TranslateUI.TranslateUiGlobalization.ResManager.GetString("UI_Language_English"); //"English";
             break;
           case 1:
             items[i].Tag = "UIFrench";
-            items[i].Text =  TranslateUI.TranslateUIGlobalization.RM.GetString("UI_Language_French"); //"French";
+            items[i].Text =  TranslateUI.TranslateUiGlobalization.ResManager.GetString("UI_Language_French"); //"French";
             break;
           default:
             break;

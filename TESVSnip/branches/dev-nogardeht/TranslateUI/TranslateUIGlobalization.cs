@@ -1,50 +1,45 @@
-﻿using System;
-using System.Windows.Forms;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Globalization;
-using System.Resources;
-using System.Threading;
-
-namespace TESVSnip.TranslateUI
+﻿namespace TESVSnip.TranslateUI
 {
-  public static class TranslateUIGlobalization
-  {
-    public static string ResourcesPath = string.Empty;
-    public static string CultureCode = "";
+    using System.Globalization;
+    using System.Resources;
+    using System.Threading;
+    using System.Windows.Forms;
 
-    private static ResourceManager rm = null;
-    public static ResourceManager RM { get { return rm; } }
-
-    /// <summary>
-    /// Globalize Application
-    /// </summary>
-    public static void GlobalizeApp()
+    public static class TranslateUiGlobalization
     {
-      SetCulture();
-      SetResource();
-    }
+        public static string CultureCode = string.Empty;
 
-    /// <summary>
-    /// Set Culture
-    /// </summary>
-    private static void SetCulture()
-    {
-      CultureInfo objCI = new CultureInfo(CultureCode);
-      Thread.CurrentThread.CurrentCulture = objCI;
-      Thread.CurrentThread.CurrentUICulture = objCI;
-    }
+        private static string resourcesPath = string.Empty;
 
-    /// <summary>
-    /// Set Resource from file
-    /// </summary>
-    private static void SetResource()
-    {
-      ResourcesPath = System.IO.Path.Combine(Application.StartupPath, "Lang");
-      rm = null;
-      rm = ResourceManager.CreateFileBasedResourceManager("resource", ResourcesPath, null);
-    }
+        public static ResourceManager ResManager { get; private set; }
 
-  }
+        /// <summary>
+        /// Globalize Application
+        /// </summary>
+        public static void GlobalizeApp()
+        {
+            SetCulture();
+            SetResource();
+        }
+
+        /// <summary>
+        /// Set Culture
+        /// </summary>
+        private static void SetCulture()
+        {
+            CultureInfo objCi = new CultureInfo(CultureCode);
+            Thread.CurrentThread.CurrentCulture = objCi;
+            Thread.CurrentThread.CurrentUICulture = objCi;
+        }
+
+        /// <summary>
+        /// Set Resource from file
+        /// </summary>
+        private static void SetResource()
+        {
+            resourcesPath = System.IO.Path.Combine(Application.StartupPath, "Lang");
+            ResManager = null;
+            ResManager = ResourceManager.CreateFileBasedResourceManager("resource", resourcesPath, null);
+        }
+    }
 }

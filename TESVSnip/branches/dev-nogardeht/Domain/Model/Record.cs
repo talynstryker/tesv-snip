@@ -72,7 +72,7 @@ namespace TESVSnip.Domain.Model
 
                 this.SubRecords = new AdvancedList<SubRecord>(1) {AllowSorting = false};
                 Name = name;
-                ZLibStreamWrapper.AddRecordToRecordsList(Name);
+                RecordsTace.AddRecordToRecordsList(Name);
                 this.Flags1 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 this.FormID = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 this.Flags2 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
@@ -86,10 +86,10 @@ namespace TESVSnip.Domain.Model
                 realSize = dataSize;
                 if (compressed)
                 {
-                    realSize = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
-                    //snipStreamWrapper.JumpTo(-4,SeekOrigin.Current);
+                    realSize = snipStreamWrapper.ReadUInt32(); // recordReader.ReadUInt32();
+                    // snipStreamWrapper.JumpTo(-4,SeekOrigin.Current);
                     dataSize -= 4;
-                    ZLibStreamWrapper.AddRecordToCompressedRecordsList(Name);
+                    RecordsTace.AddRecordToCompressedRecordsList(Name);
                 }
 
                 //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
@@ -103,7 +103,7 @@ namespace TESVSnip.Domain.Model
 
                     if (dataSize > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
                     {
-                        ZLibStreamWrapper.CopyTo(snipStreamWrapper.SnipStream, dataSize);
+                        ZLibWrapper.CopyStreamToInputBuffer(snipStreamWrapper.SnipStream, dataSize);
                         //stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
                         //dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
                         if (compressed)
@@ -114,12 +114,12 @@ namespace TESVSnip.Domain.Model
                         }
                         else
                         {
-                            ZLibStreamWrapper.CopyInputBufferToOutputBuffer(dataSize);
+                            ZLibWrapper.CopyInputBufferToOutputBuffer(dataSize);
                         }
                     }
                     else
                     {
-                        ZLibStreamWrapper.Clear();
+                        ZLibWrapper.ResetBufferSizeAndPosition();
                     }
                 }
                 catch (Exception ex)
@@ -131,26 +131,26 @@ namespace TESVSnip.Domain.Model
                 }
 
                 if (compressed & dataSize > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
-                    if (ZLibStreamWrapper.OutputBufferLength <= 0) //if (dataReader == null)
+                    if (ZLibWrapper.OutputBufferLength <= 0) //if (dataReader == null)
                     {
                         throw new TESParserException("Record.Record: ZLib inflate error. Output buffer is empty.");
                     }
 
-                while (ZLibStreamWrapper.OutputBufferPosition < ZLibStreamWrapper.OutputBufferLength)
+                while (ZLibWrapper.OutputBufferPosition < ZLibWrapper.OutputBufferLength)
                     //while (dataReader.BaseStream.Position < dataReader.BaseStream.Length)
                 {
-                    var type = ReadRecName(ZLibStreamWrapper.Read4Bytes()); //var type = ReadRecName(dataReader);
+                    var type = ReadRecName(ZLibWrapper.Read4Bytes()); //var type = ReadRecName(dataReader);
                     uint size = 0;
                     if (type == "XXXX")
                     {
-                        ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
-                        size = ZLibStreamWrapper.ReadUInt32(); //dataReader.ReadUInt32();
-                        type = ReadRecName(ZLibStreamWrapper.Read4Bytes()); //ReadRecName(dataReader);
-                        ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
+                        ZLibWrapper.ReadUInt16(); //dataReader.ReadUInt16();
+                        size = ZLibWrapper.ReadUInt32(); //dataReader.ReadUInt32();
+                        type = ReadRecName(ZLibWrapper.Read4Bytes()); //ReadRecName(dataReader);
+                        ZLibWrapper.ReadUInt16(); //dataReader.ReadUInt16();
                     }
                     else
                     {
-                        size = ZLibStreamWrapper.ReadUInt16(); //dataReader.ReadUInt16();
+                        size = ZLibWrapper.ReadUInt16(); //dataReader.ReadUInt16();
                     }
 
                     record = new SubRecord(this, type, size);

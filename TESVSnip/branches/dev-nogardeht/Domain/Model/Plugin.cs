@@ -816,7 +816,7 @@ namespace TESVSnip.Domain.Model
                 string msg = string.Format(ex.Message);
                 MessageBox.Show(
                     msg,
-                    TranslateUI.TranslateUIGlobalization.RM.GetString("Application_Title"),
+                    TranslateUI.TranslateUiGlobalization.ResManager.GetString("Application_Title"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
                 Clipboard.SetText(msg);
@@ -895,7 +895,8 @@ namespace TESVSnip.Domain.Model
 
             try
             {
-                ZLibStreamWrapper.AllocateBuffers();
+                ZLibWrapper.AllocateBuffers();
+                RecordsTace.InitListOfRecords();
                 snipStreamWrapper = new SnipStreamWrapper(fs);
                 //BinaryReader br = new BinaryReader(fs);
 
@@ -993,12 +994,12 @@ namespace TESVSnip.Domain.Model
                 snipStreamWrapper.CloseFile();
                 snipStreamWrapper = null;
                 Clipboard.SetText("CompressedRecords:" + Environment.NewLine +
-                                  string.Join<string>(string.Empty, ZLibStreamWrapper.CompressedRecords) +
+                                  string.Join<string>(string.Empty, RecordsTace.CompressedRecords) +
                                   "AllRecords:" + Environment.NewLine +
-                                  string.Join<string>(string.Empty, ZLibStreamWrapper.AllRecords) +
+                                  string.Join<string>(string.Empty, RecordsTace.AllRecords) +
                                   "Max Size:" +
-                                  ZLibStreamWrapper.MaxOutputBufferPosition.ToString(CultureInfo.InvariantCulture));
-                ZLibStreamWrapper.ReleaseBuffers();
+                                  ZLibWrapper.MaxOutputBufferPosition.ToString(CultureInfo.InvariantCulture));
+                ZLibWrapper.ReleaseBuffers();
                 ZLib.ReleaseInflater();
                 HoldUpdates = oldHoldUpdates;
                 FireRecordListUpdate(this, this);
