@@ -146,13 +146,15 @@
     <Compile Include="Domain\Scripts\Token.cs" />
     <Compile Include="Domain\Scripts\TokenStream.cs" />
     <Compile Include="Domain\Scripts\TokenType.cs" />
+    <Compile Include="Domain\Services\RecordsTace.cs" />
+    <Compile Include="Domain\Services\ZLibBufferType.cs" />
     <Compile Include="Domain\Services\Compressor.cs" />
     <Compile Include="Domain\Services\Options.cs" />
     <Compile Include="Domain\Services\SaveReadStream.cs" />
     <Compile Include="Domain\Services\Settings.cs" />
     <Compile Include="Domain\Services\ZLib.cs" />
     <Compile Include="Domain\Services\SnipStreamWrapper.cs" />
-    <Compile Include="Domain\Services\ZLibStreamWrapper.cs" />
+    <Compile Include="Domain\Services\ZLibWrapper.cs" />
     <Compile Include="Framework\Collections\AdvancedList.cs" />
     <Compile Include="Framework\Collections\PropertyComparer.cs" />
     <Compile Include="Framework\Collections\PropertyComparerCollection.cs" />
@@ -799,15 +801,11 @@
     <Content Include="Vendor\ObjectListView\Resources\sort-ascending1.png" />
     <Content Include="Vendor\ObjectListView\Resources\sort-descending.png" />
     <Content Include="Vendor\ObjectListView\Resources\sort-descending1.png" />
-    <Content Include="zlib1.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="zlib1.dll" />
     <Content Include="zlib123.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
-    <Content Include="zlibwapi.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
+    <Content Include="zlibwapi.dll" />
     <None Include="Resources\bookmark_add.png" />
     <None Include="Resources\14_layer_deletelayer.png" />
     <Content Include="Resources\clear-filter.png" />

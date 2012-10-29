@@ -1,23 +1,25 @@
-﻿using System;
-using System.Globalization;
-using System.IO;
-
-namespace TESVSnip.Domain.Services
+﻿namespace TESVSnip.Domain.Services
 {
+    using System;
+    using System.Globalization;
+    using System.IO;
+
     /// <summary>
     /// ZLibStreamWrapper
     /// </summary>
     public class SnipStreamWrapper
     {
-        public FileStream SnipStream;
-        private readonly long _streamSize;
         private readonly byte[] _bytes2 = new byte[2];
+
         private readonly byte[] _bytes4 = new byte[4];
 
+        private readonly long _streamSize;
+
         /// <summary>
+        /// Initializes a new instance of the <see cref="SnipStreamWrapper"/> class. 
         /// Create new instance of SnipStreamWrapper
         /// </summary>
-        /// <param name="fs"></param>
+        /// <param name="fs">FileStream</param>
         public SnipStreamWrapper(FileStream fs)
         {
             SnipStream = fs;
@@ -26,7 +28,12 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// Current position in stream
+        /// The file stream
+        /// </summary>
+        public FileStream SnipStream { get; set; }
+
+        /// <summary>
+        /// Gets the current position in stream
         /// </summary>
         protected long Position
         {
@@ -48,15 +55,17 @@ namespace TESVSnip.Domain.Services
                 SnipStream.Close();
                 SnipStream.Dispose();
             }
+
             SnipStream = null;
         }
+
         /// <summary>
-        /// End Of file
+        /// Gets the End Of File
         /// </summary>
-        /// <returns></returns>
+        /// <returns>True if end of file</returns>
         public bool Eof()
         {
-            return (SnipStream.Position == SnipStream.Length);
+            return SnipStream.Position == SnipStream.Length;
         }
 
         /// <summary>
@@ -64,7 +73,7 @@ namespace TESVSnip.Domain.Services
         /// </summary>
         /// <param name="offset">Offset (can be negative or positive)</param>
         /// <param name="from">Reference points in stream</param>
-        /// <exception cref="Exception"></exception>
+        /// <exception cref="Exception">An exception if size or position error</exception>
         public void JumpTo(int offset, SeekOrigin from)
         {
             long newPosition = SnipStream.Position;
@@ -75,13 +84,14 @@ namespace TESVSnip.Domain.Services
 
             if (newPosition > _streamSize)
                 throw new Exception(
-                    string.Format("WARNING: The final position ({0}) is greater than the size of file ({1}).",
-                                  newPosition.ToString(CultureInfo.InvariantCulture),
-                                  _streamSize.ToString(CultureInfo.InvariantCulture)));
+                    message: string.Format("WARNING: The final position ({0}) is greater than the size of file ({1}).",
+                                           arg0: newPosition.ToString(CultureInfo.InvariantCulture),
+                                           arg1: _streamSize.ToString(CultureInfo.InvariantCulture)));
 
             if (newPosition < 0)
-                throw new Exception(string.Format("WARNING: The position is negative ({0}).",
-                                                  newPosition.ToString(CultureInfo.InvariantCulture)));
+                throw new Exception(
+                    message: string.Format("WARNING: The position is negative ({0}).",
+                                           arg0: newPosition.ToString(CultureInfo.InvariantCulture)));
 
             SnipStream.Seek(offset, from);
         }
