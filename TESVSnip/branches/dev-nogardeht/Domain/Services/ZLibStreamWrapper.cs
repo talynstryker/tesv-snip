@@ -258,9 +258,83 @@ namespace TESVSnip.Domain.Services
         /// <summary>
         /// Read bytes in input/output buffer from the current position
         /// </summary>
-        /// <param name="count">The maximum number of bytes to read.</param>
-        /// <param name="bufferType">Read in input or output buffer</param>
-        /// <returns>Contains the specified byte array.</returns>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="count">
+        /// The maximum number of bytes to read.
+        /// </param>
+        /// <param name="bufferType">
+        /// Read in input or output buffer
+        /// </param>
+        /// <returns>
+        /// Contains the specified byte array.
+        /// </returns>
+        public static void ReadBytes(ref byte[] data, int count, BufferType bufferType)
+        {
+            if (data == null)
+            {
+                throw new ArgumentNullException("data");
+            }
+
+            uint newPosition;
+            uint bufferSize;
+
+            if (bufferType == BufferType.Output)
+            {
+                newPosition = (uint)(OutputBufferPosition + count);
+                bufferSize = OutputBufferLength;
+            }
+            else
+            {
+                newPosition = (uint)(InputBufferPosition + count);
+                bufferSize = InputBufferLength;
+            }
+
+            if (newPosition > bufferSize)
+            {
+                string msg = string.Format(
+                    "ZLibStreamWrapper.ReadBytes: ZLib inflate error. The final position ({0}) in {1} buffer is over the buffer size {2}",
+                    newPosition.ToString(CultureInfo.InvariantCulture),
+                    bufferType.ToString(),
+                    bufferSize.ToString(CultureInfo.InvariantCulture));
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            //var b = new byte[count];
+
+            if (bufferType == BufferType.Output)
+            {
+                //Array.Copy(OutputBuffer, OutputBufferPosition, b, 0, count);
+                Array.Copy(OutputBuffer, OutputBufferPosition, data, 0, count);                
+                OutputBufferPosition += (uint)count;
+            }
+            else
+            {
+                //Array.Copy(InputBuffer, InputBufferPosition, b, 0, count);
+                Array.Copy(InputBuffer, InputBufferPosition, data, 0, count);
+                InputBufferPosition += (uint)count;
+            }
+
+            //return b;
+        }
+
+        /// <summary>
+        /// Read bytes in input/output buffer from the current position
+        /// </summary>
+        /// <param name="data">
+        /// The data.
+        /// </param>
+        /// <param name="count">
+        /// The maximum number of bytes to read.
+        /// </param>
+        /// <param name="bufferType">
+        /// Read in input or output buffer
+        /// </param>
+        /// <returns>
+        /// Contains the specified byte array.
+        /// </returns>
         public static byte[] ReadBytes(int count, BufferType bufferType)
         {
             uint newPosition;

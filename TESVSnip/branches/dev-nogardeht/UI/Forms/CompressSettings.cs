@@ -19,7 +19,7 @@
         {
             this.rdoNeverCompressRecords.Checked = !Settings.Default.UseDefaultRecordCompression;
             this.rdoDefaultCompressRecords.Checked = Settings.Default.UseDefaultRecordCompression;
-            this.rdoPluginCompressRecords.Checked = Settings.Default.UsePlunginRecordCompression;
+            this.rdoPluginCompressRecords.Checked = Settings.Default.UsePluginRecordCompression;
             this.chkEnableAutoCompress.Checked = Settings.Default.EnableAutoCompress;
             this.chkEnableCompressLimit.Checked = Settings.Default.EnableCompressionLimit;
             this.txtCompressLimit.Text = Settings.Default.CompressionLimit.ToString();
@@ -54,7 +54,7 @@
         private void btnOk_Click(object sender, EventArgs e)
         {
             Settings.Default.UseDefaultRecordCompression = this.rdoDefaultCompressRecords.Checked;
-            Settings.Default.UsePlunginRecordCompression = this.rdoPluginCompressRecords.Checked;
+            Settings.Default.UsePluginRecordCompression = this.rdoPluginCompressRecords.Checked;
             Settings.Default.EnableCompressionLimit = this.chkEnableCompressLimit.Checked;
             Settings.Default.CompressionLimit = uint.Parse(this.txtCompressLimit.Text);
             Settings.Default.EnableAutoCompress = this.chkEnableAutoCompress.Checked;

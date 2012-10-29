@@ -467,12 +467,12 @@ namespace TESVSnip.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("False")]
-        public bool UsePlunginRecordCompression {
+        public bool UsePluginRecordCompression {
             get {
-                return ((bool)(this["UsePlunginRecordCompression"]));
+                return ((bool)(this["UsePluginRecordCompression"]));
             }
             set {
-                this["UsePlunginRecordCompression"] = value;
+                this["UsePluginRecordCompression"] = value;
             }
         }
         

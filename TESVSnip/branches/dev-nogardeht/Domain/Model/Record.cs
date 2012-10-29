@@ -41,6 +41,7 @@ namespace TESVSnip.Domain.Model
         [Persistable] public uint FormID;
 
         private readonly uint dataSize;
+        
         private CompressLevel compressLevel = CompressLevel.None;
 
         private readonly Func<string> descNameOverride;
@@ -107,11 +108,14 @@ namespace TESVSnip.Domain.Model
                         //dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
                         if (compressed)
                         {
-                            Clipboard.SetText(Name + realSize.ToString(CultureInfo.InvariantCulture));
-                            ZLib.Decompress(compressLevel: out compressLevel, expectedSize: (int) realSize);
+                            //Clipboard.SetText(Name + realSize.ToString(CultureInfo.InvariantCulture));
+                            ZLib.Decompress(compressLevel: out compressLevel, expectedSize: (int)realSize);
+                            //Array.Copy();
                         }
                         else
+                        {
                             ZLibStreamWrapper.CopyInputBufferToOutputBuffer(dataSize);
+                        }
                     }
                     else
                     {
@@ -660,16 +664,26 @@ namespace TESVSnip.Domain.Model
                 }
 
                 realSize = (uint) stream.Length;
+                data = stream.ToArray();
 
                 if (Properties.Settings.Default.UseDefaultRecordCompression)
                 {
                     compressed = ((this.Flags1 & 0x00040000) != 0) || (Properties.Settings.Default.EnableAutoCompress && Compressor.CompressRecord(Name))
                                  || (Properties.Settings.Default.EnableCompressionLimit && (realSize >= Properties.Settings.Default.CompressionLimit));
+
+                    if (compressed)
+                        data = ZLib.Compress(stream, CompressLevel.Best);//data = ZLib.Compress(data);
                 }
 
-                data = stream.ToArray();
-                if (compressed & compressLevel != CompressLevel.None)
-                    data = ZLib.Compress(stream, compressLevel); //data = ZLib.Compress(data);
+                // ajouter dans zlib un option pour dire oui compresser ou dans le record une variable pour dire que c'est compressé
+                if (Properties.Settings.Default.UsePluginRecordCompression)
+                {
+                    compressed = (this.Flags1 & 0x00040000) != 0;
+                    if (compressed)
+                    {
+                        data = ZLib.Compress(stream, compressLevel); // data = ZLib.Compress(data);
+                    }
+                }
             }
 
             var dataSize = (uint) data.Length;

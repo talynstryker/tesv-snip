@@ -148,6 +148,7 @@
     <Compile Include="Domain\Scripts\TokenType.cs" />
     <Compile Include="Domain\Services\Compressor.cs" />
     <Compile Include="Domain\Services\Options.cs" />
+    <Compile Include="Domain\Services\SaveReadStream.cs" />
     <Compile Include="Domain\Services\Settings.cs" />
     <Compile Include="Domain\Services\ZLib.cs" />
     <Compile Include="Domain\Services\SnipStreamWrapper.cs" />

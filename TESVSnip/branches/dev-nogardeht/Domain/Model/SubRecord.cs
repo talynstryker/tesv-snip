@@ -104,7 +104,9 @@ namespace TESVSnip.Domain.Model
             this.Owner = rec;
             Name = name;
             //this.Data = new byte[size];
-            this.Data = ZLibStreamWrapper.ReadBytes((int) size, BufferType.Output);
+            this.Data = new byte[size];
+            //this.Data = ZLibStreamWrapper.ReadBytes(ref this.Data[], (int) size, BufferType.Output);
+            ZLibStreamWrapper.ReadBytes(ref this.Data, (int) size, BufferType.Output);
             //br.Read(this.Data, 0, this.Data.Length);
         }
 
