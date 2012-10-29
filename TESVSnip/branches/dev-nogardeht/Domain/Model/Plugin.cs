@@ -748,18 +748,27 @@ namespace TESVSnip.Domain.Model
         {
             UpdateRecordCount();
             bool existed = false;
+            string extension = string.Empty;
             BinaryWriter bw;
+
+            string tmpFile = filePath + ".new";
+
 
             if (File.Exists(filePath))
             {
                 existed = true;
-                bw = new BinaryWriter(File.OpenWrite(filePath + ".new"));
+                //bw = new BinaryWriter(File.OpenWrite(filePath + ".new"));
+                //extension = ".new";
             }
-            else
-            {
-                bw = new BinaryWriter(File.OpenWrite(filePath));
-            }
+            //else
+            //{
+            //    //bw = new BinaryWriter(File.OpenWrite(filePath));
+            //    fs = new FileStream(filePath, FileMode.Open, FileAccess.Write);
+            //}
 
+            //fs = new FileStream(filePath + extension, FileMode.Open, FileAccess.Write);
+            //bw = new BinaryWriter(File.OpenWrite(filePath + extension));
+            bw = new BinaryWriter(File.OpenWrite(tmpFile));
             try
             {
                 this.SaveData(bw);
@@ -774,22 +783,33 @@ namespace TESVSnip.Domain.Model
             try
             {
                 // ** Create Backup
-                if (existed)
+                bool backupExists = true;
+                int backupVersion = 0;
+                string backupFolder = CreateBackupFolder(filePath);
+                while (backupExists && backupVersion < 999)
                 {
-                    bool backupExists = true;
-                    int backupVersion = 0;
-                    string backupFolder = CreateBackupFolder(filePath);
-
-                    while (backupExists && backupVersion < 999)
+                    backupExists =
+                        File.Exists(Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion));
+                    if (backupExists)
                     {
-                        backupExists =
-                            File.Exists(Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion));
-                        if (backupExists) backupVersion++;
+                        backupVersion++;
                     }
-
-                    File.Replace(filePath + ".new", filePath,
-                                 Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion));
                 }
+                string backupFile = Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion);
+                File.Copy(tmpFile, backupFile, true);
+
+                //if (existed)
+                //{
+                    ////string newFile = filePath;
+                    //string backupFile = Path.Combine(backupFolder, Name) + string.Format(".{0,3:D3}.bak", backupVersion);
+                    //File.Copy(tmpFile, backupFile, true);
+                    if (File.Exists(filePath))
+                    {
+                        File.Delete(filePath);
+                    }
+                    File.Move(tmpFile, filePath);
+                //}
+        
             }
             catch (Exception ex)
             {
@@ -970,6 +990,8 @@ namespace TESVSnip.Domain.Model
             }
             finally
             {
+                snipStreamWrapper.CloseFile();
+                snipStreamWrapper = null;
                 Clipboard.SetText("CompressedRecords:" + Environment.NewLine +
                                   string.Join<string>(string.Empty, ZLibStreamWrapper.CompressedRecords) +
                                   "AllRecords:" + Environment.NewLine +
@@ -978,7 +1000,6 @@ namespace TESVSnip.Domain.Model
                                   ZLibStreamWrapper.MaxOutputBufferPosition.ToString(CultureInfo.InvariantCulture));
                 ZLibStreamWrapper.ReleaseBuffers();
                 ZLib.ReleaseInflater();
-                snipStreamWrapper = null;
                 HoldUpdates = oldHoldUpdates;
                 FireRecordListUpdate(this, this);
             }

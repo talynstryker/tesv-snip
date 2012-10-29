@@ -113,7 +113,7 @@
     <Setting Name="PersonalOpenFolder" Type="System.String" Scope="User">
       <Value Profile="(Default)" />
     </Setting>
-    <Setting Name="UsePlunginRecordCompression" Type="System.Boolean" Scope="User">
+    <Setting Name="UsePluginRecordCompression" Type="System.Boolean" Scope="User">
       <Value Profile="(Default)">False</Value>
     </Setting>
     <Setting Name="AllESMRecordsOld" Type="System.String" Scope="User">
