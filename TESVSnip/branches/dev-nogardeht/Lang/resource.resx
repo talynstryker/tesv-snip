@@ -326,4 +326,13 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="MSG_SavePluginIn" xml:space="preserve">
     <value>Save Plugin in {0}.</value>
   </data>
+  <data name="Domain_Services_Options_NotInitializedYet" xml:space="preserve">
+    <value>Program options are not initialized yet.</value>
+  </data>
+  <data name="Domain_Services_Settings_UnableLoadSettings" xml:space="preserve">
+    <value>Unable to load settings.xml.</value>
+  </data>
+  <data name="Global_Msg_TESVsnipError" xml:space="preserve">
+    <value>TESVsnip Error</value>
+  </data>
 </root>

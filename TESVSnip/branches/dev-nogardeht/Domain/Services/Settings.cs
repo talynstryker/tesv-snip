@@ -7,67 +7,72 @@ namespace TESVSnip.Domain.Services
 
     internal static class Settings
     {
-        private static readonly string xmlPath = Path.Combine(Options.Value.SettingsDirectory, "settings.xml");
+        private static readonly string XmlPath = Path.Combine(Options.Value.SettingsDirectory, "settings.xml");
 
-        private static XmlElement rootNode;
+        private static XmlElement _rootNode;
 
-        private static XmlDocument xmlDoc;
+        private static XmlDocument _xmlDoc;
 
+        /// <summary>
+        /// Constructor
+        /// </summary>
         static Settings()
         {
             Init();
         }
 
+        /// <summary>
+        /// Retrieve a boolean value
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <returns>True or False</returns>
         public static bool GetBool(string name)
         {
-            var xe = rootNode.SelectSingleNode("descendant::boolValue[@name='" + name + "']") as XmlElement;
-            if (xe == null)
-            {
-                return false;
-            }
-            else
-            {
-                return xe.InnerText == "true";
-            }
+            var xe = _rootNode.SelectSingleNode("descendant::boolValue[@name='" + name + "']") as XmlElement;
+            if (xe == null) return false;
+
+            return xe.InnerText == "true";
         }
 
+        /// <summary>
+        /// Retrieve a string value
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <returns>THe string</returns>
         public static string GetString(string name)
         {
-            var xe = rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
-            if (xe == null)
-            {
-                return null;
-            }
-            else
-            {
-                return xe.InnerText;
-            }
+            var xe = _rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
+            if (xe == null) return null;
+
+            return xe.InnerText;
         }
 
+        /// <summary>
+        /// Retrieve a string array
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <returns>A string array</returns>
         public static string[] GetStringArray(string name)
         {
-            var xe = rootNode.SelectSingleNode("descendant::strArray[@name='" + name + "']") as XmlElement;
-            if (xe == null)
-            {
-                return null;
-            }
+            var xe = _rootNode.SelectSingleNode("descendant::strArray[@name='" + name + "']") as XmlElement;
+            if (xe == null) return null;
 
             var result = new string[xe.ChildNodes.Count];
             for (int i = 0; i < result.Length; i++)
-            {
                 result[i] = xe.ChildNodes[i].InnerText;
-            }
 
             return result;
         }
 
+        /// <summary>
+        /// Retrieve the window position
+        /// </summary>
+        /// <param name="window">Window name</param>
+        /// <param name="f">Object form</param>
         public static void GetWindowPosition(string window, Form f)
         {
-            var xe = rootNode.SelectSingleNode("descendant::window[@name='" + window + "']") as XmlElement;
-            if (xe == null)
-            {
-                return;
-            }
+            var xe = _rootNode.SelectSingleNode("descendant::window[@name='" + window + "']") as XmlElement;
+            if (xe == null) return;
 
             if (xe.Attributes.GetNamedItem("maximized").Value == "true")
             {
@@ -81,32 +86,38 @@ namespace TESVSnip.Domain.Services
             }
         }
 
+        /// <summary>
+        /// Init class Settings
+        /// </summary>
         public static void Init()
         {
-            xmlDoc = new XmlDocument();
-            if (File.Exists(xmlPath))
+            _xmlDoc = new XmlDocument();
+            if (File.Exists(XmlPath))
             {
                 try
                 {
-                    xmlDoc.Load(xmlPath);
-                    rootNode = (XmlElement)xmlDoc.LastChild;
+                    _xmlDoc.Load(XmlPath);
+                    _rootNode = (XmlElement) _xmlDoc.LastChild;
                 }
                 catch
                 {
-                    MessageBox.Show("Unable to load settings.xml", "Error");
-                    xmlDoc = new XmlDocument();
-                    xmlDoc.AppendChild(rootNode = xmlDoc.CreateElement("settings"));
+                    MessageBox.Show(
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "Domain_Services_Settings_UnableLoadSettings"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "Global_Msg_TESVsnipError"));
+                    _xmlDoc = new XmlDocument();
+                    _xmlDoc.AppendChild(_rootNode = _xmlDoc.CreateElement("settings"));
                 }
             }
             else
             {
-                xmlDoc.AppendChild(rootNode = xmlDoc.CreateElement("settings"));
+                _xmlDoc.AppendChild(_rootNode = _xmlDoc.CreateElement("settings"));
             }
         }
 
+
         public static void RemoveString(string name)
         {
-            var xe = rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
+            var xe = _rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
             if (xe != null)
             {
                 xe.ParentNode.RemoveChild(xe);
@@ -115,41 +126,41 @@ namespace TESVSnip.Domain.Services
 
         public static void SetBool(string name, bool value)
         {
-            var xe = rootNode.SelectSingleNode("descendant::boolValue[@name='" + name + "']") as XmlElement;
+            var xe = _rootNode.SelectSingleNode("descendant::boolValue[@name='" + name + "']") as XmlElement;
             if (xe == null)
             {
-                rootNode.AppendChild(xe = xmlDoc.CreateElement("boolValue"));
-                xe.Attributes.Append(xmlDoc.CreateAttribute("name"));
+                _rootNode.AppendChild(xe = _xmlDoc.CreateElement("boolValue"));
+                xe.Attributes.Append(_xmlDoc.CreateAttribute("name"));
                 xe.Attributes[0].Value = name;
             }
 
             xe.InnerText = value ? "true" : "false";
 
-            xmlDoc.Save(xmlPath);
+            _xmlDoc.Save(XmlPath);
         }
 
         public static void SetString(string name, string value)
         {
-            var xe = rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
+            var xe = _rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
             if (xe == null)
             {
-                rootNode.AppendChild(xe = xmlDoc.CreateElement("strValue"));
-                xe.Attributes.Append(xmlDoc.CreateAttribute("name"));
+                _rootNode.AppendChild(xe = _xmlDoc.CreateElement("strValue"));
+                xe.Attributes.Append(_xmlDoc.CreateAttribute("name"));
                 xe.Attributes[0].Value = name;
             }
 
             xe.InnerText = value;
 
-            xmlDoc.Save(xmlPath);
+            _xmlDoc.Save(XmlPath);
         }
 
         public static void SetStringArray(string name, string[] items)
         {
-            var xe = rootNode.SelectSingleNode("descendant::strArray[@name='" + name + "']") as XmlElement;
+            var xe = _rootNode.SelectSingleNode("descendant::strArray[@name='" + name + "']") as XmlElement;
             if (xe == null)
             {
-                rootNode.AppendChild(xe = xmlDoc.CreateElement("strArray"));
-                xe.Attributes.Append(xmlDoc.CreateAttribute("name"));
+                _rootNode.AppendChild(xe = _xmlDoc.CreateElement("strArray"));
+                xe.Attributes.Append(_xmlDoc.CreateAttribute("name"));
                 xe.Attributes[0].Value = name;
             }
 
@@ -160,12 +171,12 @@ namespace TESVSnip.Domain.Services
 
             foreach (string str in items)
             {
-                XmlElement xe2 = xmlDoc.CreateElement("element");
+                XmlElement xe2 = _xmlDoc.CreateElement("element");
                 xe2.InnerText = str;
                 xe.AppendChild(xe2);
             }
 
-            xmlDoc.Save(xmlPath);
+            _xmlDoc.Save(XmlPath);
         }
 
         public static void SetWindowPosition(string window, Form f)
@@ -178,31 +189,31 @@ namespace TESVSnip.Domain.Services
             Point location = f.Location;
             Size size = f.ClientSize;
             bool maximized = f.WindowState == FormWindowState.Maximized;
-            var xe = rootNode.SelectSingleNode("descendant::window[@name='" + window + "']") as XmlElement;
+            var xe = _rootNode.SelectSingleNode("descendant::window[@name='" + window + "']") as XmlElement;
             if (xe == null)
             {
-                rootNode.AppendChild(xe = xmlDoc.CreateElement("window"));
-                xe.Attributes.Append(xmlDoc.CreateAttribute("name"));
+                _rootNode.AppendChild(xe = _xmlDoc.CreateElement("window"));
+                xe.Attributes.Append(_xmlDoc.CreateAttribute("name"));
                 xe.Attributes[0].Value = window;
             }
 
-            XmlAttribute xa = xmlDoc.CreateAttribute("left");
+            XmlAttribute xa = _xmlDoc.CreateAttribute("left");
             xa.Value = location.X.ToString();
             xe.Attributes.SetNamedItem(xa);
-            xa = xmlDoc.CreateAttribute("top");
+            xa = _xmlDoc.CreateAttribute("top");
             xa.Value = location.Y.ToString();
             xe.Attributes.SetNamedItem(xa);
-            xa = xmlDoc.CreateAttribute("width");
+            xa = _xmlDoc.CreateAttribute("width");
             xa.Value = size.Width.ToString();
             xe.Attributes.SetNamedItem(xa);
-            xa = xmlDoc.CreateAttribute("height");
+            xa = _xmlDoc.CreateAttribute("height");
             xa.Value = size.Height.ToString();
             xe.Attributes.SetNamedItem(xa);
-            xa = xmlDoc.CreateAttribute("maximized");
+            xa = _xmlDoc.CreateAttribute("maximized");
             xa.Value = maximized ? "true" : "false";
             xe.Attributes.SetNamedItem(xa);
 
-            xmlDoc.Save(xmlPath);
+            _xmlDoc.Save(XmlPath);
         }
     }
 }
