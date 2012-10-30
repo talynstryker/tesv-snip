@@ -1,3 +1,5 @@
+using TESVSnip.Domain.Services;
+
 namespace TESVSnip.Domain.Model
 {
     using System;
@@ -164,9 +166,15 @@ namespace TESVSnip.Domain.Model
             throw new NotImplementedException();
         }
 
-        internal override void SaveData(BinaryWriter writer)
+        //internal override void SaveData(BinaryWriter writer)
+        //{
+        //    throw new NotImplementedException();
+        //}
+
+        internal override void SaveData(SnipStreamWrapper snipStreamWrapper)
         {
             throw new NotImplementedException();
         }
+
     }
 }

@@ -37,7 +37,6 @@
             if (_inputBuffer != null | _outputBuffer != null) ReleaseBuffers();
             _inputBuffer = new byte[MaxBufferSize];
             _outputBuffer = new byte[MaxBufferSize];
-            MaxOutputBufferPosition = 0;
             ResetBuffer();
         }
 
@@ -100,7 +99,7 @@
 
             if ((fs.Position + bytesToRead) > fs.Length)
             {
-                string msg = "ZLibStreamWrapper.CopyTo: ZLib inflate error. Copy size " +
+                string msg = "ZLibStreamWrapper.CopyStreamToInputBuffer: ZLib wrapper error. Copy size " +
                              (fs.Position + bytesToRead).ToString(CultureInfo.InvariantCulture) +
                              " is over stream length " +
                              fs.Length.ToString(CultureInfo.InvariantCulture);
@@ -110,7 +109,7 @@
 
             if (bytesToRead > MaxBufferSize)
             {
-                string msg = "ZLibStreamWrapper.CopyTo: ZLib inflate error. Bytes to read (" +
+                string msg = "ZLibStreamWrapper.CopyStreamToInputBuffer: ZLib wrapper error. Bytes to read (" +
                              bytesToRead.ToString(CultureInfo.InvariantCulture) + ")" +
                              " exceed buffer size ( " + MaxBufferSize.ToString(CultureInfo.InvariantCulture) + ")";
                 Clipboard.SetText(msg);
@@ -128,6 +127,46 @@
             }
 
             InputBufferLength = bytesToRead;
+        }
+
+        /// <summary>
+        /// Copy a piece of bytes array into input buffer
+        /// </summary>
+        /// <param name="byteArray">The byte Array.</param>
+        /// <param name="offset">Offset in byte array.</param>
+        /// <param name="bytesToCopy">Number of bytes to read (copy to buffer).</param>
+        public static void CopyByteArrayToInputBuffer(byte[] byteArray, int offset, uint bytesToCopy)
+        {
+            ResetBufferSizeAndPosition();
+
+            if ((bytesToCopy + offset) > MaxBufferSize)
+            {
+                string msg = "ZLibStreamWrapper.CopyByteArrayToInputBuffer: ZLib wrapper error. Bytes to read (" +
+                             bytesToCopy.ToString(CultureInfo.InvariantCulture) + ")" +
+                             " exceed max buffer size ( " + MaxBufferSize.ToString(CultureInfo.InvariantCulture) + ")";
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            Array.Copy(byteArray, offset, _inputBuffer, 0, bytesToCopy);
+
+            InputBufferLength = bytesToCopy;
+        }
+
+        /// <summary>
+        /// Copy a piece of output buffer into a bytes array
+        /// </summary>
+        /// <param name="byteArray">The byte Array.</param>
+        public static void CopyOutputBufferIntoByteArray(byte[] byteArray)
+        {
+            if (OutputBufferLength <= 0)
+            {
+                string msg = "ZLibStreamWrapper.CopyOutputBufferIntoByteArray: ZLib wrapper error. Output buffer is empty.";
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            Array.Copy(_outputBuffer, 0, byteArray, 0, OutputBufferLength);
         }
 
         /// <summary>
@@ -352,12 +391,9 @@
         /// <summary>
         /// Write in the output buffer the ZLib inflate bytes byte[] data, int startIndex, int count
         /// </summary>
-        /// <param name="data">
-        /// </param>
-        /// <param name="startIndex">
-        /// </param>
-        /// <param name="count">
-        /// </param>
+        /// <param name="data"> </param>
+        /// <param name="startIndex"> </param>
+        /// <param name="count"> </param>
         public static void WriteInOutputBuffer(byte[] data, int startIndex, int count)
         {
             if (startIndex < 0)

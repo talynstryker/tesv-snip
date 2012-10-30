@@ -9,97 +9,193 @@ namespace TESVSnip.Domain.Services
 
     public static class ZLib
     {
-        private static Deflater deflater;
+        private static Deflater _deflaterBest;
+        private static Deflater _deflaterNone;
+        private static Deflater _deflaterFastest;
+        private static Deflater _deflaterDefault;
 
-        private static Inflater inflater;
+        private static Inflater _inflater;
 
         public static string Version { get; private set; }
 
-        [Obsolete("Compress(byte[] input)")]
-        public static byte[] Compress(Stream input)
-        {
-            // if (input == null)
-            // {
-            // throw new ArgumentNullException("input");
-            // }
+        //[Obsolete("Compress(byte[] input)")]
+        //public static byte[] Compress(Stream input)
+        //{
+        //    // if (input == null)
+        //    // {
+        //    // throw new ArgumentNullException("input");
+        //    // }
 
-            // var buffer = new byte[input.Length];
-            // input.Read(buffer, 0, (int)input.Length);
+        //    // var buffer = new byte[input.Length];
+        //    // input.Read(buffer, 0, (int)input.Length);
 
-            // return Compress(buffer);
-            return null;
-        }
+        //    // return Compress(buffer);
+        //    return null;
+        //}
 
-        public static byte[] Compress(byte[] input)
-        {
-            using (var output = new MemoryStream())
-            {
-                using (var deflater1 = new Deflater(CompressLevel.Best))
-                {
-                    deflater1.DataAvailable += output.Write;
-                    deflater1.Add(input, 0, input.Length);
-                }
+        //public static byte[] Compress(byte[] input)
+        //{
+        //    using (var output = new MemoryStream())
+        //    {
+        //        using (var deflater1 = new Deflater(CompressLevel.Best))
+        //        {
+        //            deflater1.DataAvailable += output.Write;
+        //            deflater1.Add(input, 0, input.Length);
+        //        }
 
-                return output.ToArray();
-            }
-        }
+        //        return output.ToArray();
+        //    }
+        //}
 
         /// <summary>
         /// Compress a ZLib stream
         /// </summary>
-        /// <param name="input">stream</param>
-        /// <param name="compressLevel">compression level of stream</param>
-        /// <returns>compressed stream</returns>
-        public static byte[] Compress(Stream input, CompressLevel compressLevel)
+        /// <param name="buffer">The buffer. </param>
+        /// <param name="compressLevel">Compression level of stream. </param>
+        public static void Compress(SnipStreamWrapper snipStreamWrapper, CompressLevel compressLevel)
         {
-            var maxBytesAddressing = (uint)input.Length;
+            var numBytesAddressing = snipStreamWrapper.OutputBufferLength;
             byte[] returnedArrayOfBytes;
 
-            Deflater deflater1 = new Deflater(compressLevel);
-            MemoryStream output = new MemoryStream();
-            input.Seek(0, SeekOrigin.Begin);
-            BinaryReader br = new BinaryReader(input);
+            ZLibWrapper.CopyByteArrayToInputBuffer(snipStreamWrapper.OutputBuffer, 0,
+                                                   snipStreamWrapper.OutputBufferLength);
+
+            if (_deflaterBest == null)
+            {
+                _deflaterBest = new Deflater(CompressLevel.Best);
+                _deflaterBest.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+            }
+
+            if (_deflaterNone == null)
+            {
+                _deflaterNone = new Deflater(CompressLevel.None);
+                _deflaterNone.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+            }
+
+            if (_deflaterFastest == null)
+            {
+                _deflaterFastest = new Deflater(CompressLevel.Fastest);
+                _deflaterFastest.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+            }
+
+            if (_deflaterDefault == null)
+            {
+                _deflaterDefault = new Deflater(CompressLevel.Default);
+                _deflaterDefault.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+            }
+
+           //MemoryStream output = new MemoryStream();
+            //input.Seek(0, SeekOrigin.Begin);
+            //BinaryReader br = new BinaryReader(input);
 
             try
             {
-                deflater1.DataAvailable += output.Write;
-                br.BaseStream.Seek(0, SeekOrigin.Begin);
+                //_deflater.DataAvailable += output.Write;
+                //br.BaseStream.Seek(0, SeekOrigin.Begin);
 
-                while (maxBytesAddressing > 0)
+                //while (maxBytesAddressing > 0)
+                //{
+                //    uint numBytes = Math.Min(maxBytesAddressing, 8192);
+                //    deflater1.Add(br.ReadBytes((int)numBytes));
+                //    maxBytesAddressing -= numBytes;
+                //}
+
+                while (numBytesAddressing > 0u)
                 {
-                    uint numBytes = Math.Min(maxBytesAddressing, 8192);
-                    deflater1.Add(br.ReadBytes((int)numBytes));
-                    maxBytesAddressing -= numBytes;
+                    uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
+
+                    if (compressLevel == CompressLevel.None)
+                        _deflaterNone.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+
+                    if (compressLevel == CompressLevel.Best)
+                        _deflaterBest.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+
+                    if (compressLevel == CompressLevel.Default)
+                        _deflaterDefault.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+
+                    if (compressLevel == CompressLevel.Fastest)
+                        _deflaterFastest.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+
+                    numBytesAddressing -= numBytes;
                 }
 
-                deflater1.Finish(); // flush zlib buffer
+                string deflateErrorMsg = string.Empty;
+                if (compressLevel == CompressLevel.None)
+                    deflateErrorMsg = _deflaterNone._ztream.msg;
 
+                if (compressLevel == CompressLevel.Best)
+                    deflateErrorMsg = _deflaterBest._ztream.msg;
+
+                if (compressLevel == CompressLevel.Default)
+                    deflateErrorMsg = _deflaterDefault._ztream.msg;
+
+                if (compressLevel == CompressLevel.Fastest)
+                    deflateErrorMsg = _deflaterFastest._ztream.msg;
+
+                if (!string.IsNullOrWhiteSpace(deflateErrorMsg))
+                    MessageBox.Show(string.Format("ZLib.Compress: {0}", deflateErrorMsg), @"ZLib Error",
+                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                if (compressLevel == CompressLevel.None)
+                    _deflaterNone.Finish(); // flush zlib buffer    
+
+                if (compressLevel == CompressLevel.Best)
+                    _deflaterBest.Finish(); // flush zlib buffer  
+
+                if (compressLevel == CompressLevel.Default)
+                    _deflaterDefault.Finish(); // flush zlib buffer      
+
+                if (compressLevel == CompressLevel.Fastest)
+                    _deflaterFastest.Finish(); // flush zlib buffer      
+     
                 // Line for debug and test
                 // output.Seek(0, SeekOrigin.Begin);
                 // TESVSnip.Domain.Services.SaveReadStream.SaveStreamToDisk(output);
-                output.Seek(0, SeekOrigin.Begin);
+                //output.Seek(0, SeekOrigin.Begin);
+                ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer); //output.Seek(0, SeekOrigin.Begin);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
                     string.Format(
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"), ex.ToString()),
-                    TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Compress"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"),
+                        ex.ToString()),
+                    TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
             finally
             {
-                returnedArrayOfBytes = output.ToArray();
-
-                deflater1.Dispose();
-
-                br.Close();
-                br.Dispose();
+                if (ZLibWrapper.OutputBufferLength == 0)
+                {
+                    MessageBox.Show(
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_OutputBufferEmpty"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
+                        MessageBoxButtons.OK,
+                        MessageBoxIcon.Error);
+                }
             }
+            //catch (Exception ex)
+            //{
+            //    MessageBox.Show(
+            //        string.Format(
+            //            TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"), ex.ToString()),
+            //        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Compress"),
+            //        MessageBoxButtons.OK,
+            //        MessageBoxIcon.Error);
+            //}
+            //finally
+            //{
+            //    returnedArrayOfBytes = output.ToArray();
 
-            Debug.Assert(returnedArrayOfBytes != null, "returnedArrayOfBytes != null");
-            return returnedArrayOfBytes;
+            //    deflater1.Dispose();
+
+            //    br.Close();
+            //    br.Dispose();
+            //}
+
+            //Debug.Assert(returnedArrayOfBytes != null, "returnedArrayOfBytes != null");
+            //return returnedArrayOfBytes;
 
             //MessageBox.Show(
             //    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_OutputBufferEmpty"),
@@ -132,10 +228,10 @@ namespace TESVSnip.Domain.Services
                 ZLibWrapper.Position(0, ZLibBufferType.InputBuffer);
                 //ReadBytes(  ) br.BaseStream.Seek(0, SeekOrigin.Begin);
 
-                if (inflater == null)
+                if (_inflater == null)
                 {
-                    inflater = new Inflater();
-                    inflater.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+                    _inflater = new Inflater();
+                    _inflater.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
                 }
 
                 //output = new MemoryStream(expectedSize);
@@ -158,26 +254,27 @@ namespace TESVSnip.Domain.Services
                 while (numBytesAddressing > 0u)
                 {
                     uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
-                    inflater.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+                    _inflater.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
                     //inflater.Add(br.ReadBytes((int) numBytes));   
                     numBytesAddressing -= numBytes;
                 }
 
-                if (!string.IsNullOrWhiteSpace(inflater._ztream.msg))
+                if (!string.IsNullOrWhiteSpace(_inflater._ztream.msg))
                     MessageBox.Show(
-                        string.Format("ZLib.Decompress: {0}", inflater._ztream.msg),
+                        string.Format("ZLib.Decompress: {0}", _inflater._ztream.msg),
                         @"ZLib Error",
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
 
-                inflater.Finish(); //flush zlib buffer
+                _inflater.Finish(); //flush zlib buffer
 
                 ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer); //output.Seek(0, SeekOrigin.Begin);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"),
-                                  ex.ToString()),
+                    string.Format(
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"),
+                        ex.ToString()),
                     TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
@@ -200,21 +297,42 @@ namespace TESVSnip.Domain.Services
 
         public static void ReleaseDeflater()
         {
-            if (deflater != null)
+            if (_deflaterBest != null)
             {
-                deflater.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
-                deflater.Dispose();
-                deflater = null;
+                _deflaterBest.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
+                _deflaterBest.Dispose();
+                _deflaterBest = null;
+            }
+
+            if (_deflaterNone != null)
+            {
+                _deflaterNone.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
+                _deflaterNone.Dispose();
+                _deflaterNone = null;
+            }
+
+            if (_deflaterFastest != null)
+            {
+                _deflaterFastest.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
+                _deflaterFastest.Dispose();
+                _deflaterFastest = null;
+            }
+
+            if (_deflaterDefault != null)
+            {
+                _deflaterDefault.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
+                _deflaterDefault.Dispose();
+                _deflaterDefault = null;
             }
         }
 
         public static void ReleaseInflater()
         {
-            if (inflater != null)
+            if (_inflater != null)
             {
-                inflater.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
-                inflater.Dispose();
-                inflater = null;
+                _inflater.DataAvailable -= ZLibWrapper.WriteInOutputBuffer;
+                _inflater.Dispose();
+                _inflater = null;
             }
         }
         /// <summary>

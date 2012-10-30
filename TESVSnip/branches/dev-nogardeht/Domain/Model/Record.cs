@@ -42,7 +42,7 @@ namespace TESVSnip.Domain.Model
 
         private readonly uint dataSize;
         
-        private CompressLevel compressLevel = CompressLevel.None;
+        private readonly CompressLevel compressLevel = CompressLevel.None;
 
         private readonly Func<string> descNameOverride;
 
@@ -55,12 +55,12 @@ namespace TESVSnip.Domain.Model
             this.FixSubrecordOwner();
         }
 
-        internal Record(string name, uint dataSize, SnipStreamWrapper snipStreamWrapper, bool oblivion)  //internal Record(string name, uint dataSize, BinaryReader recordReader, bool oblivion) 
+        internal Record(string name, uint dataSizeParam, SnipStreamWrapper snipStreamWrapper, bool oblivion)  //internal Record(string name, uint dataSize, BinaryReader recordReader, bool oblivion) 
         {
             bool compressed = false;
             uint amountRead = 0;
             uint realSize = 0;
-            uint dataSizeInParam = dataSize;
+
             //MemoryStream stream = null;
             //BinaryReader dataReader = null;
             SubRecord record = null;
@@ -68,9 +68,13 @@ namespace TESVSnip.Domain.Model
 
             try
             {
-                this.dataSize = dataSize;
+                this.dataSize = dataSizeParam;
 
                 this.SubRecords = new AdvancedList<SubRecord>(1) {AllowSorting = false};
+
+                if (snipStreamWrapper.SnipStream.Position >= 52776047)
+                    Name = name;
+
                 Name = name;
                 RecordsTace.AddRecordToRecordsList(Name);
                 this.Flags1 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
@@ -83,12 +87,12 @@ namespace TESVSnip.Domain.Model
 
                 compressed = (this.Flags1 & 0x00040000) != 0;
                 amountRead = 0;
-                realSize = dataSize;
+                realSize = dataSizeParam;
                 if (compressed)
                 {
                     realSize = snipStreamWrapper.ReadUInt32(); // recordReader.ReadUInt32();
                     // snipStreamWrapper.JumpTo(-4,SeekOrigin.Current);
-                    dataSize -= 4;
+                    dataSizeParam -= 4;
                     RecordsTace.AddRecordToCompressedRecordsList(Name);
                 }
 
@@ -101,9 +105,9 @@ namespace TESVSnip.Domain.Model
                     //if (dataSize == 0)
                     //    throw new TESParserException("Record.Record: ZLib inflate error. Output buffer is empty.");
 
-                    if (dataSize > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
+                    if (dataSizeParam > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
                     {
-                        ZLibWrapper.CopyStreamToInputBuffer(snipStreamWrapper.SnipStream, dataSize);
+                        ZLibWrapper.CopyStreamToInputBuffer(snipStreamWrapper.SnipStream, dataSizeParam);
                         //stream = new MemoryStream(recordReader.ReadBytes((int) dataSize));
                         //dataReader = compressed ? ZLib.Decompress(stream, out compressLevel, (int)realSize) : new BinaryReader(stream);
                         if (compressed)
@@ -114,7 +118,7 @@ namespace TESVSnip.Domain.Model
                         }
                         else
                         {
-                            ZLibWrapper.CopyInputBufferToOutputBuffer(dataSize);
+                            ZLibWrapper.CopyInputBufferToOutputBuffer(dataSizeParam);
                         }
                     }
                     else
@@ -130,7 +134,7 @@ namespace TESVSnip.Domain.Model
                                                  "StackTrace: " + ex.StackTrace);
                 }
 
-                if (compressed & dataSize > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
+                if (compressed & dataSizeParam > 0) //dawnguard.esm at position 6.812.369 at a dataSize == 0 - Record=NAVM
                     if (ZLibWrapper.OutputBufferLength <= 0) //if (dataReader == null)
                     {
                         throw new TESParserException("Record.Record: ZLib inflate error. Output buffer is empty.");
@@ -153,9 +157,9 @@ namespace TESVSnip.Domain.Model
                         size = ZLibWrapper.ReadUInt16(); //dataReader.ReadUInt16();
                     }
 
-                    record = new SubRecord(this, type, size);
+                    record = new SubRecord(this, type, snipStreamWrapper, size);
                         //record = new SubRecord(this, type, dataReader, size); //var record = new SubRecord(this, type, dataReader, size);
-                    SubRecords.Add(record);
+                    this.SubRecords.Add(record);
                     amountRead += (uint) record.Size2;
                 }
 
@@ -171,11 +175,11 @@ namespace TESVSnip.Domain.Model
                 {
                     Debug.Print(
                         " * ERROR: SUB-RECORD {0} DATA DOESN'T MATCH THE SIZE SPECIFIED IN THE HEADER: DATA-SIZE={1} REAL-SIZE={2} AMOUNT-READ={3}",
-                        name, dataSize, realSize, amountRead);
+                        name, dataSizeParam, realSize, amountRead);
                     throw new TESParserException(
                         string.Format(
                             "Subrecord block did not match the size specified in the record header: ExpectedSize={0} ReadSize={1} DataSize={2}",
-                            realSize, amountRead, dataSize));
+                            realSize, amountRead, dataSizeParam));
                 }
 
 
@@ -185,12 +189,6 @@ namespace TESVSnip.Domain.Model
                 // br.BaseStream.Position+=Size;
 
                 //} //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
-
-
-
-                //if (Environment.WorkingSet >= 1400000000)
-                //  GC.Collect();
-
             }
             catch (Exception ex)
             {
@@ -647,44 +645,65 @@ namespace TESVSnip.Domain.Model
             return list;
         }
 
-        internal override void SaveData(BinaryWriter writer)
-        {
-            var position = writer.BaseStream.Position;
-            WriteString(writer, Name);
 
-            uint realSize;
+        //internal override void SaveData(BinaryWriter writer)
+        internal override void SaveData(SnipStreamWrapper snipStreamWrapper)
+        {
+            //var position = writer.BaseStream.Position;
+            var position = snipStreamWrapper.SnipStream.Position;
+            //WriteString(writer, Name);
+            snipStreamWrapper.WriteString(Name);
+
             var compressed = false;
             byte[] data;
-            using (var stream = new MemoryStream())
+            //using (var stream = new MemoryStream())
+            //{
+
+            //var dataWriter = new BinaryWriter(stream);
+            snipStreamWrapper.ResetBufferSizeAndPosition();
+ 
+            foreach (var subRecord in this.SubRecords)
             {
-                var dataWriter = new BinaryWriter(stream);
-                foreach (var subRecord in this.SubRecords)
-                {
-                    subRecord.SaveData(dataWriter);
-                }
-
-                realSize = (uint) stream.Length;
-                data = stream.ToArray();
-
-                if (Properties.Settings.Default.UseDefaultRecordCompression)
-                {
-                    compressed = ((this.Flags1 & 0x00040000) != 0) || (Properties.Settings.Default.EnableAutoCompress && Compressor.CompressRecord(Name))
-                                 || (Properties.Settings.Default.EnableCompressionLimit && (realSize >= Properties.Settings.Default.CompressionLimit));
-
-                    if (compressed)
-                        data = ZLib.Compress(stream, CompressLevel.Best);//data = ZLib.Compress(data);
-                }
-
-                // ajouter dans zlib un option pour dire oui compresser ou dans le record une variable pour dire que c'est compressé
-                if (Properties.Settings.Default.UsePluginRecordCompression)
-                {
-                    compressed = (this.Flags1 & 0x00040000) != 0;
-                    if (compressed)
-                    {
-                        data = ZLib.Compress(stream, compressLevel); // data = ZLib.Compress(data);
-                    }
-                }
+                //subRecord.SaveData(dataWriter);
+                subRecord.SaveData(snipStreamWrapper); //write data into buffer
             }
+
+            uint realSize = snipStreamWrapper.OutputBufferLength;            
+            //data = stream.ToArray();  //data = stream.ToArray();
+
+            if (Properties.Settings.Default.UseDefaultRecordCompression)
+            {
+                compressed = ((this.Flags1 & 0x00040000) != 0) ||
+                             (Properties.Settings.Default.EnableAutoCompress && Compressor.CompressRecord(Name))
+                             ||
+                             (Properties.Settings.Default.EnableCompressionLimit &&
+                              (realSize >= Properties.Settings.Default.CompressionLimit));
+
+                //if (compressed)
+                //    data = ZLib.Compress(stream, CompressLevel.Best); //data = ZLib.Compress(data);
+            }
+
+            // ajouter dans zlib un option pour dire oui compresser ou dans le record une variable pour dire que c'est compressé
+            if (Properties.Settings.Default.UsePluginRecordCompression)
+            {
+                compressed = (this.Flags1 & 0x00040000) != 0;
+            }
+
+            if (compressed)
+            {
+                ZLib.Compress(snipStreamWrapper, compressLevel);
+                data = new byte[ZLibWrapper.OutputBufferLength];
+                ZLibWrapper.CopyOutputBufferIntoByteArray(data);
+            }
+            else
+            {
+                data = new byte[snipStreamWrapper.OutputBufferLength];
+                if (snipStreamWrapper.OutputBufferLength > 0)
+                    snipStreamWrapper.CopyOutputBufferToData(ref data);
+                        //data = stream.ToArray();  //data = stream.ToArray();
+            }
+
+            //} // using (var stream = new MemoryStream())
 
             var dataSize = (uint) data.Length;
             var flags = this.Flags1 & ~0x00040000U;
@@ -695,21 +714,21 @@ namespace TESVSnip.Domain.Model
 
                 Debug.WriteLineIf(
                     this.dataSize != dataSize,
-                    string.Format(
-                        "COMPRESSED RECORD [NAME={0} AT POSITION={1}] SIZE DIFFERS FROM ORIGINAL: ORIGINAL={2} ACTUAL={3}, RAW RECORD SIZE={4}", Name, position, this.dataSize, dataSize, realSize));
+                    string.Format("COMPRESSED RECORD [NAME={0} AT POSITION={1}] SIZE DIFFERS FROM ORIGINAL: ORIGINAL={2} ACTUAL={3}, RAW RECORD SIZE={4}",
+                        Name, position, this.dataSize, dataSize, realSize));
             }
 
-            writer.Write(dataSize); // Size of compressed section + length
-            writer.Write(flags);
-            writer.Write(this.FormID);
-            writer.Write(this.Flags2);
-            writer.Write(this.Flags3);
+            snipStreamWrapper.WriteUInt32(dataSize);  //writer.Write(dataSize); // Size of compressed section + length
+            snipStreamWrapper.WriteUInt32(flags);  //writer.Write(flags);
+            snipStreamWrapper.WriteUInt32(FormID);  //writer.Write(this.FormID);
+            snipStreamWrapper.WriteUInt32(Flags2);  //writer.Write(this.Flags2);
+            snipStreamWrapper.WriteUInt32(Flags3);  //writer.Write(this.Flags3);
             if (compressed)
             {
-                writer.Write(realSize);
+                snipStreamWrapper.WriteUInt32(realSize);  //writer.Write(realSize);
             }
-
-            writer.Write(data, 0, data.Length);
+            if (dataSize > 0)
+                snipStreamWrapper.WriteBytes(data); //writer.Write(data, 0, data.Length);
         }
 
         private static bool MatchRecordCheckCondition(Dictionary<int, Conditional> conditions, SubrecordStructure ss)
