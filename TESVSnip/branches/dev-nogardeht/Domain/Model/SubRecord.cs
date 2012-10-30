@@ -99,14 +99,19 @@ namespace TESVSnip.Domain.Model
             br.Read(this.Data, 0, this.Data.Length);
         }
 
-        internal SubRecord(Record rec, string name, uint size)
+        internal SubRecord(Record rec, string name, SnipStreamWrapper snipStreamWrapper, uint size)
         {
             this.Owner = rec;
             Name = name;
             //this.Data = new byte[size];
             this.Data = new byte[size];
             //this.Data = ZLibStreamWrapper.ReadBytes(ref this.Data[], (int) size, BufferType.Output);
-            ZLibWrapper.ReadBytes(ref this.Data, (int) size, ZLibBufferType.OutputBuffer);
+            ZLibWrapper.ReadBytes(ref this.Data, (int)size, ZLibBufferType.OutputBuffer);
+            //if (snipStreamWrapper.SnipStream.Position >= 52776111)
+            //    Name = name;
+
+            //this.Data = snipStreamWrapper.ReadBytes((int) size);
+
             //br.Read(this.Data, 0, this.Data.Length);
         }
 
@@ -1531,23 +1536,45 @@ namespace TESVSnip.Domain.Model
             return this.Data;
         }
 
-        internal override void SaveData(BinaryWriter writer)
+        //internal override void SaveData(BinaryWriter writer)
+        //{
+        //    if (this.Data.Length > ushort.MaxValue)
+        //    {
+        //        WriteString(writer, "XXXX");
+        //        writer.Write((ushort)4);
+        //        writer.Write(this.Data.Length);
+        //        WriteString(writer, Name);
+        //        writer.Write((ushort)0);
+        //        writer.Write(this.Data, 0, this.Data.Length);
+        //    }
+        //    else
+        //    {
+        //        WriteString(writer, Name);
+        //        writer.Write((ushort)this.Data.Length);
+        //        writer.Write(this.Data, 0, this.Data.Length);
+        //    }
+        //}
+
+        internal override void SaveData(SnipStreamWrapper snipStreamWrapper)
         {
             if (this.Data.Length > ushort.MaxValue)
             {
-                WriteString(writer, "XXXX");
-                writer.Write((ushort)4);
-                writer.Write(this.Data.Length);
-                WriteString(writer, Name);
-                writer.Write((ushort)0);
-                writer.Write(this.Data, 0, this.Data.Length);
+
+                snipStreamWrapper.WriteStringToBuffer("XXXX"); //WriteString(writer, "XXXX");
+                snipStreamWrapper.WriteUInt16ToBuffer(4); //writer.Write((ushort)4);                
+                snipStreamWrapper.WriteIntToBuffer(this.Data.Length); //writer.Write(this.Data.Length);
+                snipStreamWrapper.WriteStringToBuffer(Name); //WriteString(writer, Name);
+                snipStreamWrapper.WriteUInt16ToBuffer(0); //writer.Write((ushort)0);
+
+                snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);
             }
             else
             {
-                WriteString(writer, Name);
-                writer.Write((ushort)this.Data.Length);
-                writer.Write(this.Data, 0, this.Data.Length);
+                snipStreamWrapper.WriteStringToBuffer(Name); //WriteString(writer, Name);
+                snipStreamWrapper.WriteUInt16ToBuffer((ushort) this.Data.Length); //writer.Write((ushort)this.Data.Length);
+                snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);
             }
         }
+
     }
 }

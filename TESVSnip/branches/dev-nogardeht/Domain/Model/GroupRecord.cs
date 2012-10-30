@@ -49,8 +49,9 @@ namespace TESVSnip.Domain.Model
         //internal GroupRecord(uint Size, BinaryReader br, bool Oblivion, string[] recFilter, bool filterAll)
         internal GroupRecord(uint Size, SnipStreamWrapper snipStreamWrapper, bool Oblivion, string[] recFilter, bool filterAll)
         {
-            GroupRecord gr;
             Name = "GRUP";
+            //if (snipStreamWrapper.SnipStream.Position == 52776119 ) //>= 52776111)
+            //    Name = "????";
             this.data = snipStreamWrapper.ReadBytes(4); //br.ReadBytes(4);
             this.groupType = snipStreamWrapper.ReadUInt32(); //br.ReadUInt32();
             this.dateStamp = snipStreamWrapper.ReadUInt32(); //br.ReadUInt32();
@@ -71,7 +72,7 @@ namespace TESVSnip.Domain.Model
                     {
                         bool skip = filterAll || (recFilter != null && Array.IndexOf(recFilter, contentType) >= 0);
                         //var gr = new GroupRecord(recsize, br, Oblivion, recFilter, skip);
-                        gr = new GroupRecord(recsize, snipStreamWrapper, Oblivion, recFilter, skip); //gr = new GroupRecord(recsize, br, Oblivion, recFilter, skip);
+                        var gr = new GroupRecord(recsize, snipStreamWrapper, Oblivion, recFilter, skip);
                         if (!filterAll)
                         {
                             this.AddRecord(gr);
@@ -197,11 +198,10 @@ namespace TESVSnip.Domain.Model
 
         public override void AddRecord(BaseRecord br)
         {
-          Rec r = null;
-          try
+            try
           {
             //var r = br as Rec;
-            r = br as Rec;
+            var r = br as Rec;
             if (r == null)
             {
               throw new TESParserException("Record to add was not of the correct type." + Environment.NewLine + "Groups can only hold records or other groups.");
@@ -479,31 +479,68 @@ namespace TESVSnip.Domain.Model
             return this.data;
         }
 
-        internal override void SaveData(BinaryWriter writer)
+        //internal override void SaveData(BinaryWriter writer)
+        //{
+        //    long startpos = writer.BaseStream.Position;
+        //    var svSize = (uint)this.Size;
+        //    var svSize2 = (uint)this.Size2;
+        //    WriteString(writer, "GRUP");
+        //    writer.Write(svSize); // Write uncompressed size for now
+        //    writer.Write(this.data);
+        //    writer.Write(this.groupType);
+        //    writer.Write(this.dateStamp);
+        //    writer.Write(this.flags); // should this check for oblivion?
+        //    foreach (Rec r in this.Records)
+        //    {
+        //        r.SaveData(writer);
+        //    }
+
+        //    writer.Flush();
+        //    long curpos = writer.BaseStream.Position;
+        //    var wrSize = (uint)(curpos - startpos);
+        //    if (wrSize != svSize2)
+        //    {
+        //        // fix size due to compression
+        //        writer.BaseStream.Position = startpos + 4;
+        //        writer.Write(wrSize); // Write the actuall compressed group size
+        //        writer.BaseStream.Position = curpos;
+        //    }
+        //}
+
+        internal override void SaveData(SnipStreamWrapper snipStreamWrapper)
         {
-            long startpos = writer.BaseStream.Position;
+            long startpos = snipStreamWrapper.SnipStream.Position; //writer.BaseStream.Position;
             var svSize = (uint)this.Size;
             var svSize2 = (uint)this.Size2;
-            WriteString(writer, "GRUP");
-            writer.Write(svSize); // Write uncompressed size for now
-            writer.Write(this.data);
-            writer.Write(this.groupType);
-            writer.Write(this.dateStamp);
-            writer.Write(this.flags); // should this check for oblivion?
+            //if (this.Name == "????")
+            //    snipStreamWrapper.WriteString("????"); //WriteString(writer, "GRUP");
+            //else
+                snipStreamWrapper.WriteString("GRUP"); //WriteString(writer, "GRUP");
+            snipStreamWrapper.WriteUInt32(svSize);  //writer.Write(svSize); // Write uncompressed size for now
+            snipStreamWrapper.WriteBytes(this.data); //writer.Write(this.data);
+            snipStreamWrapper.WriteUInt32(this.groupType);  //writer.Write(this.groupType);
+            snipStreamWrapper.WriteUInt32(this.dateStamp);  //writer.Write(this.dateStamp);
+            snipStreamWrapper.WriteUInt32(this.flags);  //writer.Write(this.flags); // should this check for oblivion?
+
             foreach (Rec r in this.Records)
             {
-                r.SaveData(writer);
+                r.SaveData(snipStreamWrapper);  //r.SaveData(writer);
             }
 
-            writer.Flush();
-            long curpos = writer.BaseStream.Position;
+            //if (this.Name == "????")
+            //    this.Name = "????";
+
+            //writer.Flush();
+            long curpos = snipStreamWrapper.SnipStream.Position;  //long curpos = writer.BaseStream.Position;
             var wrSize = (uint)(curpos - startpos);
             if (wrSize != svSize2)
             {
                 // fix size due to compression
-                writer.BaseStream.Position = startpos + 4;
-                writer.Write(wrSize); // Write the actuall compressed group size
-                writer.BaseStream.Position = curpos;
+                snipStreamWrapper.SnipStream.Seek(startpos + 4, SeekOrigin.Begin);
+                //snipStreamWrapper.SnipStream.Position = startpos + 4; //writer.BaseStream.Position = startpos + 4;
+                snipStreamWrapper.WriteUInt32(wrSize); //writer.Write(wrSize); // Write the actuall compressed group size
+                //snipStreamWrapper.SnipStream.Position = curpos; //writer.BaseStream.Position = curpos;
+                snipStreamWrapper.SnipStream.Seek(curpos, SeekOrigin.Begin);
             }
         }
 

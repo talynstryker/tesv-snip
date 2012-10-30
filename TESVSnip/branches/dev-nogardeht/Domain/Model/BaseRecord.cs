@@ -1,3 +1,5 @@
+using TESVSnip.Domain.Services;
+
 namespace TESVSnip.Domain.Model
 {
     using System;
@@ -176,7 +178,8 @@ namespace TESVSnip.Domain.Model
 
         internal abstract List<string> GetIDs(bool lower);
 
-        internal abstract void SaveData(BinaryWriter writer);
+        //internal abstract void SaveData(BinaryWriter writer);
+        internal abstract void SaveData(SnipStreamWrapper snipStreamWrapper);
 
         protected static void FireRecordChangeUpdate(object sender, BaseRecord rec)
         {
@@ -207,7 +210,8 @@ namespace TESVSnip.Domain.Model
             try
             {
                 br.Read(RecByte, 0, 4);
-                return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
+                return string.Empty + ((char) RecByte[0]) + ((char) RecByte[1]) + ((char) RecByte[2]) +
+                       ((char) RecByte[3]);
             }
             catch (Exception ex)
             {
@@ -220,7 +224,8 @@ namespace TESVSnip.Domain.Model
             try
             {
                 Array.Copy(rec, RecByte, 4);
-                return string.Empty + ((char)RecByte[0]) + ((char)RecByte[1]) + ((char)RecByte[2]) + ((char)RecByte[3]);
+                return string.Empty + ((char) RecByte[0]) + ((char) RecByte[1]) + ((char) RecByte[2]) +
+                       ((char) RecByte[3]);
             }
             catch (Exception ex)
             {
@@ -228,15 +233,17 @@ namespace TESVSnip.Domain.Model
             }
         }
 
-        protected static void WriteString(BinaryWriter bw, string s)
-        {
-            var b = new byte[s.Length];
-            for (int i = 0; i < s.Length; i++)
-            {
-                b[i] = (byte)s[i];
-            }
+        //protected static void WriteString(BinaryWriter bw, string s)
+        //{
+        //    var b = new byte[s.Length];
+        //    for (int i = 0; i < s.Length; i++)
+        //    {
+        //        b[i] = (byte) s[i];
+        //    }
 
-            bw.Write(b, 0, s.Length);
-        }
+        //    bw.Write(b, 0, s.Length);
+        //}
+
+
     }
 }

@@ -1813,10 +1813,15 @@ namespace TESVSnip.UI.Forms
             this.SaveModDialog.FileName = p.Name;
             if (this.SaveModDialog.ShowDialog(this) == DialogResult.OK)
             {
+                Stopwatch sw = Stopwatch.StartNew();
                 p.Save(this.SaveModDialog.FileName);
                 mruMenu.AddFileAndSaveToRegistry(this.SaveModDialog.FileName);
                 this.FixMasters();
                 this.PluginTree.RebuildDisplayNode();
+                sw.Stop();
+                TimeSpan t = TimeSpan.FromMilliseconds(sw.ElapsedMilliseconds);
+                toolStripStatusLabel.Text =
+                    string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString("MSG_SavePluginIn"), t.ToString());
             }
         }
 
@@ -1835,10 +1840,9 @@ namespace TESVSnip.UI.Forms
             }
 
             var p = this.GetPluginFromNode(this.PluginTree.SelectedRecord);
-            DialogResult result;
             if (p.Filtered)
             {
-                result = MessageBox.Show(
+                DialogResult result = MessageBox.Show(
                     this, Resources.SavePluginWithFilterAppliedInquiry, Resources.WarningText, MessageBoxButtons.YesNo,
                     MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2);
                 if (result == DialogResult.No)
@@ -2151,6 +2155,7 @@ namespace TESVSnip.UI.Forms
             {
                 string[] fileNames = new string[] {filename};
                 mruMenu.SetFirstFile(number);
+                this.Update();
                 LoadPluginFromListOfFileNames(fileNames);
             }
             else

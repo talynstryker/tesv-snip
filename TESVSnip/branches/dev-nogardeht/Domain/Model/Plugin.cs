@@ -468,12 +468,14 @@ namespace TESVSnip.Domain.Model
 
         public byte[] Save()
         {
-            var ms = new MemoryStream();
-            var bw = new BinaryWriter(ms);
-            this.SaveData(bw);
-            byte[] b = ms.ToArray();
-            bw.Close();
-            return b;
+            throw new NotImplementedException();
+
+            //var ms = new MemoryStream();
+            //var bw = new BinaryWriter(ms);
+            //this.SaveData(bw);
+            //byte[] b = ms.ToArray();
+            //bw.Close();
+            //return b;
         }
 
         public bool TryGetRecordByID(uint key, out Record value)
@@ -747,19 +749,17 @@ namespace TESVSnip.Domain.Model
         internal void Save(string filePath)
         {
             UpdateRecordCount();
-            bool existed = false;
             string extension = string.Empty;
-            BinaryWriter bw;
+            //BinaryWriter bw;
+            SnipStreamWrapper snipStreamWrapper = null;
 
             string tmpFile = filePath + ".new";
 
-
-            if (File.Exists(filePath))
-            {
-                existed = true;
-                //bw = new BinaryWriter(File.OpenWrite(filePath + ".new"));
-                //extension = ".new";
-            }
+            //if (File.Exists(filePath))
+            //{
+            //    //bw = new BinaryWriter(File.OpenWrite(filePath + ".new"));
+            //    //extension = ".new";
+            //}
             //else
             //{
             //    //bw = new BinaryWriter(File.OpenWrite(filePath));
@@ -768,16 +768,27 @@ namespace TESVSnip.Domain.Model
 
             //fs = new FileStream(filePath + extension, FileMode.Open, FileAccess.Write);
             //bw = new BinaryWriter(File.OpenWrite(filePath + extension));
-            bw = new BinaryWriter(File.OpenWrite(tmpFile));
+
+            //bw = new BinaryWriter(File.OpenWrite(tmpFile));
+            FileStream fs = new FileStream(tmpFile, FileMode.Create, FileAccess.Write, FileShare.None);
+
             try
             {
-                this.SaveData(bw);
+                ZLibWrapper.AllocateBuffers();
+                snipStreamWrapper = new SnipStreamWrapper(fs);
+                snipStreamWrapper.AllocateBuffers();
+
+                this.SaveData(snipStreamWrapper);
                 Name = Path.GetFileName(filePath);
                 PluginPath = Path.GetDirectoryName(filePath);
             }
             finally
             {
-                bw.Close();
+                //bw.Close();                
+                snipStreamWrapper.CloseFile();
+                snipStreamWrapper.ReleaseBuffers();
+                snipStreamWrapper = null;
+                fs = null;
             }
 
             try
@@ -846,11 +857,21 @@ namespace TESVSnip.Domain.Model
             return dir;
         }
 
-        internal override void SaveData(BinaryWriter writer)
+        
+        //internal override void SaveData(BinaryWriter writer)
+        //{
+        //    foreach (Rec r in this.Records)
+        //    {
+        //        r.SaveData(writer);
+        //    }
+        //}
+
+        internal override void SaveData(SnipStreamWrapper snipStreamWrapper)
         {
+
             foreach (Rec r in this.Records)
             {
-                r.SaveData(writer);
+                r.SaveData(snipStreamWrapper);
             }
         }
 
@@ -948,6 +969,9 @@ namespace TESVSnip.Domain.Model
                 {
                     while (!snipStreamWrapper.Eof())  //while (br.PeekChar() != -1)
                     {
+                        if (snipStreamWrapper.SnipStream.Position >= 52776111)
+                            s = "";
+
                         s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
                         recsize = snipStreamWrapper.ReadUInt32(); //recsize = br.ReadUInt32();
                         if (s == "GRUP")

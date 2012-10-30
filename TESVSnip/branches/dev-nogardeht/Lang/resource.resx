@@ -323,4 +323,7 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="MSG_ERR_CanNotCreateBackup" xml:space="preserve">
     <value>Error. Can't create a backup of plugin. Do you want save it anyway ?</value>
   </data>
+  <data name="MSG_SavePluginIn" xml:space="preserve">
+    <value>Save Plugin in {0}.</value>
+  </data>
 </root>
