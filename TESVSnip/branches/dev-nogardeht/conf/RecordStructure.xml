@@ -5200,6 +5200,7 @@
 			<Element name="NW Cell Y" type="short"/>
 			<Element name="SE Cell X" type="short"/>
 			<Element name="SE Cell Y" type="short"/>
+      <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="ONAM" desc="World Map Offset Data" optional="1">
 			<Element name="World Map Scale" type="float"/>
