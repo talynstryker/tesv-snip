@@ -4,11 +4,16 @@ namespace TESVSnip.Domain.Services
 
     internal static class Compressor
     {
-        private static readonly string[] autoCompRecList = new string[0];
+        private static readonly string[] AutoCompRecList = new string[0];
 
+        /// <summary>
+        /// UseDefaultRecordCompression: Test if record must be compressed
+        /// </summary>
+        /// <param name="name">Record name</param>
+        /// <returns>True if record must be compressed</returns>
         public static bool CompressRecord(string name)
         {
-            return Array.BinarySearch(autoCompRecList, name) >= 0;
+            return Array.BinarySearch(AutoCompRecList, name) >= 0;
         }
     }
 }
