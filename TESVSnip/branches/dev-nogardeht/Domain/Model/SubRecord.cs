@@ -1559,20 +1559,29 @@ namespace TESVSnip.Domain.Model
         {
             if (this.Data.Length > ushort.MaxValue)
             {
-
                 snipStreamWrapper.WriteStringToBuffer("XXXX"); //WriteString(writer, "XXXX");
                 snipStreamWrapper.WriteUInt16ToBuffer(4); //writer.Write((ushort)4);                
                 snipStreamWrapper.WriteIntToBuffer(this.Data.Length); //writer.Write(this.Data.Length);
                 snipStreamWrapper.WriteStringToBuffer(Name); //WriteString(writer, Name);
                 snipStreamWrapper.WriteUInt16ToBuffer(0); //writer.Write((ushort)0);
 
-                snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);
+                snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);}
             }
             else
             {
-                snipStreamWrapper.WriteStringToBuffer(Name); //WriteString(writer, Name);
-                snipStreamWrapper.WriteUInt16ToBuffer((ushort) this.Data.Length); //writer.Write((ushort)this.Data.Length);
-                snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);
+                if (Name == "????")
+                {
+                    //snipStreamWrapper.WriteStringToBuffer(Name); //WriteString(writer, Name);
+                    //snipStreamWrapper.WriteUInt16ToBuffer((ushort) this.Data.Length); //writer.Write((ushort)this.Data.Length);
+                    //snipStreamWrapper.WriteUInt32ToBuffer(0);
+                    snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);
+                }
+                else
+                {
+                    snipStreamWrapper.WriteStringToBuffer(Name); //WriteString(writer, Name);
+                    snipStreamWrapper.WriteUInt16ToBuffer((ushort) this.Data.Length); //writer.Write((ushort)this.Data.Length);
+                    snipStreamWrapper.WriteByteToBuffer(ref this.Data, 0); //writer.Write(this.Data, 0, this.Data.Length);
+                }
             }
         }
 
