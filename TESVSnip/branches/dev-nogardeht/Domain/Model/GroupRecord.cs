@@ -515,9 +515,9 @@ namespace TESVSnip.Domain.Model
             //if (this.Name == "????")
             //    snipStreamWrapper.WriteString("????"); //WriteString(writer, "GRUP");
             //else
-                snipStreamWrapper.WriteString("GRUP"); //WriteString(writer, "GRUP");
+                snipStreamWrapper.WriteStringInFileStream("GRUP"); //WriteString(writer, "GRUP");
             snipStreamWrapper.WriteUInt32(svSize);  //writer.Write(svSize); // Write uncompressed size for now
-            snipStreamWrapper.WriteBytes(this.data); //writer.Write(this.data);
+            snipStreamWrapper.WriteBytesArrayInFileStream(this.data); //writer.Write(this.data);
             snipStreamWrapper.WriteUInt32(this.groupType);  //writer.Write(this.groupType);
             snipStreamWrapper.WriteUInt32(this.dateStamp);  //writer.Write(this.dateStamp);
             snipStreamWrapper.WriteUInt32(this.flags);  //writer.Write(this.flags); // should this check for oblivion?

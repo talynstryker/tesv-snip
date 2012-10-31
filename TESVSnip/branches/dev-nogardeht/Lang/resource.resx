@@ -305,13 +305,13 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="MSG_ErrorWithNewLine" xml:space="preserve">
     <value>Error : \n {0}</value>
   </data>
-  <data name="MSG_ZLib_Compress" xml:space="preserve">
+  <data name="ZLib_Compress" xml:space="preserve">
     <value>Compress</value>
   </data>
-  <data name="MSG_ZLib_Decompress" xml:space="preserve">
+  <data name="ZLib_Decompress" xml:space="preserve">
     <value>Decompress</value>
   </data>
-  <data name="MSG_ZLib_OutputBufferEmpty" xml:space="preserve">
+  <data name="ZLib_OutputBufferEmpty" xml:space="preserve">
     <value>Compression error. Output buffer is empty !"</value>
   </data>
   <data name="MSG_DoYouWantCreateBackupBefore" xml:space="preserve">
@@ -334,5 +334,53 @@ Duration of process between 15 and 35 seconds.</value>
   </data>
   <data name="Global_Msg_TESVsnipError" xml:space="preserve">
     <value>TESVsnip Error</value>
+  </data>
+  <data name="SnipStreamWrapper_JumpTo_GreaterSize" xml:space="preserve">
+    <value>WARNING: The final position ({0}) is greater than the size of file ({1}).</value>
+  </data>
+  <data name="SnipStreamWrapper_JumpTo_PositionNegative" xml:space="preserve">
+    <value>WARNING: The position is negative ({0}).</value>
+  </data>
+  <data name="ZLibWrapper_BufferIsTooSmall" xml:space="preserve">
+    <value>Static buffer is too small. DataSize={0} / Buffer={1}.</value>
+  </data>
+  <data name="ZLibWrapper_BytesToWriteIsNegative" xml:space="preserve">
+    <value>The number of bytes to write cannot be negative.</value>
+  </data>
+  <data name="ZLibWrapper_Error" xml:space="preserve">
+    <value>ZLibWrapper Error</value>
+  </data>
+  <data name="ZLibWrapper_ExceedMaxBufferSize" xml:space="preserve">
+    <value>Bytes to read ({0}) exceed max buffer size ({1}).</value>
+  </data>
+  <data name="ZLibWrapper_FinalPositionOverBufferSize" xml:space="preserve">
+    <value>The final position ({0}) in output buffer is over the buffer size {1}.</value>
+  </data>
+  <data name="ZLibWrapper_FinalPositionOverBufferSize2" xml:space="preserve">
+    <value>The final position ({0} in {1} buffer is over the buffer size {2}.</value>
+  </data>
+  <data name="ZLibWrapper_InputBufferIsEmpty" xml:space="preserve">
+    <value>Input buffer is empty.</value>
+  </data>
+  <data name="ZLibWrapper_OutputBufferIsEmpty" xml:space="preserve">
+    <value>Output buffer is empty.</value>
+  </data>
+  <data name="ZLibWrapper_OutputBufferIsTooSmall" xml:space="preserve">
+    <value>The output buffer is too small. Buffer size={0}, Number of bytes to write={1}.</value>
+  </data>
+  <data name="ZLibWrapper_PositionIsNegative" xml:space="preserve">
+    <value>The position cannot be negative.</value>
+  </data>
+  <data name="ZLibWrapper_PositionOverBufferSize" xml:space="preserve">
+    <value>The position cannot be greater than buffer size ({0}).</value>
+  </data>
+  <data name="ZLibWrapper_RequestedReadByteError" xml:space="preserve">
+    <value>The starting position is {0}. A reading of {1} bytes is requested. The number of bytes that can be read in the buffer is {2}.</value>
+  </data>
+  <data name="ZLibWrapper_SizeOverStreamSize" xml:space="preserve">
+    <value>Copy size {0} is over stream length {1}.</value>
+  </data>
+  <data name="ZLib_Error" xml:space="preserve">
+    <value>ZLib error</value>
   </data>
 </root>

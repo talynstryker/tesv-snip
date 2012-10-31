@@ -17,7 +17,7 @@
 
         private void LoadSettings_Load(object sender, EventArgs e)
         {
-            this.rdoNeverCompressRecords.Checked = !Settings.Default.UseDefaultRecordCompression;
+            this.rdoNeverCompressRecords.Checked = !Settings.Default.UsePluginRecordCompression;
             this.rdoDefaultCompressRecords.Checked = Settings.Default.UseDefaultRecordCompression;
             this.rdoPluginCompressRecords.Checked = Settings.Default.UsePluginRecordCompression;
             this.chkEnableAutoCompress.Checked = Settings.Default.EnableAutoCompress;

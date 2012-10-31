@@ -20,10 +20,6 @@ namespace TESVSnip.DotZLib
         {
             try
             {
-                if(Marshal.SizeOf(_ztream)>kBufferSize)
-                {
-                    string toto = "stop";
-                }
                 int retval = inflateInit_(ref _ztream, Info.Version, Marshal.SizeOf(_ztream));
                 if (retval != 0)
                 {

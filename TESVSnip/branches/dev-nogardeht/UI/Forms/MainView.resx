@@ -462,11 +462,11 @@
   <data name="compressionSettingsToolStripMenuItem.Text" xml:space="preserve">
     <value>&amp;Compression Settings...</value>
   </data>
-  <data name="setConfigToDefaultToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
+  <data name="resetSettingsToDefaultsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>208, 22</value>
   </data>
-  <data name="setConfigToDefaultToolStripMenuItem.Text" xml:space="preserve">
-    <value>Set config to default</value>
+  <data name="resetSettingsToDefaultsToolStripMenuItem.Text" xml:space="preserve">
+    <value>Reset settings to defaults</value>
   </data>
   <data name="optionsToolStripMenuItem.Size" type="System.Drawing.Size, System.Drawing">
     <value>61, 20</value>
@@ -1437,7 +1437,7 @@
     <value>CenterScreen</value>
   </data>
   <data name="$this.Text" xml:space="preserve">
-    <value>TESsnip 4.4.0a(Skyrim edition)</value>
+    <value>TESsnip 4.4.0a (Skyrim Edition)</value>
   </data>
   <data name="&gt;&gt;fileToolStripMenuItem.Name" xml:space="preserve">
     <value>fileToolStripMenuItem</value>
@@ -1709,10 +1709,10 @@
   <data name="&gt;&gt;compressionSettingsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
-  <data name="&gt;&gt;setConfigToDefaultToolStripMenuItem.Name" xml:space="preserve">
-    <value>setConfigToDefaultToolStripMenuItem</value>
+  <data name="&gt;&gt;resetSettingsToDefaultsToolStripMenuItem.Name" xml:space="preserve">
+    <value>resetSettingsToDefaultsToolStripMenuItem</value>
   </data>
-  <data name="&gt;&gt;setConfigToDefaultToolStripMenuItem.Type" xml:space="preserve">
+  <data name="&gt;&gt;resetSettingsToDefaultsToolStripMenuItem.Type" xml:space="preserve">
     <value>System.Windows.Forms.ToolStripMenuItem, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toolsToolStripMenuItem.Name" xml:space="preserve">

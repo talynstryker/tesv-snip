@@ -582,6 +582,9 @@
     </EmbeddedResource>
     <None Include="build\tesvsnip.snk" />
     <None Include="changelog.rtf" />
+    <None Include="conf\DockPanel.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="Domain\Data\RecordStructure.xsd" />
     <None Include="TranslateUI\Tools\ResEx\ResEx.chm" />
     <None Include="TranslateUI\Tools\ResEx\ResEx.exe.config" />

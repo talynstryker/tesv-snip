@@ -652,7 +652,7 @@ namespace TESVSnip.Domain.Model
             //var position = writer.BaseStream.Position;
             var position = snipStreamWrapper.SnipStream.Position;
             //WriteString(writer, Name);
-            snipStreamWrapper.WriteString(Name);
+            snipStreamWrapper.WriteStringInFileStream(Name);
 
             var compressed = false;
             byte[] data;
@@ -728,7 +728,7 @@ namespace TESVSnip.Domain.Model
                 snipStreamWrapper.WriteUInt32(realSize);  //writer.Write(realSize);
             }
             if (dataSize > 0)
-                snipStreamWrapper.WriteBytes(data); //writer.Write(data, 0, data.Length);
+                snipStreamWrapper.WriteBytesArrayInFileStream(data); //writer.Write(data, 0, data.Length);
         }
 
         private static bool MatchRecordCheckCondition(Dictionary<int, Conditional> conditions, SubrecordStructure ss)

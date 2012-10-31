@@ -1,3 +1,5 @@
+using System.Globalization;
+
 namespace TESVSnip.Domain.Services
 {
     using System.Drawing;
@@ -68,7 +70,7 @@ namespace TESVSnip.Domain.Services
         /// Retrieve the window position
         /// </summary>
         /// <param name="window">Window name</param>
-        /// <param name="f">Object form</param>
+        /// <param name="f">Windows form reference</param>
         public static void GetWindowPosition(string window, Form f)
         {
             var xe = _rootNode.SelectSingleNode("descendant::window[@name='" + window + "']") as XmlElement;
@@ -97,7 +99,7 @@ namespace TESVSnip.Domain.Services
                 try
                 {
                     _xmlDoc.Load(XmlPath);
-                    _rootNode = (XmlElement) _xmlDoc.LastChild;
+                    _rootNode = (XmlElement)_xmlDoc.LastChild;
                 }
                 catch
                 {
@@ -114,16 +116,23 @@ namespace TESVSnip.Domain.Services
             }
         }
 
-
+        /// <summary>
+        /// Remove string parameters
+        /// </summary>
+        /// <param name="name">Parameter name</param>
         public static void RemoveString(string name)
         {
             var xe = _rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
             if (xe != null)
-            {
-                xe.ParentNode.RemoveChild(xe);
-            }
+                if (xe.ParentNode != null)
+                    xe.ParentNode.RemoveChild(xe);
         }
 
+        /// <summary>
+        /// Set a boolean value in a parameter
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <param name="value">Boolean value</param>
         public static void SetBool(string name, bool value)
         {
             var xe = _rootNode.SelectSingleNode("descendant::boolValue[@name='" + name + "']") as XmlElement;
@@ -139,6 +148,11 @@ namespace TESVSnip.Domain.Services
             _xmlDoc.Save(XmlPath);
         }
 
+        /// <summary>
+        /// Set a string value in a parameter
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <param name="value">String value</param>
         public static void SetString(string name, string value)
         {
             var xe = _rootNode.SelectSingleNode("descendant::strValue[@name='" + name + "']") as XmlElement;
@@ -154,6 +168,11 @@ namespace TESVSnip.Domain.Services
             _xmlDoc.Save(XmlPath);
         }
 
+        /// <summary>
+        /// Set a string array in a parameter
+        /// </summary>
+        /// <param name="name">Parameter name</param>
+        /// <param name="items">String array</param>
         public static void SetStringArray(string name, string[] items)
         {
             var xe = _rootNode.SelectSingleNode("descendant::strArray[@name='" + name + "']") as XmlElement;
@@ -179,12 +198,14 @@ namespace TESVSnip.Domain.Services
             _xmlDoc.Save(XmlPath);
         }
 
+        /// <summary>
+        /// Set windows position on screen
+        /// </summary>
+        /// <param name="window">Windows name</param>
+        /// <param name="f">Windows form reference</param>
         public static void SetWindowPosition(string window, Form f)
         {
-            if (f.WindowState == FormWindowState.Minimized)
-            {
-                return;
-            }
+            if (f.WindowState == FormWindowState.Minimized) return;
 
             Point location = f.Location;
             Size size = f.ClientSize;
@@ -198,13 +219,13 @@ namespace TESVSnip.Domain.Services
             }
 
             XmlAttribute xa = _xmlDoc.CreateAttribute("left");
-            xa.Value = location.X.ToString();
+            xa.Value = location.X.ToString(CultureInfo.InvariantCulture);
             xe.Attributes.SetNamedItem(xa);
             xa = _xmlDoc.CreateAttribute("top");
-            xa.Value = location.Y.ToString();
+            xa.Value = location.Y.ToString(CultureInfo.InvariantCulture);
             xe.Attributes.SetNamedItem(xa);
             xa = _xmlDoc.CreateAttribute("width");
-            xa.Value = size.Width.ToString();
+            xa.Value = size.Width.ToString(CultureInfo.InvariantCulture);
             xe.Attributes.SetNamedItem(xa);
             xa = _xmlDoc.CreateAttribute("height");
             xa.Value = size.Height.ToString();
