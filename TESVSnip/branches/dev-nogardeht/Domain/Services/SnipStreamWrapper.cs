@@ -1,4 +1,4 @@
-﻿using TESVSnip.DotZLib;
+﻿using System.Diagnostics;
 
 namespace TESVSnip.Domain.Services
 {
@@ -9,7 +9,7 @@ namespace TESVSnip.Domain.Services
     using Model;
 
     /// <summary>
-    /// ZLibStreamWrapper
+    /// SnipStreamWrapper
     /// </summary>
     public class SnipStreamWrapper
     {
@@ -17,21 +17,13 @@ namespace TESVSnip.Domain.Services
 
         public byte[] OutputBuffer;
 
+        private readonly long _streamSize;
         private byte[] _bytes2 = new byte[2];
 
         private byte[] _bytes4 = new byte[4];
 
-        private readonly long _streamSize;
-
-        public uint MaxOutputBufferPosition { get; private set; } // for calculate an optimized buffer size
-
-        public uint OutputBufferLength { get; private set; }
-
-        public uint OutputBufferPosition { get; private set; }
-
         /// <summary>
-        /// Initializes a new instance of the <see cref="SnipStreamWrapper"/> class. 
-        /// Create new instance of SnipStreamWrapper
+        /// Initializes a new instance of the <see cref="SnipStreamWrapper"/> class.
         /// </summary>
         /// <param name="fs">FileStream</param>
         public SnipStreamWrapper(FileStream fs)
@@ -41,56 +33,21 @@ namespace TESVSnip.Domain.Services
             SnipStream.Seek(0, SeekOrigin.Begin);
         }
 
-        /// <summary>
-        /// Allocate the buffers size
-        /// </summary>
-        public void AllocateBuffers()
-        {
-            if (OutputBuffer != null) ReleaseBuffers(); 
-            OutputBuffer = new byte[MaxBufferSize];
-            ResetBuffer();
-        }
+        public uint MaxOutputBufferPosition { get; private set; } // for calculate an optimized buffer size
+
+        public uint OutputBufferLength { get; private set; }
+
+        public uint OutputBufferPosition { get; private set; }
 
         /// <summary>
-        /// Reset input/Output buffer with zero
-        /// </summary>
-        public void ResetBuffer()
-        {
-            ResetBufferSizeAndPosition();
-            MaxOutputBufferPosition = 0;
-            Array.Clear(OutputBuffer, 0, MaxBufferSize);
-        }
-
-        /// <summary>
-        /// Reset size and position of input and output buffer
-        /// </summary>
-        public void ResetBufferSizeAndPosition()
-        {
-            OutputBufferLength = 0;
-            OutputBufferPosition = 0;
-        }
-
-        /// <summary>
-        /// Release the buffers
-        /// </summary>
-        public void ReleaseBuffers()
-        {
-            OutputBuffer = null;
-
-            GC.Collect();
-            GC.WaitForPendingFinalizers();
-            GC.Collect();
-        }
-
-        /// <summary>
-        /// Gets the file stream
+        /// Gets the stream of FileStream
         /// </summary>
         public FileStream SnipStream { get; private set; }
 
         /// <summary>
         /// Gets the current position in stream
         /// </summary>
-        protected long Position
+        protected long CurrentStreamPosition
         {
             get
             {
@@ -101,9 +58,19 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// close the file
+        /// Allocate the buffers size
         /// </summary>
-        public void CloseFile()
+        public void AllocateBuffers()
+        {
+            if (OutputBuffer != null) ReleaseBuffers();
+            OutputBuffer = new byte[MaxBufferSize];
+            ResetBuffer();
+        }
+
+        /// <summary>
+        /// Close the file stream
+        /// </summary>
+        public void CloseAndDisposeFileStream()
         {
             if (SnipStream != null)
             {
@@ -115,12 +82,40 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
+        /// Copy the input buffer to output buffer
+        /// </summary>
+        /// <param name="b">The data Size.</param>
+        public void CopyOutputBufferToData(ref byte[] b)
+        {
+            try
+            {
+                if (OutputBufferLength > 0)
+                {
+                    b = new byte[OutputBufferLength];
+                    Array.Copy(OutputBuffer, 0, b, 0, OutputBufferLength);
+                }
+            }
+            catch (Exception ex)
+            {
+                string msg = "SnipStreamWrapper.CopyOutputBufferToData" +
+                             Environment.NewLine +
+                             "Message: " + ex.Message +
+                             Environment.NewLine +
+                             "StackTrace: " + ex.StackTrace;
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+        }
+
+        /// <summary>
         /// Gets the End Of File
         /// </summary>
         /// <returns>True if end of file</returns>
         public bool Eof()
         {
-            return SnipStream.Position == SnipStream.Length;
+            if (SnipStream != null)
+                return SnipStream.Position == SnipStream.Length;
+            return true; // force end of file
         }
 
         /// <summary>
@@ -131,28 +126,34 @@ namespace TESVSnip.Domain.Services
         /// <exception cref="Exception">An exception if size or position error</exception>
         public void JumpTo(int offset, SeekOrigin from)
         {
-            long newPosition = SnipStream.Position;
+            if (SnipStream != null)
+            {
+                long newPosition = SnipStream.Position;
 
-            if (from == SeekOrigin.Begin) newPosition = offset;
-            if (from == SeekOrigin.Current) newPosition += offset;
-            if (from == SeekOrigin.End) newPosition += offset;
+                if (@from == SeekOrigin.Begin) newPosition = offset;
+                if (@from == SeekOrigin.Current) newPosition += offset;
+                if (@from == SeekOrigin.End) newPosition += offset;
 
-            if (newPosition > _streamSize)
-                throw new Exception(
-                    message: string.Format("WARNING: The final position ({0}) is greater than the size of file ({1}).",
-                                           arg0: newPosition.ToString(CultureInfo.InvariantCulture),
-                                           arg1: _streamSize.ToString(CultureInfo.InvariantCulture)));
+                if (newPosition > _streamSize)
+                    throw new Exception(
+                        string.Format(
+                            format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "SnipStreamWrapper_JumpTo_GreaterSize"),
+                            arg0: newPosition.ToString(CultureInfo.InvariantCulture),
+                            arg1: _streamSize.ToString(CultureInfo.InvariantCulture)));
 
-            if (newPosition < 0)
-                throw new Exception(
-                    message: string.Format("WARNING: The position is negative ({0}).",
-                                           arg0: newPosition.ToString(CultureInfo.InvariantCulture)));
 
-            SnipStream.Seek(offset, from);
+                if (newPosition < 0)
+                    throw new Exception(
+                        string.Format(
+                            format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "SnipStreamWrapper_JumpTo_PositionNegative"),
+                            arg0: newPosition.ToString(CultureInfo.InvariantCulture)));
+
+                SnipStream.Seek(offset, from);
+            }
         }
 
         /// <summary>
-        /// Read bytes in stream from the current position
+        /// Read bytes in file stream from the current position
         /// </summary>
         /// <param name="count">The maximum number of bytes to read.</param>
         /// <returns>Contains the specified byte array.</returns>
@@ -164,7 +165,7 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// Read UInt16 in stream from the current position
+        /// Read UInt16 in file stream from the current position
         /// </summary>
         /// <returns>An UInt16 number</returns>
         public UInt16 ReadUInt16()
@@ -174,7 +175,7 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// Read UInt32 in stream from the current position
+        /// Read UInt32 in file stream from the current position
         /// </summary>
         /// <returns>An UInt32 number</returns>
         public UInt32 ReadUInt32()
@@ -184,83 +185,57 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// Write a string in file
+        /// Release the buffers
         /// </summary>
-        /// <param name="s">String to write</param>
-        public void WriteString(string s)
+        public void ReleaseBuffers()
         {
-            var b = new byte[s.Length];
-            for (int i = 0; i < s.Length; i++)
-            {
-                b[i] = (byte) s[i];
-            }
-
-            SnipStream.Write(b, 0, s.Length);
+            OutputBuffer = null;
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
+            GC.Collect();
         }
 
         /// <summary>
-        /// Write a string into buffer
+        /// Reset output buffer
         /// </summary>
-        /// <param name="s">String to write</param>
-        public void WriteStringToBuffer(string s)
+        public void ResetBuffer()
         {
-            foreach (char t in s)
-            {
-                OutputBuffer[OutputBufferPosition] = (byte) t;
-                OutputBufferPosition++;
-                OutputBufferLength++;
-            }
+            ResetBufferSizeAndPosition();
+            MaxOutputBufferPosition = 0;
+            Array.Clear(OutputBuffer, 0, MaxBufferSize);
         }
 
         /// <summary>
-        /// Write UInt16 into buffer
+        /// Reset size and position of output buffer
         /// </summary>
-        /// <param name="value">A UInt16 value.</param>
-        public void WriteUInt16ToBuffer(UInt16 value)
+        public void ResetBufferSizeAndPosition()
         {
-            _bytes2 = TESVSnip.Framework.TypeConverter.s2h(value);
-            Array.Copy(_bytes2, 0, OutputBuffer, OutputBufferPosition, 2);
-            OutputBufferPosition += 2;
-            OutputBufferLength += 2;
+            OutputBufferLength = 0;
+            OutputBufferPosition = 0;
         }
 
         /// <summary>
-        /// Write UInt32 into buffer
+        /// Writes the output buffer in the file stream
         /// </summary>
-        /// <param name="value">A UInt32 value.</param>
-        public void WriteUInt32ToBuffer(UInt32 value)
+        public void WriteOutputBufferInFileStream()
         {
-            _bytes4 = TESVSnip.Framework.TypeConverter.i2h(value);
-            Array.Copy(_bytes4, 0, OutputBuffer, OutputBufferPosition, 4);
-            OutputBufferPosition += 4;
-            OutputBufferLength += 4;
+            if (SnipStream == null) return;
+            if (OutputBufferLength <= 0) return;
+            SnipStream.Write(OutputBuffer, 0, (int) OutputBufferLength);
         }
 
         /// <summary>
-        /// Write Int into buffer
+        /// Writes an array of bytes in the file stream
         /// </summary>
-        /// <param name="value">A Int value.</param>
-        public void WriteIntToBuffer(int value)
+        /// <param name="b">A byte array.</param>
+        public void WriteBytesArrayInFileStream(byte[] b)
         {
-            _bytes4 = TESVSnip.Framework.TypeConverter.si2h(value);
-            Array.Copy(_bytes4, 0, OutputBuffer, OutputBufferPosition, 4);
-            OutputBufferPosition += 4;
-            OutputBufferLength += 4;
+            if (SnipStream == null) return;
+            SnipStream.Write(b, 0, b.Length);
         }
 
         /// <summary>
-        /// Write Int into buffer
-        /// </summary>
-        /// <param name="value">A Int value.</param>
-        public void WriteIntToBuffer(ushort value)
-        {
-            _bytes4 = TESVSnip.Framework.TypeConverter.si2h(value);
-            Array.Copy(_bytes4, 0, OutputBuffer, OutputBufferPosition, 4);
-            OutputBufferPosition += 4;
-            OutputBufferLength += 4;
-        }
-        /// <summary>
-        /// Write byte[] into buffer
+        /// Write byte[] in output buffer
         /// </summary>
         /// <param name="b">An array of bytes.</param>
         /// <param name="sourceIndex">starting index</param>
@@ -272,65 +247,93 @@ namespace TESVSnip.Domain.Services
         }
 
         /// <summary>
-        /// Copy the input buffer to oupput buffer
+        /// Write Int in output buffer
         /// </summary>
-        /// <param name="b">The data Size. </param>
-        public void CopyOutputBufferToData(ref byte[] b)
+        /// <param name="value">A Int value.</param>
+        public void WriteIntToBuffer(int value)
         {
-            string msg;
-            try
+            _bytes4 = Framework.TypeConverter.si2h(value);
+            Array.Copy(_bytes4, 0, OutputBuffer, OutputBufferPosition, 4);
+            OutputBufferPosition += 4;
+            OutputBufferLength += 4;
+        }
+
+        /// <summary>
+        /// Write ushort into buffer
+        /// </summary>
+        /// <param name="value">An ushort value.</param>
+        public void WriteIntToBuffer(ushort value)
+        {
+            _bytes4 = Framework.TypeConverter.si2h(value);
+            Array.Copy(_bytes4, 0, OutputBuffer, OutputBufferPosition, 4);
+            OutputBufferPosition += 4;
+            OutputBufferLength += 4;
+        }
+
+        /// <summary>
+        /// Writes a string in the file stream
+        /// </summary>
+        /// <param name="s">String to write</param>
+        public void WriteStringInFileStream(string s)
+        {
+            if (SnipStream == null) return;
+            if (string.IsNullOrWhiteSpace(s)) return;
+            var b = new byte[s.Length];
+            for (int i = 0; i < s.Length; i++)
+                b[i] = (byte) s[i];
+
+            SnipStream.Write(b, 0, s.Length);
+        }
+
+        /// <summary>
+        /// Write a string in buffer
+        /// </summary>
+        /// <param name="s">String to write</param>
+        public void WriteStringToBuffer(string s)
+        {
+            foreach (var t in s)
             {
-                if (OutputBufferLength == 0)
-                {
-                    msg = "SnipStreamWrapper.CopyOutputBufferToData: Output buffer is empty.";
-                    Clipboard.SetText(msg);
-                }
-                if (OutputBufferLength > 0)
-                {
-                    //msg = "SnipStreamWrapper.CopyOutputBufferToData: Output buffer is empty.";
-                    //Clipboard.SetText(msg);
-                    //throw new TESParserException(msg);
-                    b = new byte[OutputBufferLength];
-                    Array.Copy(OutputBuffer, 0, b, 0, OutputBufferLength);
-                }
-            }
-            catch (Exception ex)
-            {
-                msg = "SnipStreamWrapper.CopyOutputBufferToData" + Environment.NewLine +
-                      "Message: " + ex.Message +
-                      Environment.NewLine +
-                      "StackTrace: " + ex.StackTrace;
-                Clipboard.SetText(msg);
-                throw new TESParserException(msg);
+                OutputBuffer[OutputBufferPosition] = (byte) t;
+                OutputBufferPosition++;
+                OutputBufferLength++;
             }
         }
 
         /// <summary>
-        /// Write output buffer to file stream
+        /// Write UInt16 in buffer
         /// </summary>
-        public void WriteBufferToFile()
+        /// <param name="value">A UInt16 value.</param>
+        public void WriteUInt16ToBuffer(UInt16 value)
         {
-            if (OutputBufferLength > 0)
-                SnipStream.Write(OutputBuffer, 0, (int) OutputBufferLength);
+            _bytes2 = Framework.TypeConverter.s2h(value);
+            Array.Copy(_bytes2, 0, OutputBuffer, OutputBufferPosition, 2);
+            OutputBufferPosition += 2;
+            OutputBufferLength += 2;
         }
 
         /// <summary>
-        /// Write UInt32 in file
+        /// Write UInt32 in file stream
         /// </summary>
         /// <param name="value">A UInt32 value.</param>
         public void WriteUInt32(UInt32 value)
         {
-            _bytes4 = TESVSnip.Framework.TypeConverter.i2h(value);
-            SnipStream.Write(_bytes4, 0, _bytes4.Length);
+            if (SnipStream != null)
+            {
+                _bytes4 = Framework.TypeConverter.i2h(value);
+                SnipStream.Write(_bytes4, 0, _bytes4.Length);
+            }
         }
 
-        /// Write bytes in file
+        /// <summary>
+        /// Write UInt32 in buffer
         /// </summary>
-        /// <param name="value">A byte array.</param>
-        public void WriteBytes(byte[] b)
+        /// <param name="value">A UInt32 value.</param>
+        public void WriteUInt32ToBuffer(UInt32 value)
         {
-            SnipStream.Write(b, 0, b.Length);
+            _bytes4 = Framework.TypeConverter.i2h(value);
+            Array.Copy(_bytes4, 0, OutputBuffer, OutputBufferPosition, 4);
+            OutputBufferPosition += 4;
+            OutputBufferLength += 4;
         }
-
     }
 }

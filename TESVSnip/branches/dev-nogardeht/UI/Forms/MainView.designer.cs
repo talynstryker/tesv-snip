@@ -85,7 +85,7 @@ namespace TESVSnip.UI.Forms {
             this.resetDockingWindowsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.eSMFilterSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.compressionSettingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.setConfigToDefaultToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.resetSettingsToDefaultsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.languageToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.englishToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -423,7 +423,7 @@ namespace TESVSnip.UI.Forms {
             this.resetDockingWindowsToolStripMenuItem,
             this.eSMFilterSettingsToolStripMenuItem,
             this.compressionSettingsToolStripMenuItem,
-            this.setConfigToDefaultToolStripMenuItem});
+            this.resetSettingsToDefaultsToolStripMenuItem});
             this.optionsToolStripMenuItem.Name = "optionsToolStripMenuItem";
             resources.ApplyResources(this.optionsToolStripMenuItem, "optionsToolStripMenuItem");
             // 
@@ -499,11 +499,11 @@ namespace TESVSnip.UI.Forms {
             resources.ApplyResources(this.compressionSettingsToolStripMenuItem, "compressionSettingsToolStripMenuItem");
             this.compressionSettingsToolStripMenuItem.Click += new System.EventHandler(this.compressionSettingsToolStripMenuItem_Click);
             // 
-            // setConfigToDefaultToolStripMenuItem
+            // resetSettingsToDefaultsToolStripMenuItem
             // 
-            this.setConfigToDefaultToolStripMenuItem.Name = "setConfigToDefaultToolStripMenuItem";
-            resources.ApplyResources(this.setConfigToDefaultToolStripMenuItem, "setConfigToDefaultToolStripMenuItem");
-            this.setConfigToDefaultToolStripMenuItem.Click += new System.EventHandler(this.setConfigToDefaultToolStripMenuItem_Click);
+            this.resetSettingsToDefaultsToolStripMenuItem.Name = "resetSettingsToDefaultsToolStripMenuItem";
+            resources.ApplyResources(this.resetSettingsToDefaultsToolStripMenuItem, "resetSettingsToDefaultsToolStripMenuItem");
+            this.resetSettingsToDefaultsToolStripMenuItem.Click += new System.EventHandler(this.resetSettingsToDefaultsToolStripMenuItem_Click);
             // 
             // toolsToolStripMenuItem
             // 
@@ -1250,6 +1250,6 @@ namespace TESVSnip.UI.Forms {
         private System.Windows.Forms.ToolStripMenuItem saveAsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem recentFilelToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
-        private System.Windows.Forms.ToolStripMenuItem setConfigToDefaultToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem resetSettingsToDefaultsToolStripMenuItem;
     }
 }

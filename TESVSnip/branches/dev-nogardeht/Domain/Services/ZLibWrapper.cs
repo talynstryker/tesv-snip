@@ -41,6 +41,32 @@
         }
 
         /// <summary>
+        /// Copy a piece of bytes array into input buffer
+        /// </summary>
+        /// <param name="byteArray">The byte Array.</param>
+        /// <param name="offset">Offset in byte array.</param>
+        /// <param name="bytesToCopy">Number of bytes to read (copy to buffer).</param>
+        public static void CopyByteArrayToInputBuffer(byte[] byteArray, int offset, uint bytesToCopy)
+        {
+            ResetBufferSizeAndPosition();
+
+            if ((bytesToCopy + offset) > MaxBufferSize)
+            {
+                string msg =
+                    "ZLibWrapper.CopyByteArrayToInputBuffer: " +
+                    string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString("ZLibWrapper_ExceedMaxBufferSize"),
+                                  arg0: bytesToCopy.ToString(CultureInfo.InvariantCulture),
+                                  arg1: MaxBufferSize.ToString(CultureInfo.InvariantCulture));
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            Array.Copy(byteArray, offset, _inputBuffer, 0, bytesToCopy);
+
+            InputBufferLength = bytesToCopy;
+        }
+
+        /// <summary>
         /// Copy the input buffer to oupput buffer
         /// </summary>
         /// <param name="dataSize">
@@ -53,7 +79,8 @@
             {
                 if (InputBufferLength == 0)
                 {
-                    msg = "ZLibStreamWrapper.CopyInputBufferToOutputBuffer: Static input buffer is empty.";
+                    msg = "ZLibWrapper.CopyInputBufferToOutputBuffer: " +
+                          TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_InputBufferIsEmpty");
                     Clipboard.SetText(msg);
                     throw new TESParserException(msg);
                 }
@@ -61,7 +88,8 @@
                 if (dataSize > MaxBufferSize)
                 {
                     msg = string.Format(
-                        "ZLibStreamWrapper.CopyInputBufferToOutputBuffer: Static buffer is too small. DataSize={0}  /  Buffer={1}",
+                        "ZLibWrapper.CopyInputBufferToOutputBuffer: " +
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_BufferIsTooSmall"),
                         dataSize.ToString(CultureInfo.InvariantCulture),
                         MaxBufferSize.ToString(CultureInfo.InvariantCulture));
                     Clipboard.SetText(msg);
@@ -73,7 +101,7 @@
             }
             catch (Exception ex)
             {
-                msg = "ZLibStreamWrapper.CopyInputBufferToOutputBuffer" + Environment.NewLine +
+                msg = "ZLibWrapper.CopyInputBufferToOutputBuffer" + Environment.NewLine +
                       "Message: " + ex.Message +
                       Environment.NewLine +
                       "StackTrace: " + ex.StackTrace;
@@ -89,6 +117,23 @@
         }
 
         /// <summary>
+        /// Copy a piece of output buffer into a bytes array
+        /// </summary>
+        /// <param name="byteArray">The byte Array.</param>
+        public static void CopyOutputBufferIntoByteArray(byte[] byteArray)
+        {
+            if (OutputBufferLength <= 0)
+            {
+                string msg = "ZLibWrapper.CopyOutputBufferIntoByteArray: " +
+                             TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_OutputBufferIsEmpty");
+                Clipboard.SetText(msg);
+                throw new TESParserException(msg);
+            }
+
+            Array.Copy(_outputBuffer, 0, byteArray, 0, OutputBufferLength);
+        }
+
+        /// <summary>
         /// Copy a piece of stream into input buffer
         /// </summary>
         /// <param name="fs">A file stream</param>
@@ -99,19 +144,20 @@
 
             if ((fs.Position + bytesToRead) > fs.Length)
             {
-                string msg = "ZLibStreamWrapper.CopyStreamToInputBuffer: ZLib wrapper error. Copy size " +
-                             (fs.Position + bytesToRead).ToString(CultureInfo.InvariantCulture) +
-                             " is over stream length " +
-                             fs.Length.ToString(CultureInfo.InvariantCulture);
+                string msg = "ZLibWrapper.CopyStreamToInputBuffer: " +
+                             string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_SizeOverStreamSize"),
+                                           arg0: (fs.Position + bytesToRead).ToString(CultureInfo.InvariantCulture),
+                                           arg1: fs.Length.ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
 
             if (bytesToRead > MaxBufferSize)
             {
-                string msg = "ZLibStreamWrapper.CopyStreamToInputBuffer: ZLib wrapper error. Bytes to read (" +
-                             bytesToRead.ToString(CultureInfo.InvariantCulture) + ")" +
-                             " exceed buffer size ( " + MaxBufferSize.ToString(CultureInfo.InvariantCulture) + ")";
+                string msg = "ZLibWrapper.CopyStreamToInputBuffer: " +
+                             string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_ExceedMaxBufferSize"),
+                                           arg0: bytesToRead.ToString(CultureInfo.InvariantCulture),
+                                           arg1: MaxBufferSize.ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -128,47 +174,6 @@
 
             InputBufferLength = bytesToRead;
         }
-
-        /// <summary>
-        /// Copy a piece of bytes array into input buffer
-        /// </summary>
-        /// <param name="byteArray">The byte Array.</param>
-        /// <param name="offset">Offset in byte array.</param>
-        /// <param name="bytesToCopy">Number of bytes to read (copy to buffer).</param>
-        public static void CopyByteArrayToInputBuffer(byte[] byteArray, int offset, uint bytesToCopy)
-        {
-            ResetBufferSizeAndPosition();
-
-            if ((bytesToCopy + offset) > MaxBufferSize)
-            {
-                string msg = "ZLibStreamWrapper.CopyByteArrayToInputBuffer: ZLib wrapper error. Bytes to read (" +
-                             bytesToCopy.ToString(CultureInfo.InvariantCulture) + ")" +
-                             " exceed max buffer size ( " + MaxBufferSize.ToString(CultureInfo.InvariantCulture) + ")";
-                Clipboard.SetText(msg);
-                throw new TESParserException(msg);
-            }
-
-            Array.Copy(byteArray, offset, _inputBuffer, 0, bytesToCopy);
-
-            InputBufferLength = bytesToCopy;
-        }
-
-        /// <summary>
-        /// Copy a piece of output buffer into a bytes array
-        /// </summary>
-        /// <param name="byteArray">The byte Array.</param>
-        public static void CopyOutputBufferIntoByteArray(byte[] byteArray)
-        {
-            if (OutputBufferLength <= 0)
-            {
-                string msg = "ZLibStreamWrapper.CopyOutputBufferIntoByteArray: ZLib wrapper error. Output buffer is empty.";
-                Clipboard.SetText(msg);
-                throw new TESParserException(msg);
-            }
-
-            Array.Copy(_outputBuffer, 0, byteArray, 0, OutputBufferLength);
-        }
-
         /// <summary>
         /// Set position in input/output buffer
         /// </summary>
@@ -182,8 +187,9 @@
             {
                 string msg =
                     string.Format(
-                        "ZLibStreamWrapper.SetPositionInInputBuffer: The position cannot be greater than buffer size ({0}).",
-                        bufferSize.ToString(CultureInfo.InvariantCulture));
+                        "ZLibWrapper.Position: " +
+                        string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_PositionOverBufferSize"),
+                                      arg0: bufferSize.ToString(CultureInfo.InvariantCulture)));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -202,10 +208,10 @@
         {
             if ((OutputBufferPosition + 2) > OutputBufferLength)
             {
-                string msg = string.Format(
-                    "ZLibStreamWrapper.Read2Bytes: ZLib inflate error. The final position ({0}) in output buffer is over the buffer size {1}",
-                    (OutputBufferPosition + 2).ToString(CultureInfo.InvariantCulture),
-                    OutputBufferLength.ToString(CultureInfo.InvariantCulture));
+                string msg = "ZLibWrapper.Read2Bytes: " +
+                             string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_FinalPositionOverBufferSize"),
+                                           arg0: (OutputBufferPosition + 2).ToString(CultureInfo.InvariantCulture),
+                                           arg1: OutputBufferLength.ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -223,10 +229,10 @@
         {
             if ((OutputBufferPosition + 4) > OutputBufferLength)
             {
-                string msg = string.Format(
-                    "ZLibStreamWrapper.Read4Bytes: ZLib inflate error. The final position ({0}) in output buffer is over the buffer size {1}",
-                    (OutputBufferPosition + 4).ToString(CultureInfo.InvariantCulture),
-                    OutputBufferLength.ToString(CultureInfo.InvariantCulture));
+                string msg = "ZLibWrapper.Read4Bytes: " +
+                             string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_FinalPositionOverBufferSize"),
+                                           arg0: (OutputBufferPosition + 4).ToString(CultureInfo.InvariantCulture),
+                                           arg1: OutputBufferLength.ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -244,10 +250,7 @@
         /// <param name="bufferType">Read in input or output buffer.</param>
         public static void ReadBytes(ref byte[] data, int count, ZLibBufferType bufferType)
         {
-            if (data == null)
-            {
-                throw new ArgumentNullException("data");
-            }
+            if (data == null) throw new ArgumentNullException("data");
 
             uint newPosition;
             uint bufferSize;
@@ -265,11 +268,11 @@
 
             if (newPosition > bufferSize)
             {
-                string msg = string.Format(
-                    "ZLibStreamWrapper.ReadBytes: ZLib inflate error. The final position ({0}) in {1} buffer is over the buffer size {2}",
-                    newPosition.ToString(CultureInfo.InvariantCulture),
-                    bufferType.ToString(),
-                    bufferSize.ToString(CultureInfo.InvariantCulture));
+                string msg = "ZLibWrapper.ReadBytes: " +
+                             string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_FinalPositionOverBufferSize2"),
+                                           arg0: newPosition.ToString(CultureInfo.InvariantCulture),
+                                           arg1: bufferType.ToString(),
+                                           arg2: bufferSize.ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -310,11 +313,11 @@
 
             if (newPosition > bufferSize)
             {
-                string msg = string.Format(
-                    "ZLibStreamWrapper.ReadBytes: ZLib inflate error. The final position ({0}) in {1} buffer is over the buffer size {2}",
-                    newPosition.ToString(CultureInfo.InvariantCulture),
-                    bufferType.ToString(),
-                    bufferSize.ToString(CultureInfo.InvariantCulture));
+                string msg = "ZLibWrapper.ReadBytes: " +
+                             string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_FinalPositionOverBufferSize2"),
+                                           arg0: newPosition.ToString(CultureInfo.InvariantCulture),
+                                           arg1: bufferType.ToString(),
+                                           arg2: bufferSize.ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -398,15 +401,16 @@
         {
             if (startIndex < 0)
             {
-                const string msg = "ZLibStreamWrapper.WriteInOutputBuffer: The position cannot be negative.";
+                string msg = "ZLibWrapper.WriteInOutputBuffer: " +
+                             TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_PositionIsNegative");
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
 
             if (count < 0)
             {
-                const string msg =
-                    "ZLibStreamWrapper.WriteInOutputBuffer: The number of bytes to write cannot be negative.";
+                string msg = "ZLibWrapper.WriteInOutputBuffer: " +
+                             TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_BytesToWriteIsNegative");
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -414,12 +418,11 @@
             if ((startIndex + count) > data.Length)
             {
                 string msg =
-                    string.Format(
-                        "ZLibStreamWrapper.WriteInOutputBuffer: The starting position is {0}. A reading of {1} bytes is requested. The number of bytes that can be read in the buffer is {2}",
-                        startIndex.ToString(CultureInfo.InvariantCulture),
-                        count.ToString(CultureInfo.InvariantCulture),
-                        (data.Length - startIndex).ToString(CultureInfo.InvariantCulture));
-
+                    "ZLibWrapper.WriteInOutputBuffer: " +
+                    string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_RequestedReadByteError"),
+                                  arg0: startIndex.ToString(CultureInfo.InvariantCulture),
+                                  arg1: count.ToString(CultureInfo.InvariantCulture),
+                                  arg2: (data.Length - startIndex).ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }
@@ -427,10 +430,9 @@
             if ((OutputBufferPosition + count) > MaxBufferSize)
             {
                 string msg =
-                    string.Format(
-                        "ZLibStreamWrapper.WriteInOutputBuffer: The output buffer is to small. Buffer size={0}, Number of bytes to write={1}",
-                        MaxBufferSize.ToString(CultureInfo.InvariantCulture),
-                        (OutputBufferPosition + count).ToString(CultureInfo.InvariantCulture));
+                    string.Format(format: TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLibWrapper_OutputBufferIsTooSmall"),
+                                  arg0: MaxBufferSize.ToString(CultureInfo.InvariantCulture),
+                                  arg1: (OutputBufferPosition + count).ToString(CultureInfo.InvariantCulture));
                 Clipboard.SetText(msg);
                 throw new TESParserException(msg);
             }

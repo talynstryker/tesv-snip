@@ -2167,7 +2167,7 @@ namespace TESVSnip.UI.Forms
             }
         }
 
-        private void setConfigToDefaultToolStripMenuItem_Click(object sender, EventArgs e)
+        private void resetSettingsToDefaultsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Configuration conf = System.Configuration.ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.PerUserRoamingAndLocal);
             string pathUserConfig = conf.FilePath;

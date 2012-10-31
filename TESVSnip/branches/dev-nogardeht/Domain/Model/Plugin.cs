@@ -785,7 +785,7 @@ namespace TESVSnip.Domain.Model
             finally
             {
                 //bw.Close();                
-                snipStreamWrapper.CloseFile();
+                snipStreamWrapper.CloseAndDisposeFileStream();
                 snipStreamWrapper.ReleaseBuffers();
                 snipStreamWrapper = null;
                 fs = null;
@@ -969,9 +969,6 @@ namespace TESVSnip.Domain.Model
                 {
                     while (!snipStreamWrapper.Eof())  //while (br.PeekChar() != -1)
                     {
-                        if (snipStreamWrapper.SnipStream.Position >= 52776111)
-                            s = "";
-
                         s = ReadRecName(snipStreamWrapper.ReadBytes(4)); //s = ReadRecName(br);
                         recsize = snipStreamWrapper.ReadUInt32(); //recsize = br.ReadUInt32();
                         if (s == "GRUP")
@@ -1015,7 +1012,7 @@ namespace TESVSnip.Domain.Model
             }
             finally
             {
-                snipStreamWrapper.CloseFile();
+                snipStreamWrapper.CloseAndDisposeFileStream();
                 snipStreamWrapper = null;
                 Clipboard.SetText("CompressedRecords:" + Environment.NewLine +
                                   string.Join<string>(string.Empty, RecordsTace.CompressedRecords) +

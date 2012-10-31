@@ -1,61 +1,30 @@
 namespace TESVSnip.Domain.Services
 {
     using System;
-    using System.Diagnostics;
-    using System.IO;
     using System.Windows.Forms;
 
-    using TESVSnip.DotZLib;
+    using DotZLib;
 
     public static class ZLib
     {
+        // One deflater by compression level for prevent out of memory
         private static Deflater _deflaterBest;
-        private static Deflater _deflaterNone;
-        private static Deflater _deflaterFastest;
         private static Deflater _deflaterDefault;
+        private static Deflater _deflaterFastest;
+        private static Deflater _deflaterNone;
 
         private static Inflater _inflater;
 
         public static string Version { get; private set; }
 
-        //[Obsolete("Compress(byte[] input)")]
-        //public static byte[] Compress(Stream input)
-        //{
-        //    // if (input == null)
-        //    // {
-        //    // throw new ArgumentNullException("input");
-        //    // }
-
-        //    // var buffer = new byte[input.Length];
-        //    // input.Read(buffer, 0, (int)input.Length);
-
-        //    // return Compress(buffer);
-        //    return null;
-        //}
-
-        //public static byte[] Compress(byte[] input)
-        //{
-        //    using (var output = new MemoryStream())
-        //    {
-        //        using (var deflater1 = new Deflater(CompressLevel.Best))
-        //        {
-        //            deflater1.DataAvailable += output.Write;
-        //            deflater1.Add(input, 0, input.Length);
-        //        }
-
-        //        return output.ToArray();
-        //    }
-        //}
-
         /// <summary>
-        /// Compress a ZLib stream
+        /// Compress a stream with ZLib
         /// </summary>
-        /// <param name="buffer">The buffer. </param>
-        /// <param name="compressLevel">Compression level of stream. </param>
+        /// <param name="snipStreamWrapper">A stream wrapper object</param>
+        /// <param name="compressLevel">Compression level of stream.</param>
         public static void Compress(SnipStreamWrapper snipStreamWrapper, CompressLevel compressLevel)
         {
             var numBytesAddressing = snipStreamWrapper.OutputBufferLength;
-            byte[] returnedArrayOfBytes;
 
             ZLibWrapper.CopyByteArrayToInputBuffer(snipStreamWrapper.OutputBuffer, 0,
                                                    snipStreamWrapper.OutputBufferLength);
@@ -84,37 +53,23 @@ namespace TESVSnip.Domain.Services
                 _deflaterDefault.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
             }
 
-           //MemoryStream output = new MemoryStream();
-            //input.Seek(0, SeekOrigin.Begin);
-            //BinaryReader br = new BinaryReader(input);
-
             try
             {
-                //_deflater.DataAvailable += output.Write;
-                //br.BaseStream.Seek(0, SeekOrigin.Begin);
-
-                //while (maxBytesAddressing > 0)
-                //{
-                //    uint numBytes = Math.Min(maxBytesAddressing, 8192);
-                //    deflater1.Add(br.ReadBytes((int)numBytes));
-                //    maxBytesAddressing -= numBytes;
-                //}
-
                 while (numBytesAddressing > 0u)
                 {
                     uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
 
                     if (compressLevel == CompressLevel.None)
-                        _deflaterNone.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+                        _deflaterNone.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
 
                     if (compressLevel == CompressLevel.Best)
-                        _deflaterBest.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+                        _deflaterBest.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
 
                     if (compressLevel == CompressLevel.Default)
-                        _deflaterDefault.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+                        _deflaterDefault.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
 
                     if (compressLevel == CompressLevel.Fastest)
-                        _deflaterFastest.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
+                        _deflaterFastest.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
 
                     numBytesAddressing -= numBytes;
                 }
@@ -133,34 +88,30 @@ namespace TESVSnip.Domain.Services
                     deflateErrorMsg = _deflaterFastest._ztream.msg;
 
                 if (!string.IsNullOrWhiteSpace(deflateErrorMsg))
-                    MessageBox.Show(string.Format("ZLib.Compress: {0}", deflateErrorMsg), @"ZLib Error",
-                                    MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show(string.Format("ZLib.Compress: {0}", deflateErrorMsg),
+                                    TranslateUI.TranslateUiGlobalization.ResManager.GetString("ZLib_Error"),
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
 
                 if (compressLevel == CompressLevel.None)
-                    _deflaterNone.Finish(); // flush zlib buffer    
+                    _deflaterNone.Finish(); // flush zlib buffer
 
                 if (compressLevel == CompressLevel.Best)
-                    _deflaterBest.Finish(); // flush zlib buffer  
+                    _deflaterBest.Finish(); // flush zlib buffer
 
                 if (compressLevel == CompressLevel.Default)
-                    _deflaterDefault.Finish(); // flush zlib buffer      
+                    _deflaterDefault.Finish(); // flush zlib buffer
 
                 if (compressLevel == CompressLevel.Fastest)
-                    _deflaterFastest.Finish(); // flush zlib buffer      
-     
-                // Line for debug and test
-                // output.Seek(0, SeekOrigin.Begin);
-                // TESVSnip.Domain.Services.SaveReadStream.SaveStreamToDisk(output);
-                //output.Seek(0, SeekOrigin.Begin);
-                ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer); //output.Seek(0, SeekOrigin.Begin);
+                    _deflaterFastest.Finish(); // flush zlib buffer
+
+                ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"),
-                        ex.ToString()),
-                    TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
+                    string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"), arg0: ex),
+                    TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLib_Compress"),
                     MessageBoxButtons.OK,
                     MessageBoxIcon.Error);
             }
@@ -169,56 +120,22 @@ namespace TESVSnip.Domain.Services
                 if (ZLibWrapper.OutputBufferLength == 0)
                 {
                     MessageBox.Show(
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_OutputBufferEmpty"),
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLib_OutputBufferEmpty"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLib_Compress"),
                         MessageBoxButtons.OK,
                         MessageBoxIcon.Error);
                 }
             }
-            //catch (Exception ex)
-            //{
-            //    MessageBox.Show(
-            //        string.Format(
-            //            TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"), ex.ToString()),
-            //        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Compress"),
-            //        MessageBoxButtons.OK,
-            //        MessageBoxIcon.Error);
-            //}
-            //finally
-            //{
-            //    returnedArrayOfBytes = output.ToArray();
-
-            //    deflater1.Dispose();
-
-            //    br.Close();
-            //    br.Dispose();
-            //}
-
-            //Debug.Assert(returnedArrayOfBytes != null, "returnedArrayOfBytes != null");
-            //return returnedArrayOfBytes;
-
-            //MessageBox.Show(
-            //    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_OutputBufferEmpty"),
-            //    TranslateUI.TranslateUIGlobalization.RM.GetString("MSG_ZLib_Compress"),
-            //    MessageBoxButtons.OK, MessageBoxIcon.Error);
-            //return null;
         }
 
         /// <summary>
-        /// Decompress a ZLib stream
+        /// Decompress a stream with ZLib
         /// </summary>
-        /// <param name="compressLevel">
-        /// compression level of stream
-        /// </param>
-        /// <param name="expectedSize">
-        /// size
-        /// </param>
+        /// <param name="compressLevel">Compression level of stream</param>
+        /// <param name="expectedSize">Expected size</param>
         public static void Decompress(out CompressLevel compressLevel, int expectedSize = 0)
         {
             uint numBytesAddressing = ZLibWrapper.InputBufferLength;
-            //MemoryStream output = null;
-
-            //BinaryReader br = null;
             compressLevel = CompressLevel.None;
 
             try
@@ -226,7 +143,6 @@ namespace TESVSnip.Domain.Services
                 ZLibWrapper.Position(0, ZLibBufferType.InputBuffer);
                 compressLevel = RetrieveCompressionLevel();
                 ZLibWrapper.Position(0, ZLibBufferType.InputBuffer);
-                //ReadBytes(  ) br.BaseStream.Seek(0, SeekOrigin.Begin);
 
                 if (_inflater == null)
                 {
@@ -234,48 +150,29 @@ namespace TESVSnip.Domain.Services
                     _inflater.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
                 }
 
-                //output = new MemoryStream(expectedSize);
-                //br = new BinaryReader(input);
-                //br.BaseStream.Seek(0, SeekOrigin.Begin);
-                //output.Seek(0, SeekOrigin.Begin);
-
-                //inflater.DataAvailable += delegate(byte[] data, int position, int count)
-                //{
-                //    ZLibStreamWrapper.WriteInOutputBuffer(data, position, count);
-                //};DataAvailableHandler
-
-                //inflater.DataAvailable += ZLibStreamWrapper.WriteInOutputBuffer;
-
-
-                //br.BaseStream.Seek(0, SeekOrigin.Begin);
-                //compressLevel = RetrieveCompressionLevel(br);
-                //br.BaseStream.Seek(0, SeekOrigin.Begin);
-
                 while (numBytesAddressing > 0u)
                 {
                     uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
-                    _inflater.Add(ZLibWrapper.ReadBytes((int)numBytes, ZLibBufferType.InputBuffer));
-                    //inflater.Add(br.ReadBytes((int) numBytes));   
+                    _inflater.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
                     numBytesAddressing -= numBytes;
                 }
 
-                if (!string.IsNullOrWhiteSpace(_inflater._ztream.msg))
-                    MessageBox.Show(
-                        string.Format("ZLib.Decompress: {0}", _inflater._ztream.msg),
-                        @"ZLib Error",
-                        MessageBoxButtons.OK, MessageBoxIcon.Error);
+
+                string inflateErrorMsg = _inflater._ztream.msg;
+                if (!string.IsNullOrWhiteSpace(inflateErrorMsg))
+                    MessageBox.Show(string.Format("ZLib.Decompress: {0}", inflateErrorMsg),
+                                    TranslateUI.TranslateUiGlobalization.ResManager.GetString("ZLib_Error"),
+                                    MessageBoxButtons.OK,
+                                    MessageBoxIcon.Error);
 
                 _inflater.Finish(); //flush zlib buffer
-
-                ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer); //output.Seek(0, SeekOrigin.Begin);
+                ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer);
             }
             catch (Exception ex)
             {
                 MessageBox.Show(
-                    string.Format(
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"),
-                        ex.ToString()),
-                    TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
+                    string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ErrorWithNewLine"), ex),
+                    TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLib_Decompress"),
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             finally
@@ -283,18 +180,24 @@ namespace TESVSnip.Domain.Services
                 if (ZLibWrapper.OutputBufferLength == 0)
                 {
                     MessageBox.Show(
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_OutputBufferEmpty"),
-                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "MSG_ZLib_Decompress"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLib_OutputBufferEmpty"),
+                        TranslateUI.TranslateUiGlobalization.ResManager.GetString(name: "ZLib_Decompress"),
                         MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
             }
         }
 
+        /// <summary>
+        /// Initialize ZLib class
+        /// </summary>
         public static void Initialize()
         {
             Version = Info.Version;
         }
 
+        /// <summary>
+        /// Release all deflater instance
+        /// </summary>
         public static void ReleaseDeflater()
         {
             if (_deflaterBest != null)
@@ -326,6 +229,9 @@ namespace TESVSnip.Domain.Services
             }
         }
 
+        /// <summary>
+        /// Release inflater instance
+        /// </summary>
         public static void ReleaseInflater()
         {
             if (_inflater != null)
@@ -335,21 +241,23 @@ namespace TESVSnip.Domain.Services
                 _inflater = null;
             }
         }
+
         /// <summary>
         /// Retrieve the compression level of the stream
+        /// 
         /// RFC 1950
-        /// 0       1  
+        /// 0       1
         /// +---+---+
         /// |CMF|FLG|   (more-->)
         /// +---+---+
-        /// 
-        /// FLG (FLaGs) 
-        /// This flag byte is divided as follows: 
-        /// 
+        ///
+        /// FLG (FLaGs)
+        /// This flag byte is divided as follows:
+        ///
         /// bits 0 to 4  FCHECK  (check bits for CMF and FLG)
         /// bit  5       FDICT   (preset dictionary)
         /// bits 6 to 7  FLEVEL  (compression level)
-        /// 
+        ///
         ///       FLEVEL (Compression level)
         /// These flags are available for use by specific compression
         /// methods.  The "deflate" method (CM = 8) sets these flags as
@@ -359,7 +267,7 @@ namespace TESVSnip.Domain.Services
         ///   1 - compressor used fast algorithm
         ///   2 - compressor used default algorithm
         ///   3 - compressor used maximum compression, slowest algorithm
-        /// 
+        ///
         ///  ZLib enumeration
         /// 	public enum CompressLevel
         /// 	{
@@ -368,7 +276,7 @@ namespace TESVSnip.Domain.Services
         /// 	Best = 9,
         /// 	Fastest = 1
         /// 	}
-        /// 
+        ///
         /// http://code.activestate.com/lists/python-list/204644/
         /// Two bytes, that's not really a lot of known plaintext, but every little bit might be a liability, I guess.
         /// </summary>
@@ -386,15 +294,19 @@ namespace TESVSnip.Domain.Services
                 case 0:
                     fLevel = CompressLevel.None;
                     break;
+
                 case 1:
                     fLevel = CompressLevel.Fastest;
                     break;
+
                 case 2:
                     fLevel = CompressLevel.Default;
                     break;
+
                 case 3:
                     fLevel = CompressLevel.Best;
                     break;
+
                 default:
                     fLevel = CompressLevel.Best;
                     break;
@@ -402,6 +314,5 @@ namespace TESVSnip.Domain.Services
 
             return fLevel;
         }
-
     }
 }
