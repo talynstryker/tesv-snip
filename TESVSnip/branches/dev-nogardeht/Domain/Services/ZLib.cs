@@ -144,28 +144,36 @@ namespace TESVSnip.Domain.Services
                 compressLevel = RetrieveCompressionLevel();
                 ZLibWrapper.Position(0, ZLibBufferType.InputBuffer);
 
-                if (_inflater == null)
+                if (expectedSize == 0)
                 {
-                    _inflater = new Inflater();
-                    _inflater.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+                    // no decompression. copy input buffer in output buffer
+                    ZLibWrapper.CopyInputBufferToOutputBuffer(8);
+                    compressLevel = CompressLevel.None; // for compression
                 }
-
-                while (numBytesAddressing > 0u)
+                else
                 {
-                    uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
-                    _inflater.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
-                    numBytesAddressing -= numBytes;
+                    if (_inflater == null)
+                    {
+                        _inflater = new Inflater();
+                        _inflater.DataAvailable += ZLibWrapper.WriteInOutputBuffer;
+                    }
+
+                    while (numBytesAddressing > 0u)
+                    {
+                        uint numBytes = Math.Min(numBytesAddressing, 8192u); //8192u); 65536u
+                        _inflater.Add(ZLibWrapper.ReadBytes((int) numBytes, ZLibBufferType.InputBuffer));
+                        numBytesAddressing -= numBytes;
+                    }
+
+                    string inflateErrorMsg = _inflater._ztream.msg;
+                    if (!string.IsNullOrWhiteSpace(inflateErrorMsg))
+                        MessageBox.Show(string.Format("ZLib.Decompress: {0}", inflateErrorMsg),
+                                        TranslateUI.TranslateUiGlobalization.ResManager.GetString("ZLib_Error"),
+                                        MessageBoxButtons.OK,
+                                        MessageBoxIcon.Error);
+
+                    _inflater.Finish(); //flush zlib buffer
                 }
-
-
-                string inflateErrorMsg = _inflater._ztream.msg;
-                if (!string.IsNullOrWhiteSpace(inflateErrorMsg))
-                    MessageBox.Show(string.Format("ZLib.Decompress: {0}", inflateErrorMsg),
-                                    TranslateUI.TranslateUiGlobalization.ResManager.GetString("ZLib_Error"),
-                                    MessageBoxButtons.OK,
-                                    MessageBoxIcon.Error);
-
-                _inflater.Finish(); //flush zlib buffer
                 ZLibWrapper.Position(0, ZLibBufferType.OutputBuffer);
             }
             catch (Exception ex)

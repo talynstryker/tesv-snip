@@ -97,7 +97,10 @@
                 }
 
                 if (InputBufferLength > 0)
+                {
                     Array.Copy(_inputBuffer, _outputBuffer, dataSize);
+                    OutputBufferLength = dataSize;
+                }
             }
             catch (Exception ex)
             {

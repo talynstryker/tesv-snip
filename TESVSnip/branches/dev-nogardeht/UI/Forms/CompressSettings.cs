@@ -1,4 +1,6 @@
-﻿namespace TESVSnip.UI.Forms
+﻿using System.Globalization;
+
+namespace TESVSnip.UI.Forms
 {
     using System;
     using System.Collections.Generic;
@@ -22,7 +24,7 @@
             this.rdoPluginCompressRecords.Checked = Settings.Default.UsePluginRecordCompression;
             this.chkEnableAutoCompress.Checked = Settings.Default.EnableAutoCompress;
             this.chkEnableCompressLimit.Checked = Settings.Default.EnableCompressionLimit;
-            this.txtCompressLimit.Text = Settings.Default.CompressionLimit.ToString();
+            this.txtCompressLimit.Text = Settings.Default.CompressionLimit.ToString(CultureInfo.InvariantCulture);
 
             // Groups
             var records = Settings.Default.AutoCompressRecordsOld != null ? Settings.Default.AutoCompressRecordsOld.Trim().Split(new[] { ';', ',' }, StringSplitOptions.RemoveEmptyEntries) : new string[0];
