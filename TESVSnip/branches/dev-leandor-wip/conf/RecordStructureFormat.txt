@@ -19,6 +19,8 @@ name (required): the 4 letter code of the record
 
 desc (required): A human readable description of what the record contains
 
+unordered (optional): Subrecords do not have to follow the xml definition.  All subrecords are displayed in the order found in the record.
+
 XXXXXXXXXXXXXX
 XXX Group XXX
 XXXXXXXXXXXXXX
@@ -152,11 +154,11 @@ usehexeditor (optional): If present and set to a value of "true" the subrecord w
 
 NOTE: If the subrecord block uses a condition then the condition should be evaluated against condid (Subrecord) or elmcondid (Element) then [condition] and [condvalue] are evaluated.
 
-condition (optional): If it exists, a given value is compared the value of a piece of data in a previous subrecord. If the comparison returns false, this record is skipped. Must be one of 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
+condition (optional): If it exists, a given value is compared the value of a piece of data in a previous subrecord. If the comparison returns false, this record is skipped. Must be one of 'none', 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
 
 condid (required if condition is used): An integer id that must match up with a previous and unique condid attribute.
 
-condvalue (required if condition is used): The value to compare against in a comparison and, condvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value"$01", 'float', 'formid', 'string'.
+condvalue (required if condition is used): The value to compare against in a comparison and, condvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value of "$01", '0.9500', '0x08D545', '1.023', 'Building', 'float', 'formid', 'string'.
 
 XXXXXXXXXXXXXXX
 XXX Element XXX
@@ -189,11 +191,11 @@ optional (required 'Only' if repeat is greater then 1): Performs the same task a
 
 hexview: If present and set to a value of 'true', the field is displayed in base 16 instead of base 10. Doesn't effect the subrecord editor.
 
-elmcondition: Performs the same task as the Subrecord attribute, but with the following exception:  The given value compared is the value of a piece of data in a previous Element indicated by an elmcondid. If the comparison returns false, this Element is skipped.  Must be one of 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
+elmcondition: Performs the same task as the Subrecord attribute, but with the following exception:  The given value compared is the value of a piece of data in a previous Element indicated by an elmcondid. If the comparison returns false, this Element is skipped.  Must be one of 'none', 'exists', 'missing', 'equal', 'not', 'less', 'lessequal', 'greater', 'greaterequal', 'contains', 'startswith', or 'endswith'. The latter 3 work only for string comparisons, and the greater/less than only work on numeric values.
 
 elmcondid: Performs the same task as the Subrecord attribute, but with the following exception: An integer, used to match up with the elmcondid in a conditional Element. A value greater than 0 tells tessnip that this Element will be compared later within an Element or Subrecord block. Defaults to 0 if omitted.
 
-elmcondvalue (required if elmcondition is used): Performs the same task as the subrecord attribute.  The value to compare against in a comparison and, elmcondvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value"$01", 'float', 'formid', 'string'.
+elmcondvalue (required if elmcondition is used): Performs the same task as the subrecord attribute.  The value to compare against in a comparison and, elmcondvalue can be an valid [type] indicated in the matching element.  E.x. flag value such as value of "$01", '0.9500', '0x08D545', '1.023', 'Building', 'float', 'formid', 'string'.
 
 XXXXXXXXXXXXXXXXXXXXXXXX
 XXX Script Functions XXX
