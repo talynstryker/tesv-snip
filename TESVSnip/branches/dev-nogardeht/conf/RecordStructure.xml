@@ -6284,6 +6284,11 @@
 			<Element name="Check-box and unknown flags" type="byte" flags="1;WorldInteractions;4;8;16;32;64;128;256;512"/>
 			<Element name="(always 0)" type="ushort"/>
 		</Subrecord>
+		<Subrecord name="PLDT" desc="Selected Package Data Location" optional="1">
+			<Element name="Target Location" type="uint" options="Near Reference;0;In Cell;1;Near Package Start Location;2;Near Editor Location;3;Linked Reference;6;PackdataTarget FindResults;11;Near Self;12"/>
+			<Element name="Value FormID (REFR/ACHR, KYWD, CELL, etc)" type="formid"/>
+			<Element name="Radius" type="uint"/>
+		</Subrecord>
 		<Subrecord name="PSDT" desc="Schedule tab" optional="1">
 			<!-- 3bytes flags unknown -->
 			<Element name="Month" type="byte" options="January;0;February;1;March;2;April;3;May;4;June;5;July;6;August;7;September;8;October;9;November;10;December;11;Spring(MAM);12;Summer(JJA);13;Autumn(SON);14;Winter(DJF);15;Any Month;255"/>
@@ -6297,33 +6302,36 @@
 			<Element name="Duration Hours (0,0.25+) (this # div by 60)" type="uint"/>
 		</Subrecord>
 		<Group id="CONDITIONAL" optional="1" repeat="1"/>
-		<!-- cond tab -->
-		<Subrecord name="IDLF" desc="Idles tab Use Specific Idles" optional="1">
-			<Element name="(always 8)" type="byte"/>
-		</Subrecord>
-		<Subrecord name="IDLC" desc="Idles tab Total # of Idle Anims" optional="1">
-			<Element name="Count" type="byte"/>
-		</Subrecord>
-		<Subrecord name="IDLT" desc="Idles tab Timer Setting" optional="1">
-			<Element name="Idle Timer Setting" type="float"/>
-		</Subrecord>
-		<Subrecord name="IDLA" desc="Idles tab Idle Anim (IDLE)" optional="1">
-			<Element name="IDLE FormID" type="formid" reftype="IDLE" repeat="1" optional="1"/>
-		</Subrecord>
-		<Subrecord name="IDLB" desc="Unknown" optional="1">
-			<Element name="Unknown" type="uint"/>
-		</Subrecord>
-		<Subrecord name="CNAM" desc="Combat Style (CSTY)" optional="1" repeat="1">
-			<Element name="CSTY FormID" type="formid" reftype="CSTY"/>
-		</Subrecord>
-		<Subrecord name="QNAM" desc="Owner Quest (QUST)" optional="1" repeat="1">
-			<Element name="Quest FormID" type="formid" reftype="QUST"/>
-		</Subrecord>
 		<Subrecord name="PKCU" desc="Package tab" optional="1">
 			<!-- 1int flags unknown -->
 			<Element name="Total # of PublicPackageData Entries" type="uint"/>
 			<Element name="Package Template PACK FormID" type="formid" reftype="PACK"/>
 			<Element name="unknown flags" type="uint" flags="1;2;4;8;16;32;64;128;256;512"/>
+		</Subrecord>
+		<Group id="CONDITIONAL" optional="1" repeat="1"/>
+		<!-- cond tab -->
+		<Group optional="1" repeat="1">
+      <Subrecord name="IDLF" desc="Idles tab Use Specific Idles" optional="1">
+        <Element name="(always 8)" type="byte"/>
+      </Subrecord>
+      <Subrecord name="IDLC" desc="Idles tab Total # of Idle Anims" optional="1">
+        <Element name="Count" type="byte"/>
+      </Subrecord>
+      <Subrecord name="IDLT" desc="Idles tab Timer Setting" optional="1">
+        <Element name="Idle Timer Setting" type="float"/>
+      </Subrecord>
+      <Subrecord name="IDLA" desc="Idles tab Idle Anim (IDLE)" optional="1">
+        <Element name="IDLE FormID" type="formid" reftype="IDLE" repeat="1" optional="1"/>
+      </Subrecord>
+      <Subrecord name="IDLB" desc="Unknown" optional="1">
+        <Element name="Unknown" type="uint"/>
+      </Subrecord>
+		</Group>
+		<Subrecord name="CNAM" desc="Combat Style (CSTY)" optional="1" repeat="1">
+			<Element name="CSTY FormID" type="formid" reftype="CSTY"/>
+		</Subrecord>
+		<Subrecord name="QNAM" desc="Owner Quest (QUST)" optional="1" repeat="1">
+			<Element name="Quest FormID" type="formid" reftype="QUST"/>
 		</Subrecord>
 		<!-- repeating groups could be cleaner; weird abbrev; legacy data which CK deletes/replaces -->
 		<Group optional="1" repeat="1">
@@ -6332,7 +6340,7 @@
 				<!-- CNAM dependent on this data -->
 				<Element name="Type (string)" type="string" condid="5"/>
 			</Subrecord>
-			<Subrecord name="CNAM" desc="ObjectList Type" condid="5" condition="startswith" condvalue="O">
+			<Subrecord name="CNAM" desc="ObjectList Type" optional="1" repeat="1">
 				<Element name="ObjectList Value" type="float"/>
 			</Subrecord>
 			<Subrecord name="BNAM" desc="Unknown" optional="1">
