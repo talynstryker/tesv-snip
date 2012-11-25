@@ -6310,6 +6310,9 @@
 		<Subrecord name="IDLA" desc="Idles tab Idle Anim (IDLE)" optional="1">
 			<Element name="IDLE FormID" type="formid" reftype="IDLE" repeat="1" optional="1"/>
 		</Subrecord>
+		<Subrecord name="IDLB" desc="Unknown" optional="1">
+			<Element name="Unknown" type="uint"/>
+		</Subrecord>
 		<Subrecord name="CNAM" desc="Combat Style (CSTY)" optional="1" repeat="1">
 			<Element name="CSTY FormID" type="formid" reftype="CSTY"/>
 		</Subrecord>
@@ -6322,131 +6325,161 @@
 			<Element name="Package Template PACK FormID" type="formid" reftype="PACK"/>
 			<Element name="unknown flags" type="uint" flags="1;2;4;8;16;32;64;128;256;512"/>
 		</Subrecord>
+		<!-- repeating groups could be cleaner; weird abbrev; legacy data which CK deletes/replaces -->
 		<Group optional="1" repeat="1">
-			<!-- repeating groups could be cleaner; weird abbrev; legacy data which CK deletes/replaces -->
-			<Group optional="1" repeat="1">
-				<!-- Public Package Data; weird abbrev -->
-				<Subrecord name="ANAM" desc="Package tab PublicPackageData Type" optional="1">
-					<!-- CNAM dependent on this data -->
-					<Element name="Type (string)" type="string" condid="5"/>
-				</Subrecord>
-				<Subrecord name="TPIC" desc="Dialog (DIAL)" optional="1">
-					<Element name="FormID" type="formid" reftype="DIAL"/>
-				</Subrecord>
-				<!-- CNAMS are different dpeneding on the ANAM data -->
-				<Subrecord name="CNAM" desc="ObjectList Type" condid="5" condition="startswith" condvalue="O">
-					<Element name="ObjectList Value" type="float"/>
-				</Subrecord>
-				<Subrecord name="CNAM" desc="SingleRef Type" optional="1" condid="5" condition="startswith" condvalue="S">
-					<Element name="FormID" type="formid"/>
-				</Subrecord>
-				<Subrecord name="CNAM" desc="Float Type" condid="5" condition="startswith" condvalue="F">
-					<Element name="Float Value" type="float"/>
-				</Subrecord>
-				<Subrecord name="CNAM" desc="Boolean Type" condid="5" condition="startswith" condvalue="B">
-					<Element name="Boolean Value" type="byte" options="True;1;False;0"/>
-				</Subrecord>
-				<Subrecord name="CNAM" desc="Integer Type" optional="5" condid="5" condition="startswith" condvalue="I">>
-					<Element name="Integer Value" type="uint"/>
-				</Subrecord>
-				<Subrecord name="PLDT" desc="Selected Package Data Location" optional="1">
-					<Element name="Target Location" type="uint" options="Near Reference;0;In Cell;1;Near Package Start Location;2;Near Editor Location;3;Linked Reference;6;PackdataTarget FindResults;11;Near Self;12"/>
-					<Element name="Value FormID (REFR/ACHR, KYWD, CELL, etc)" type="formid"/>
-					<Element name="Radius" type="uint"/>
-				</Subrecord>
-				<Subrecord name="PTDA" desc="Selected Package Target data" optional="1">
-					<Element name="TargetSelector Type" type="uint" options="Specific Reference;0;Any Object;1;Object Type;2;Linked Reference;3;Self;6"/>
-					<Element name="Target FormID (REFR/ACHR, FACT, KYWD, etc)" type="formid" options="Activators;1;Alchemy;14;Actors Any;19"/>
-					<Element name="(always 0)" type="uint"/>
-				</Subrecord>
-				<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
-					<Element name="(always 1)" type="uint"/>
-					<Element name="(4letter abbrev in hex view)" type="uint"/>
-				</Subrecord>
-				<Subrecord name="UNAM" desc="PublicPackageData Entry Index #" optional="1" repeat="1">
-					<Element name="Index #" type="byte"/>
-				</Subrecord>
-			</Group>
-			<Group optional="1" repeat="1">
-				<!-- Procedure Tree -->
-				<Subrecord name="XNAM" desc="Next Available Entry Index #" optional="1">
-					<Element name="Next Index #" type="byte"/>
-				</Subrecord>
-				<Subrecord name="ANAM" desc="Package tab Procedure Tree Branch Name" optional="1">
-					<Element name="Branch Name (string)" type="string"/>
-				</Subrecord>
-				<Group id="CONDITIONAL" optional="1" repeat="1"/>
-				<Subrecord name="PRCB" desc="Procedure Tree" optional="1" repeat="1" >
-					<Element name="Total # of Child Branches" type="uint"/>
-					<Element name="Branches with Children" type="uint"/>
-				</Subrecord>
-				<Subrecord name="PNAM" desc="Procedure Name" optional="1" repeat="1">
-					<Element name="Name (string)" type="string"/>
-				</Subrecord>
-				<Subrecord name="FNAM" desc="Success Completes Package Check-box" optional="1" repeat="1">
-					<Element name="Success Completes Package" type="uint" options="Unchecked;0;Checked;1"/>
-				</Subrecord>
-				<Subrecord name="PKC2" desc="Selected Procedure Value Type" optional="1" repeat="1">
-					<Element name="Value Type" type="byte" options="Search Loc;0;Target Criteria;1;Find Results;2;Location;3;Num to Activate;4;Wander Preferred;6;Ride Horse if Possible;7;Search Own Inventory;8;Allow Horse Travel;17;Guard Marker 1;18;Allow Horse Wander/Guard Marker 2;19;Guard Marker 3;20;Guard Marker 4;21;Link to Bed;33;Guard Self Location;42;Suspicious of PlayerFaction;52;Link to Map;61;Prefer Preferred Path;67;Float/Bool;255"/>
-				</Subrecord>
-				<Subrecord name="PFOR" desc="PFOR" optional="1" repeat="1">
-					<Element name="Unknown 4bytes 1" type="uint"/>
-					<Element name="Unknown 4bytes 2" type="uint"/>
-					<Element name="Unknown 4bytes 3" type="uint"/>
-				</Subrecord>
-				<Subrecord name="PFO2" desc="Spell" optional="1" repeat="1">
-					<Element name="Name" type="string"/>
-					<!-- changed from lstring -->
-					<Element name="Unknown 1" type="uint"/>
-					<Element name="SPEL FormID" type="formid" reftype="SPEL"/>
-					<Element name="Unknown 2" type="uint"/>
-				</Subrecord>
-			</Group>
-			<Group optional="1" repeat="1">
-				<!-- Selected Package Data -->
-				<Subrecord name="UNAM" desc="PublicPackageData Index #" optional="1" repeat="1">
-					<Element name="Index #" type="byte"/>
-				</Subrecord>
-				<Subrecord name="BNAM" desc="Name of PublicPackageData Selected" optional="1" repeat="1">
-					<Element name="Name (string)" type="string"/>
-				</Subrecord>
-				<Subrecord name="PNAM" desc="Public Check-box" optional="1" repeat="1">
-					<Element name="Public" type="uint" options="Unchecked;0;Checked;1"/>
-				</Subrecord>
-			</Group>
-			<Group optional="1" repeat="1">
-				<!-- begin/end/change data; legacy data which CK deletes/replaces -->
-				<Subrecord name="POBA" desc="Package On Begin" optional="1"/>
-				<Subrecord name="POEA" desc="Package On End" optional="1"/>
-				<Subrecord name="POCA" desc="Package On Change" optional="1"/>
-				<Subrecord name="INAM" desc="Begin/End/Change tab Idle Anim (IDLE)" optional="1" repeat="1">
-					<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
-				</Subrecord>
-				<Subrecord name="SCHR" desc="(legacy, deleted by CK)" optional="1" repeat="1">
-					<Element name="(always 0)" type="uint"/>
-					<Element name="(always 0)" type="uint"/>
-					<Element name="(always 0)" type="uint"/>
-					<Element name="(always 0)" type="uint"/>
-					<Element name="(always 0)" type="ushort"/>
-					<Element name="(always 1)" type="ushort"/>
-				</Subrecord>
-				<Subrecord name="TNAM" desc="(legacy, deleted by CK)" optional="1" repeat="1">
-					<Element name="(always 0)" type="uint"/>
-				</Subrecord>
-				<Subrecord name="SCDA" desc="(legacy, deleted by CK)" optional="1">
-					<Element name="various flags and data (deleted by the CK)" type="blob"/>
-				</Subrecord>
-				<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
-					<Element name="scripting code (deleted by the CK)" type="blob"/>
-				</Subrecord>
-				<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
-					<Element name="FormID" type="formid" reftype="QUST" />
-				</Subrecord>
-				<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
-					<Element name="(always 1)" type="uint"/>
-					<Element name="(4letter abbrev in hex view)" type="uint"/>
-				</Subrecord>
-			</Group>
+			<!-- Public Package Data; weird abbrev -->
+			<Subrecord name="ANAM" desc="Package tab PublicPackageData Type" optional="1">
+				<!-- CNAM dependent on this data -->
+				<Element name="Type (string)" type="string" condid="5"/>
+			</Subrecord>
+			<Subrecord name="CNAM" desc="ObjectList Type" condid="5" condition="startswith" condvalue="O">
+				<Element name="ObjectList Value" type="float"/>
+			</Subrecord>
+			<Subrecord name="BNAM" desc="Unknown" optional="1">
+				<Element name="Unknown" type="blob"/>
+			</Subrecord>
+			<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
+				<Element name="(always 1)" type="uint"/>
+				<Element name="(4letter abbrev in hex view)" type="uint"/>
+			</Subrecord>
+			<Subrecord name="PLDT" desc="Selected Package Data Location" optional="1">
+				<Element name="Target Location" type="uint" options="Near Reference;0;In Cell;1;Near Package Start Location;2;Near Editor Location;3;Linked Reference;6;PackdataTarget FindResults;11;Near Self;12"/>
+				<Element name="Value FormID (REFR/ACHR, KYWD, CELL, etc)" type="formid"/>
+				<Element name="Radius" type="uint"/>
+			</Subrecord>
+			<Subrecord name="PTDA" desc="Selected Package Target data" optional="1">
+				<Element name="TargetSelector Type" type="uint" options="Specific Reference;0;Any Object;1;Object Type;2;Linked Reference;3;Self;6"/>
+				<Element name="Target FormID (REFR/ACHR, FACT, KYWD, etc)" type="formid" options="Activators;1;Alchemy;14;Actors Any;19"/>
+				<Element name="(always 0)" type="uint"/>
+			</Subrecord>
+			<Subrecord name="TPIC" desc="Dialog (DIAL)" optional="1">
+				<Element name="FormID" type="formid" reftype="DIAL"/>
+			</Subrecord>
+			<Subrecord name="UNAM" desc="PublicPackageData Entry Index #" optional="1" repeat="1">
+				<Element name="Index #" type="byte"/>
+			</Subrecord>
+		</Group>
+		<Subrecord name="XNAM" desc="Next Available Entry Index #" optional="1">
+			<Element name="Next Index #" type="byte"/>
+		</Subrecord>
+    <Group optional="1" repeat="1">
+			<Subrecord name="ANAM" desc="Package tab PublicPackageData Type" optional="1">
+				<!-- CNAM dependent on this data -->
+				<Element name="Type (string)" type="string" condid="5"/>
+			</Subrecord>
+			<Group id="CONDITIONAL" optional="1" repeat="1"/>
+			<Subrecord name="PRCB" desc="Procedure Tree" optional="1" repeat="1" >
+				<Element name="Total # of Child Branches" type="uint"/>
+				<Element name="Branches with Children" type="uint" flags="Repeat when Complete;Unknown 1"/>/>
+			</Subrecord>
+			<Subrecord name="PNAM" desc="Procedure Name" optional="1" repeat="1">
+				<Element name="Name (string)" type="string"/>
+			</Subrecord>
+			<Subrecord name="FNAM" desc="Success Completes Package Check-box" optional="1" repeat="1">
+				<Element name="Success Completes Package" type="uint" options="Unchecked;0;Checked;1"/>
+			</Subrecord>
+			<Subrecord name="PKC2" desc="Selected Procedure Value Type" optional="1" repeat="1">
+				<Element name="Value Type" type="byte" options="Search Loc;0;Target Criteria;1;Find Results;2;Location;3;Num to Activate;4;Wander Preferred;6;Ride Horse if Possible;7;Search Own Inventory;8;Allow Horse Travel;17;Guard Marker 1;18;Allow Horse Wander/Guard Marker 2;19;Guard Marker 3;20;Guard Marker 4;21;Link to Bed;33;Guard Self Location;42;Suspicious of PlayerFaction;52;Link to Map;61;Prefer Preferred Path;67;Float/Bool;255"/>
+			</Subrecord>
+			<Subrecord name="PFO2" desc="Spell" optional="1" repeat="1">
+				<Element name="Name" type="string"/>
+				<!-- changed from lstring -->
+				<Element name="Unknown 1" type="uint"/>
+				<Element name="SPEL FormID" type="formid" reftype="SPEL"/>
+				<Element name="Unknown 2" type="uint"/>
+			</Subrecord>
+			<Subrecord name="PFOR" desc="PFOR" optional="1" repeat="1">
+				<Element name="Unknown 4bytes 1" type="uint"/>
+				<Element name="Unknown 4bytes 2" type="uint"/>
+				<Element name="Unknown 4bytes 3" type="uint"/>
+			</Subrecord>
+		</Group>
+		<Subrecord name="UNAM" desc="PublicPackageData Entry Index #" optional="1" repeat="1">
+			<Element name="Index #" type="byte"/>
+		</Subrecord>
+     <Group optional="1" repeat="1">
+			<Subrecord name="POBA" desc="Package On Begin" optional="1"/>
+			<Subrecord name="INAM" desc="Begin/End/Change tab Idle Anim (IDLE)" optional="1" repeat="1">
+				<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
+			</Subrecord>
+			<Subrecord name="SCHR" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="ushort"/>
+				<Element name="(always 1)" type="ushort"/>
+			</Subrecord>
+			<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="scripting code (deleted by the CK)" type="blob"/>
+			</Subrecord>
+			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
+				<Element name="FormID" type="formid" reftype="QUST" />
+			</Subrecord>
+			<Subrecord name="TNAM" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="(always 0)" type="uint"/>
+			</Subrecord>
+			<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
+				<Element name="(always 1)" type="uint"/>
+				<Element name="(4letter abbrev in hex view)" type="uint"/>
+			</Subrecord>
+		</Group>
+    <Group optional="1" repeat="1">
+			<Subrecord name="POEA" desc="Package On End" optional="1"/>
+			<Subrecord name="INAM" desc="Begin/End/Change tab Idle Anim (IDLE)" optional="1" repeat="1">
+				<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
+			</Subrecord>
+			<Subrecord name="SCHR" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="ushort"/>
+				<Element name="(always 1)" type="ushort"/>
+			</Subrecord>
+			<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="scripting code (deleted by the CK)" type="blob"/>
+			</Subrecord>
+			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
+				<Element name="FormID" type="formid" reftype="QUST" />
+			</Subrecord>
+			<Subrecord name="TNAM" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="(always 0)" type="uint"/>
+			</Subrecord>
+			<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
+				<Element name="(always 1)" type="uint"/>
+				<Element name="(4letter abbrev in hex view)" type="uint"/>
+			</Subrecord>
+		</Group>
+    <Group optional="1" repeat="1">
+			<Subrecord name="POCA" desc="Package On Change" optional="1"/>
+			<Subrecord name="INAM" desc="Begin/End/Change tab Idle Anim (IDLE)" optional="1" repeat="1">
+				<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
+			</Subrecord>
+			<Subrecord name="SCHR" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="ushort"/>
+				<Element name="(always 1)" type="ushort"/>
+			</Subrecord>
+			<Subrecord name="SCDA" desc="(legacy, deleted by CK)" optional="1">
+				<Element name="various flags and data (deleted by the CK)" type="blob"/>
+			</Subrecord>
+			<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="scripting code (deleted by the CK)" type="blob"/>
+      </Subrecord>
+			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
+				<Element name="FormID" type="formid" reftype="QUST" />
+			</Subrecord>
+			<Subrecord name="TNAM" desc="(legacy, deleted by CK)" optional="1" repeat="1">
+				<Element name="(always 0)" type="uint"/>
+			</Subrecord>
+			<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
+				<Element name="(always 1)" type="uint"/>
+				<Element name="(4letter abbrev in hex view)" type="uint"/>
+			</Subrecord>
 		</Group>
 	</Record>
 	<Record name="CSTY" desc="Combat Style">
