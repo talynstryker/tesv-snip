@@ -6290,27 +6290,21 @@
 			<Element name="Value FormID (REFR/ACHR, KYWD, CELL, etc)" type="formid"/>
 			<Element name="Radius" type="uint"/>
 		</Subrecord>
-		<Subrecord name="PSDT" desc="Schedule tab" optional="1">
-			<!-- 3bytes flags unknown -->
-			<Element name="Month" type="byte" options="January;0;February;1;March;2;April;3;May;4;June;5;July;6;August;7;September;8;October;9;November;10;December;11;Spring(MAM);12;Summer(JJA);13;Autumn(SON);14;Winter(DJF);15;Any Month;255"/>
-			<Element name="Day of the Week" type="byte" options="Sunday;0;Monday;1;Tuesday;2;Wednesday;3;Thursday;4;Friday;5;Saturday;6;Weekdays (MTWTF);7;Weekends;8;Mon/Wed/Fri;9;Tues/Thurs;10;Any Day;255"/>
-			<Element name="Date" type="byte" options="Any;0"/>
-			<Element name="Hour" type="byte" options="0;0;1;1;31;31;Any;255"/>
-			<Element name="Minutes" type="byte" options="0;0;5;5;10;10;15;15;20;20;25;25;30;30;35;35;40;40;45;45;50;50;55;55;Any;255"/>
-			<Element name="unknown flags 1" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="unknown flags 2" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="unknown flags 3" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
-			<Element name="Duration Hours (0,0.25+) (this # div by 60)" type="uint"/>
-		</Subrecord>
-		<Group id="CONDITIONAL" optional="1" repeat="1"/>
-		<Subrecord name="PKCU" desc="Package tab" optional="1">
-			<!-- 1int flags unknown -->
-			<Element name="Total # of PublicPackageData Entries" type="uint"/>
-			<Element name="Package Template PACK FormID" type="formid" reftype="PACK"/>
-			<Element name="unknown flags" type="uint" flags="1;2;4;8;16;32;64;128;256;512"/>
-		</Subrecord>
-		<Group id="CONDITIONAL" optional="1" repeat="1"/>
-		<!-- cond tab -->
+		<Group optional="1" repeat="1">
+      <Subrecord name="PSDT" desc="Schedule tab" optional="1">
+        <!-- 3bytes flags unknown -->
+        <Element name="Month" type="byte" options="January;0;February;1;March;2;April;3;May;4;June;5;July;6;August;7;September;8;October;9;November;10;December;11;Spring(MAM);12;Summer(JJA);13;Autumn(SON);14;Winter(DJF);15;Any Month;255"/>
+        <Element name="Day of the Week" type="byte" options="Sunday;0;Monday;1;Tuesday;2;Wednesday;3;Thursday;4;Friday;5;Saturday;6;Weekdays (MTWTF);7;Weekends;8;Mon/Wed/Fri;9;Tues/Thurs;10;Any Day;255"/>
+        <Element name="Date" type="byte" options="Any;0"/>
+        <Element name="Hour" type="byte" options="0;0;1;1;31;31;Any;255"/>
+        <Element name="Minutes" type="byte" options="0;0;5;5;10;10;15;15;20;20;25;25;30;30;35;35;40;40;45;45;50;50;55;55;Any;255"/>
+        <Element name="unknown flags 1" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
+        <Element name="unknown flags 2" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
+        <Element name="unknown flags 3" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
+        <Element name="Duration Hours (0,0.25+) (this # div by 60)" type="uint"/>
+      </Subrecord>
+      <Group id="CONDITIONAL" optional="1" repeat="1"/>
+		</Group>
 		<Group optional="1" repeat="1">
       <Subrecord name="IDLF" desc="Idles tab Use Specific Idles" optional="1">
         <Element name="(always 8)" type="byte"/>
@@ -6333,6 +6327,12 @@
 		</Subrecord>
 		<Subrecord name="QNAM" desc="Owner Quest (QUST)" optional="1" repeat="1">
 			<Element name="Quest FormID" type="formid" reftype="QUST"/>
+		</Subrecord>
+		<Subrecord name="PKCU" desc="Package tab" optional="1">
+			<!-- 1int flags unknown -->
+			<Element name="Total # of PublicPackageData Entries" type="uint"/>
+			<Element name="Package Template PACK FormID" type="formid" reftype="PACK"/>
+			<Element name="unknown flags" type="uint" flags="1;2;4;8;16;32;64;128;256;512"/>
 		</Subrecord>
 		<!-- repeating groups could be cleaner; weird abbrev; legacy data which CK deletes/replaces -->
 		<Group optional="1" repeat="1">
