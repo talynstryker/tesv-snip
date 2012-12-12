@@ -71,6 +71,14 @@
     <PlatformTarget>x86</PlatformTarget>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="IronPython, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="IronPython.Modules, Version=2.7.0.40, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="lua51, Version=0.0.0.0, Culture=neutral, PublicKeyToken=1e1fb15b02227b8a, processorArchitecture=x86" />
+    <Reference Include="LuaInterface, Version=2.0.4.41543, Culture=neutral, PublicKeyToken=1e1fb15b02227b8a, processorArchitecture=x86" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="Microsoft.Dynamic, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Scripting, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.Scripting.Metadata, Version=1.1.0.20, Culture=neutral, PublicKeyToken=7f709c5b713576e1, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Configuration" />
     <Reference Include="System.Core">
@@ -141,6 +149,7 @@
     <Compile Include="Domain\Model\SearchSubrecordXml.cs" />
     <Compile Include="Domain\Model\SubRecord.cs" />
     <Compile Include="Domain\Model\TESParserException.cs" />
+    <Compile Include="Domain\Scripts\PyInterpreter.cs" />
     <Compile Include="Domain\Scripts\Keywords.cs" />
     <Compile Include="Domain\Scripts\ScriptCompiler.cs" />
     <Compile Include="Domain\Scripts\Token.cs" />
@@ -582,6 +591,9 @@
     </EmbeddedResource>
     <None Include="build\tesvsnip.snk" />
     <None Include="changelog.rtf" />
+    <None Include="conf\scripts.py">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="conf\DockPanel.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
@@ -768,9 +780,6 @@
       <DependentUpon>MainView.cs</DependentUpon>
     </Compile>
     <None Include="Vendor\ObjectListView\FullClassDiagram.cd" />
-    <None Include="Vendor\ObjectListView\ObjectListView.FxCop" />
-    <None Include="Vendor\ObjectListView\ObjectListView.shfb" />
-    <None Include="Vendor\ObjectListView\olv-keyfile.snk" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Resources\tesv_ico.ico" />
@@ -792,6 +801,22 @@
     <Content Include="TranslateUI\Tools\xmlDbEditor\xmlDbEditor.pdb" />
     <Content Include="Vendor\DotZLib\LICENSE_1_0.txt" />
     <Content Include="Vendor\DotZLib\readme.txt" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.Modules.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.Modules.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.SQLite.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.SQLite.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.Wpf.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.Wpf.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\IronPython.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Dynamic.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Dynamic.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Scripting.AspNet.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Scripting.AspNet.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Scripting.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Scripting.Metadata.dll" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Scripting.Metadata.xml" />
+    <Content Include="Vendor\IronPython-2.7.3\Microsoft.Scripting.xml" />
     <Content Include="Vendor\ObjectListView\CustomDictionary.xml" />
     <Content Include="Vendor\ObjectListView\Resources\clear-filter.png" />
     <Content Include="Vendor\ObjectListView\Resources\clear-filter1.png" />
@@ -916,7 +941,23 @@ del "$(TargetDir)Lang\resgen.exe"</PostBuildEvent>
     </Content>
     <CopyToStaging Include="$(ProjectDir)\LICENSE" />
     <CopyToStaging Include="$(ProjectDir)\README.TXT" />
-    <CopyToStagingConf Include="$(ProjectDir)conf\**" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure r14.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 518.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 520.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 521.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 522.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 523.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 528.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 541.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 625.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 626.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 627.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructure SVN 628.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructureFNV.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructureFO3.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructureTES3.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructureTES4.xml" />
+    <CopyToStagingConf Include="C:\TESVSnip\TESVSnip\branches\dev-nogardeht\conf\RecordStructureTES5.xml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="bin\Debug\" />

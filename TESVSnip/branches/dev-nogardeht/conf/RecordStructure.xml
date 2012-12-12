@@ -11383,15 +11383,15 @@
 			<Element name="Run Forward" type="float"/>
 			<Element name="Walk Back" type="float"/>
 			<Element name="Run Back" type="float"/>
-			<Element name="Walk Rotate In Place *" type="float" desc="(this # x57.29578)"/>
-			<Element name="Run Rotate In Place *" type="float" desc="(this # x57.29578)"/>
+			<Element name="Walk Rotate In Place *" type="float" desc="(this # x57.29578)" funcr="MultiplyRounded(57.29578,6)" funcw="DivideRounded(57.29578, 6)"/>
+			<Element name="Run Rotate In Place *" type="float" desc="(this # x57.29578)" funcr="MultiplyRounded(57.29578,6)" funcw="DivideRounded(57.29578, 6)"/>
 			<!-- Not present if INAM is not specified -->
-			<Element name="Run Rotate While Moving *" type="float" desc="(this # x57.29578)" optional="1"/>
+			<Element name="Run Rotate While Moving *" type="float" desc="(this # x57.29578)" optional="1" funcr="MultiplyRounded(57.29578,6)" funcw="DivideRounded(57.29578, 6)"/>
 		</Subrecord>
 		<Subrecord name="INAM" desc="Anim Change Thresholds (* see note, 3.4028=0)" optional="1">
-			<Element name="Directional *" type="float" desc="(this # x57.29578)"/>
-			<Element name="Movement Speed *" type="float" desc="(this # x57.29578)"/>
-			<Element name="Rotational Speed *" type="float" desc="(this # x57.29578)"/>
+			<Element name="Directional *" type="float" desc="(this # x57.29578)" funcr="ReturnZeroIfEqual(3.40282347E+38)" funcw="ReturnValueIfEqualZero(3.40282347E+38)"/> 
+			<Element name="Movement Speed *" type="float" desc="(this # x57.29578)" funcr="ReturnZeroIfEqual(3.40282347E+38)" funcw="ReturnValueIfEqualZero(3.40282347E+38)"/> 
+			<Element name="Rotational Speed *" type="float" desc="(this # x57.29578)" funcr="ReturnZeroIfEqual(3.40282347E+38)" funcw="ReturnValueIfEqualZero(3.40282347E+38)"/> 
 		</Subrecord>
 	</Record>
 	<Record name="SNDR" desc="Sound Descriptor">

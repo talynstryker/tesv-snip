@@ -267,25 +267,23 @@ namespace TESVSnip.Framework
 
         public static float h2f(ArraySegment<byte> data)
         {
-          try
-          {
-
-
-            if (data.Count >= 4)
+            float f = 0;
+            try
             {
-                tc.b1 = data.Array[data.Offset + 0];
-                tc.b2 = data.Array[data.Offset + 1];
-                tc.b3 = data.Array[data.Offset + 2];
-                tc.b4 = data.Array[data.Offset + 3];
-                return tc.f;
+                if (data.Count >= 4)
+                {
+                    tc.b1 = data.Array[data.Offset + 0];
+                    tc.b2 = data.Array[data.Offset + 1];
+                    tc.b3 = data.Array[data.Offset + 2];
+                    tc.b4 = data.Array[data.Offset + 3];
+                    return tc.f;
+                }
+                return default(float);
             }
-
-            return default(float);
-          }
-          catch (Exception)
-          {
-            throw;
-          }
+            catch (Exception)
+            {
+                throw;
+            }
         }
 
         public static uint h2i(byte b1, byte b2, byte b3, byte b4)

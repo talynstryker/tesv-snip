@@ -85,8 +85,8 @@ namespace TESVSnip.Domain.Model
                     this.Flags3 = snipStreamWrapper.ReadUInt32(); //recordReader.ReadUInt32();
                 }
 
-                if (this.FormID == 496431)
-                    Name = name;
+                //if (this.FormID == 496431)
+                //    Name = name;
 
                 compressed = (this.Flags1 & 0x00040000) != 0;
                 amountRead = 0;
@@ -104,10 +104,18 @@ namespace TESVSnip.Domain.Model
                     RecordsTace.AddRecordToCompressedRecordsList(Name);
                 }
 
+#if DEBUGCOMPRESSREALSIZE
+
+                if (compressed & realSize == 0)
+                {
+                    Clipboard.SetText(name + " - " + this.FormID.ToString(CultureInfo.InvariantCulture));
+                }
+#endif
+
                 //using (var stream = new MemoryStream(recordReader.ReadBytes((int) dataSize)))
                 //{
                 //using (var dataReader = compressed ? ZLib.Decompress(stream, (int) realSize) : new BinaryReader(stream))
-                //{
+                //{.
                 try
                 {
                     //if (dataSize == 0)

@@ -85,7 +85,7 @@ namespace TESVSnip.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"AACT;ACTI;ADDN;ALCH;AMMO;ANIO;APPA;ARMA;ARMO;ARTO;ASPC;ASTP;AVIF;BOOK;BPTD;CAMS;CELL;CLAS;CLDC;CLFM;CLMT;COBJ;COLL;CONT;CPTH;CSTY;DEBR;DIAL;DLBR;DLVW;DOBJ;DOOR;DUAL;ECZN;EFSH;ENCH;EQUP;EXPL;EYES;FACT;FLOR;FLST;FSTP;FSTS;FURN;GLOB;GMST;GRAS;HAIR;HAZD;HDPT;IDLE;IDLM;IMAD;IMGS;INGR;IPCT;IPDS;KEYM;KYWD;LCRT;LCTN;LGTM;LIGH;LSCR;LTEX;LVLI;LVLN;LVSP;MATO;MATT;MESG;MGEF;MISC;MOVT;MSTT;MUSC;MUST;NAVI;NPC_;OTFT;PACK;PERK;PROJ;PWAT;QUST;RACE;REGN;RELA;REVB;RFCT;RGDL;SCEN;SCOL;SCPT;SCRL;SHOU;SLGM;SMBN;SMEN;SMQN;SNCT;SNDR;SOPM;SOUN;SPEL;SPGD;STAT;TACT;TREE;TXST;VTYP;WATR;WEAP;WOOP;WRLD;WTHR")]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"AACT;ACTI;ADDN;ALCH;AMMO;ANIO;APPA;ARMA;ARMO;ARTO;ASPC;ASTP;AVIF;BOOK;BPTD;CAMS;CELL;CLAS;CLDC;CLFM;CLMT;COBJ;COLL;CONT;CPTH;CSTY;DEBR;DIAL;DLBR;DLVW;DOBJ;DOOR;DUAL;ECZN;EFSH;ENCH;EQUP;EXPL;EYES;FACT;FLOR;FLST;FSTP;FSTS;FURN;GLOB;GMST;GRAS;HAIR;HAZD;HDPT;IDLE;IDLM;IMAD;IMGS;INGR;IPCT;IPDS;KEYM;KYWD;LCRT;LCTN;LGTM;LIGH;LSCR;LTEX;LVLI;LVLN;LVSP;MATO;MATT;MESG;MGEF;MISC;MOVT;MSTT;MUSC;MUST;NAVI;NPC_;OTFT;PACK;PERK;PROJ;PWAT;QUST;RACE;REGN;RELA;REVB;RFCT;RGDL;SCEN;SCOL;SCPT;SCTX;SCRL;SHOU;SLGM;SMBN;SMEN;SMQN;SNCT;SNDR;SOPM;SOUN;SPEL;SPGD;STAT;TACT;TREE;TXST;VTYP;WATR;WEAP;WOOP;WRLD;WTHR")]
         public string AllESMRecords {
             get {
                 return ((string)(this["AllESMRecords"]));
@@ -478,18 +478,6 @@ namespace TESVSnip.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute(@"AACT;ACTI;ADDN;ALCH;AMMO;ANIO;APPA;ARMA;ARMO;ARTO;ASPC;ASTP;AVIF;BOOK;BPTD;CAMS;CELL;CLAS;CLDC;CLFM;CLMT;COBJ;COLL;CONT;CPTH;CSTY;DEBR;DIAL;DLBR;DLVW;DOBJ;DOOR;DUAL;ECZN;EFSH;ENCH;EQUP;EXPL;EYES;FACT;FLOR;FLST;FSTP;FSTS;FURN;GLOB;GMST;GRAS;HAIR;HAZD;HDPT;IDLE;IDLM;IMAD;IMGS;INGR;IPCT;IPDS;KEYM;KYWD;LCRT;LCTN;LGTM;LIGH;LSCR;LTEX;LVLI;LVLN;LVSP;MATO;MATT;MESG;MGEF;MISC;MOVT;MSTT;MUSC;MUST;NAVI;NPC_;OTFT;PACK;PERK;PROJ;PWAT;QUST;RACE;REGN;RELA;REVB;RFCT;RGDL;SCEN;SCOL;SCPT;SCRL;SHOU;SLGM;SMBN;SMEN;SMQN;SNCT;SNDR;SOPM;SOUN;SPEL;SPGD;STAT;TACT;TREE;TXST;VTYP;WATR;WEAP;WOOP;WRLD;WTHR")]
-        public string AllESMRecordsOld {
-            get {
-                return ((string)(this["AllESMRecordsOld"]));
-            }
-            set {
-                this["AllESMRecordsOld"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("CELL;DIAL;IMAD;LAND;NAVI;NAVM;NPC_;REGN;WRLD;WTHR")]
         public string AutoCompressRecords {
             get {
@@ -497,6 +485,18 @@ namespace TESVSnip.Properties {
             }
             set {
                 this["AutoCompressRecords"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute(@"AACT;ACTI;ADDN;ALCH;AMMO;ANIO;APPA;ARMA;ARMO;ARTO;ASPC;ASTP;AVIF;BOOK;BPTD;CAMS;CELL;CLAS;CLDC;CLFM;CLMT;COBJ;COLL;CONT;CPTH;CSTY;DEBR;DIAL;DLBR;DLVW;DOBJ;DOOR;DUAL;ECZN;EFSH;ENCH;EQUP;EXPL;EYES;FACT;FLOR;FLST;FSTP;FSTS;FURN;GLOB;GMST;GRAS;HAIR;HAZD;HDPT;IDLE;IDLM;IMAD;IMGS;INGR;IPCT;IPDS;KEYM;KYWD;LCRT;LCTN;LGTM;LIGH;LSCR;LTEX;LVLI;LVLN;LVSP;MATO;MATT;MESG;MGEF;MISC;MOVT;MSTT;MUSC;MUST;NAVI;NPC_;OTFT;PACK;PERK;PROJ;PWAT;QUST;RACE;REGN;RELA;REVB;RFCT;RGDL;SCEN;SCOL;SCPT;SCRL;SHOU;SLGM;SMBN;SMEN;SMQN;SNCT;SNDR;SOPM;SOUN;SPEL;SPGD;STAT;TACT;TREE;TXST;VTYP;WATR;WEAP;WOOP;WRLD;WTHR")]
+        public string AllESMRecordsOld {
+            get {
+                return ((string)(this["AllESMRecordsOld"]));
+            }
+            set {
+                this["AllESMRecordsOld"] = value;
             }
         }
     }

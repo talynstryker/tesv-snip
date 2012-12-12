@@ -47,15 +47,16 @@ namespace BrightIdeasSoftware {
         public OLVListItem(object rowObject) {
             this.rowObject = rowObject;
         }
-   
+
         /// <summary>
         /// Create a OLVListItem for the given row object
         /// </summary>
         public OLVListItem(object rowObject, OLVListSubItem[] subItems, int imageIndex)
-          : base(subItems, imageIndex)
+            : base(subItems, imageIndex)
         {
-          this.RowObject = null;
+            this.RowObject = null;
         }
+
         /// <summary>
         /// Create a OLVListItem for the given row object, represented by the given string and image
         /// </summary>

@@ -30,6 +30,10 @@ namespace TESVSnip.Domain.Data.RecordStructure
 
         public readonly int repeat;
 
+        public readonly string funcr;
+
+        public readonly string funcw;
+
         public readonly ElementValueType type;
 
         public ElementStructure()
@@ -47,6 +51,8 @@ namespace TESVSnip.Domain.Data.RecordStructure
             this.CondID = 0;
             this.FormIDType = null;
             this.multiline = false;
+            this.funcr = string.Empty;
+            this.funcw = string.Empty;
             this.type = ElementValueType.Blob;
         }
 
@@ -62,6 +68,8 @@ namespace TESVSnip.Domain.Data.RecordStructure
             this.options = node.options == null ? new string[0] : node.options.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
             this.flags = node.flags == null ? new string[0] : node.flags.Split(new[] { ';' });
             this.repeat = node.repeat;
+            this.funcr = node.funcr;
+            this.funcw = node.funcw;
             this.CondID = node.condid;
             if (this.optional || this.repeat > 0)
             {

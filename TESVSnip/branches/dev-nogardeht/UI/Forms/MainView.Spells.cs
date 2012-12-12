@@ -79,7 +79,7 @@
                 return;
             }
 
-            if (MessageBox.Show("This may delete records from the esp.\nAre you sure you wish to continue?", "Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
+            if (MessageBox.Show(@"This may delete records from the esp. Are you sure you wish to continue?", @"Warning", MessageBoxButtons.YesNo) != DialogResult.Yes)
             {
                 return;
             }
