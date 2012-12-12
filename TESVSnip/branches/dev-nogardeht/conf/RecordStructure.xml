@@ -11363,7 +11363,7 @@
 			<Element name="DirProjVector Y" type="float"/>
 			<Element name="DirProjVector Z" type="float"/>
 			<Element name="Normal Dampener" type="float" optional="1"/>
-			<Element name="Single Pass Color R (this # x255)" type="float" optional="1"/>
+			<Element name="Single Pass Color R (this # x255)" type="float" optional="1" funcr="Multiply(255)" funcw="Divide(255)/>
 			<Element name="Single Pass Color G (this # x255)" type="float" optional="1"/>
 			<Element name="Single Pass Color B (this # x255)" type="float" optional="1"/>
 			<Element name="Single Pass" type="uint" options="False;0;True;1" optional="1"/>
