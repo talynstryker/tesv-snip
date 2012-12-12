@@ -56,7 +56,7 @@
         {
             if (r is Record)
             {
-                var r2 = (Record)r;
+                var r2 = (Record) r;
                 if (r2.SubRecords.Count > 0 && r2.SubRecords[0].Name == "EDID")
                 {
                     sw.WriteLine(r2.FormID.ToString("x8") + " : " + r2.SubRecords[0].GetStrData());
@@ -103,9 +103,9 @@
                     continue;
                 }
 
-                var match = (uint)plugin.Masters.Count(x => x.Name == "MAST");
+                var match = (uint) plugin.Masters.Count(x => x.Name == "MAST");
                 match <<= 24;
-                uint mask = (uint)i << 24;
+                uint mask = (uint) i << 24;
                 for (int j = 1; j < plugin.Masters[i].Records.Count; j++)
                 {
                     this.cleanRecurse(plugin.Masters[i].Records[j] as Rec, match, mask, lookup);
@@ -190,7 +190,7 @@
             }
             else
             {
-                var gr = (GroupRecord)r;
+                var gr = (GroupRecord) r;
                 for (int i = 0; i < gr.Records.Count; i++)
                 {
                     if (this.cleanRecurse2(gr.Records[i] as Rec, ref count, lookup))
@@ -258,7 +258,7 @@
                         {
                             if (sr.Name == "SCDA")
                             {
-                                size = (int)sr.Size;
+                                size = (int) sr.Size;
                                 break;
                             }
                         }
@@ -404,26 +404,27 @@
             builder.UpdateProgressAction = this.UpdateBackgroundProgress;
 
             this.StartBackgroundWork(
-                () => { builder.Start(p); }, 
-                () => {
-                    if (!this.IsBackroundProcessCanceled())
+                () => { builder.Start(p); },
+                () =>
                     {
-                        using (var dlg = new SaveFileDialog())
+                        if (!this.IsBackroundProcessCanceled())
                         {
-                            dlg.InitialDirectory = Path.GetTempPath();
-                            dlg.FileName = "RecordStructure.xml";
-                            dlg.OverwritePrompt = false;
-                            if (dlg.ShowDialog() == DialogResult.OK)
+                            using (var dlg = new SaveFileDialog())
                             {
-                                var xs = new XmlSerializer(typeof(Records));
-                                using (StreamWriter fs = File.CreateText(dlg.FileName))
+                                dlg.InitialDirectory = Path.GetTempPath();
+                                dlg.FileName = "RecordStructure.xml";
+                                dlg.OverwritePrompt = false;
+                                if (dlg.ShowDialog() == DialogResult.OK)
                                 {
-                                    xs.Serialize(fs, builder.Complete());
+                                    var xs = new XmlSerializer(typeof (Records));
+                                    using (StreamWriter fs = File.CreateText(dlg.FileName))
+                                    {
+                                        xs.Serialize(fs, builder.Complete());
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
         }
 
         private void createStubsForMissingStringsToolStripMenuItem_Click(object sender, EventArgs e)
@@ -475,7 +476,7 @@
             }
             else
             {
-                this.DumpEdidsInternal((GroupRecord)this.PluginTree.SelectedRecord, sw);
+                this.DumpEdidsInternal((GroupRecord) this.PluginTree.SelectedRecord, sw);
             }
 
             sw.Close();
@@ -492,12 +493,12 @@
             }
 
             var lstrings = new LocalizedStrings
-                {
-                    Strings =
-                        plugin.Strings.Select(x => new LocalizedString { ID = x.Key, Type = LocalizedStringFormat.Base, Value = x.Value }).Union(
-                            plugin.DLStrings.Select(x => new LocalizedString { ID = x.Key, Type = LocalizedStringFormat.DL, Value = x.Value })).Union(
-                                plugin.ILStrings.Select(x => new LocalizedString { ID = x.Key, Type = LocalizedStringFormat.IL, Value = x.Value })).ToArray()
-                };
+                               {
+                                   Strings =
+                                       plugin.Strings.Select(x => new LocalizedString {ID = x.Key, Type = LocalizedStringFormat.Base, Value = x.Value}).Union(
+                                           plugin.DLStrings.Select(x => new LocalizedString {ID = x.Key, Type = LocalizedStringFormat.DL, Value = x.Value})).Union(
+                                               plugin.ILStrings.Select(x => new LocalizedString {ID = x.Key, Type = LocalizedStringFormat.IL, Value = x.Value})).ToArray()
+                               };
             if (lstrings.Strings.Length == 0)
             {
                 MessageBox.Show("No strings available to export.", Resources.ErrorText);
@@ -523,7 +524,7 @@
                 dlg.FileName = string.Format("{0}_{1}.xml", Path.GetFileNameWithoutExtension(plugin.Name), Settings.Default.LocalizationName);
                 if (dlg.ShowDialog(this) == DialogResult.OK)
                 {
-                    var xs = new XmlSerializer(typeof(LocalizedStrings));
+                    var xs = new XmlSerializer(typeof (LocalizedStrings));
                     using (var tw = new XmlTextWriter(dlg.FileName, System.Text.Encoding.Unicode))
                     {
                         tw.Formatting = Formatting.Indented;
@@ -558,7 +559,7 @@
         {
             if (tn is Record)
             {
-                var r2 = (Record)tn;
+                var r2 = (Record) tn;
                 if (ids.ContainsKey(r2.FormID))
                 {
                     this.PluginTree.SelectedRecord = tn;
@@ -655,7 +656,7 @@
                 }
             }
 
-            uint mask = (uint)(plugin.Masters.Length - 1) << 24;
+            uint mask = (uint) (plugin.Masters.Length - 1) << 24;
             var recs = new Queue<Rec>(p.Records.OfType<Rec>());
 
             var sb2 = new StringBuilder();
@@ -665,7 +666,7 @@
                 Rec rec = recs.Dequeue();
                 if (rec is GroupRecord)
                 {
-                    var gr = (GroupRecord)rec;
+                    var gr = (GroupRecord) rec;
                     if (gr.ContentsType == "LVLI" || gr.ContentsType == "LVLN" || gr.ContentsType == "LVLC")
                     {
                         for (int i = 0; i < gr.Records.Count; i++)
@@ -676,7 +677,7 @@
                 }
                 else
                 {
-                    var r = (Record)rec;
+                    var r = (Record) rec;
                     string edid = string.Empty;
                     byte chance = 0;
                     byte flags = 0;
@@ -874,7 +875,7 @@
                     dlg.FileName = string.Format("{0}_{1}.xml", Path.GetFileNameWithoutExtension(plugin.Name), Settings.Default.LocalizationName);
                     if (dlg.ShowDialog(this) == DialogResult.OK)
                     {
-                        var xs = new XmlSerializer(typeof(LocalizedStrings));
+                        var xs = new XmlSerializer(typeof (LocalizedStrings));
                         using (var fs = new FileStream(dlg.FileName, FileMode.Open, FileAccess.Read))
                         {
                             var lstrings = xs.Deserialize(fs) as LocalizedStrings;
@@ -1004,7 +1005,7 @@
             {
                 if (recs.Peek() is GroupRecord)
                 {
-                    var gr = (GroupRecord)recs.Dequeue();
+                    var gr = (GroupRecord) recs.Dequeue();
                     for (int i = 0; i < gr.Records.Count; i++)
                     {
                         recs.Enqueue(gr.Records[i] as Rec);
@@ -1012,7 +1013,7 @@
                 }
                 else
                 {
-                    var r = (Record)recs.Dequeue();
+                    var r = (Record) recs.Dequeue();
                     foreach (SubRecord sr in r.SubRecords)
                     {
                         if (sr.Name != "SCTX")
@@ -1144,6 +1145,42 @@
             var p = this.GetPluginFromNode(this.PluginTree.SelectedRecord);
             Spells.StripEDIDs(p);
             this.PluginTree.RebuildObjects();
+        }
+
+        /// <summary>
+        /// CK only works with the plugin if the form version is 40.  If it's 43 then it won't load the plugin.  
+        /// Change the form ID from any value greater then 40, down to 40.
+        /// </summary>
+        private void reduceFormVersionTo40ToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var plugin = this.GetPluginFromNode(PluginTree.SelectedRecord);
+            if (plugin == null)
+            {
+                MessageBox.Show(Resources.NoPluginSelected, Resources.ErrorText);
+                return;
+            }
+
+            if (MessageBox.Show(
+                TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_Spell_ReduceFormVersionTo40"),
+                TranslateUI.TranslateUiGlobalization.ResManager.GetString("Application_Title"),
+                MessageBoxButtons.YesNo,
+                MessageBoxIcon.Question,
+                MessageBoxDefaultButton.Button2) == DialogResult.No)
+            {
+                this.SendStatusText(TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_Spell_ReduceFormVersionTo40Aborted"), Color.Red);
+                return;
+            }
+
+            int count = Spells.ChangeFormIdGreater40To40(plugin);
+            if (count > 0)
+            {
+                this.SendStatusText(string.Format(TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_Spell_ReduceFormVersionTo40Cleaned"), count), Color.DarkGreen);
+                if (this.PluginTree.SelectedRecord != null) this.UpdateMainText(this.PluginTree.SelectedRecord);
+            }
+            else
+            {
+                this.SendStatusText(TranslateUI.TranslateUiGlobalization.ResManager.GetString("TESSNIP_Spell_NoFormVersionGreater40"), Color.OrangeRed);
+            }
         }
     }
 }

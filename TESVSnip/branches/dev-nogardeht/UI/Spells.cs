@@ -791,6 +791,35 @@ namespace TESVSnip.UI
                 }
             }
         }
+
+
+        internal static int ChangeFormIdGreater40To40(Plugin plugin)
+        {
+            if (plugin == null)
+            {
+                return -1;
+            }
+
+            var masters = plugin.Masters;
+            if (masters == null || masters.Length == 0)
+            {
+                return -1;
+            }
+
+            int countGreate40 = 0;
+            foreach (var record in plugin.Enumerate().OfType<Record>())
+            {
+                record.MatchRecordStructureToRecord();
+                if (record.Flags3 > 40)
+                {
+                    record.Flags3 = 40;
+                    countGreate40++;
+                }
+            }
+
+            return countGreate40;
+        }
+
     }
 
     // class Spells
