@@ -383,4 +383,16 @@ Duration of process between 15 and 35 seconds.</value>
   <data name="ZLib_Error" xml:space="preserve">
     <value>ZLib error</value>
   </data>
+  <data name="TESSNIP_Spell_NoFormVersionGreater40" xml:space="preserve">
+    <value>No Form Version greater than 40.</value>
+  </data>
+  <data name="TESSNIP_Spell_ReduceFormVersionTo40" xml:space="preserve">
+    <value>Do you want change ALL Form Version greater than 40 to 40 ?</value>
+  </data>
+  <data name="TESSNIP_Spell_ReduceFormVersionTo40Aborted" xml:space="preserve">
+    <value>Change ALL Form Version greater than 40 is aborted.</value>
+  </data>
+  <data name="TESSNIP_Spell_ReduceFormVersionTo40Cleaned" xml:space="preserve">
+    <value>Cleaned {0} Form Version greater than 40.</value>
+  </data>
 </root>

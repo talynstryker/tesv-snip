@@ -2185,15 +2185,5 @@ namespace TESVSnip.UI.Forms
                 MessageBox.Show(ex.Message, "Tesvsnip", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
-
- 
-        private void lUATestToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            PyInterpreter.InitPyInterpreter();
-            //LuaInterpreter.InitLuaInterpreter();
-            //LuaInterpreter.LoadFunction("MOVT_by_57296");
-
-        }
-
     }
 }
