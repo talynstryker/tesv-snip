@@ -3757,7 +3757,7 @@
 			<Element name="Stamina" type="ushort" />
 			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1"/>
 			<Element name="FarAwayModel Distance" type="float"/>
-			<Element name="Geared up weapons" type="byte"  hexview="1" hexviewwithdec="1"/>
+			<Element name="Geared up weapons" type="byte" hexview="1" hexviewwithdec="1"/>
 			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
@@ -3785,6 +3785,10 @@
 		</Subrecord>
 		<Subrecord name="NAM8" desc="Sounds Tab Sound Level" optional="1">
 			<Element name="Sound Level" type="byte" options="Normal;1;Silent;2;Very Loud;3" />
+		</Subrecord>
+		<Subrecord name="PCUS" desc="Unknown (NOT IN CK) SHOULD BE REMOVED!" optional="1">
+			<Element name="Unknown From NPC Editor" type="uint" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown From NPC Editor" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Group optional="1" repeat="1">
 			<!-- sound data -->
