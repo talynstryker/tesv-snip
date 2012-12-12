@@ -1,4 +1,5 @@
 using System.Configuration;
+using TESVSnip.Domain.Scripts;
 
 namespace TESVSnip.UI.Forms
 {
@@ -158,6 +159,7 @@ namespace TESVSnip.UI.Forms
             this.SubrecordList.DataChanged += this.subrecordPanel_DataChanged;
 
             this.LocalizeApp();
+            PyInterpreter.InitPyInterpreter();
 
             mruMenu = new MruStripMenu(recentFilelToolStripMenuItem, new MruStripMenu.ClickedHandler(OnMruFile),
                                        mruRegKey + "\\MRU", true, 16);
@@ -1817,7 +1819,6 @@ namespace TESVSnip.UI.Forms
                 p.Save(this.SaveModDialog.FileName);
                 mruMenu.AddFileAndSaveToRegistry(this.SaveModDialog.FileName);
                 this.FixMasters();
-                this.PluginTree.RebuildDisplayNode();
                 sw.Stop();
                 TimeSpan t = TimeSpan.FromMilliseconds(sw.ElapsedMilliseconds);
                 toolStripStatusLabel.Text =
@@ -2183,6 +2184,15 @@ namespace TESVSnip.UI.Forms
             {
                 MessageBox.Show(ex.Message, "Tesvsnip", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
+        }
+
+ 
+        private void lUATestToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            PyInterpreter.InitPyInterpreter();
+            //LuaInterpreter.InitLuaInterpreter();
+            //LuaInterpreter.LoadFunction("MOVT_by_57296");
+
         }
 
     }

@@ -1,3 +1,4 @@
+using TESVSnip.Domain.Scripts;
 using TESVSnip.Domain.Services;
 
 namespace TESVSnip.Domain.Model
@@ -789,7 +790,6 @@ namespace TESVSnip.Domain.Model
                     bool hasFlags = sselem.flags != null && sselem.flags.Length > 1;
 
                     // setup borders for header
-                    var value = element.Value;
                     var nameCell = new RTFCellDefinition(maxFirstCellWidth, RTFAlignment.MiddleLeft, RTFBorderSide.Default, 15, Color.DarkGray, Padding.Empty);
                     row.Add(nameCell);
                     switch (sselem.type)
@@ -858,6 +858,7 @@ namespace TESVSnip.Domain.Model
                     var elem = elems[rowIdx];
                     var sselem = elem.Structure;
                     var value = elem.Value;
+
                     string recprefix = null;
                     Record rec = null;
                     string strValue = null; // value to display
@@ -865,6 +866,15 @@ namespace TESVSnip.Domain.Model
                     string strDesc2 = null; // second description
                     bool hasOptions = sselem.options != null && sselem.options.Length > 0;
                     bool hasFlags = sselem.flags != null && sselem.flags.Length > 1;
+
+                    if (!string.IsNullOrWhiteSpace(elem.Structure.funcr))
+                    {
+                        if (elem.Type == ElementValueType.Float) value = PyInterpreter.ExecuteFunction<float>(elem, FunctionOperation.ForReading);
+                        else if (elem.Type == ElementValueType.Int) value = PyInterpreter.ExecuteFunction<int>(elem, FunctionOperation.ForReading);
+                        else if (elem.Type == ElementValueType.Short) value = PyInterpreter.ExecuteFunction<short>(elem, FunctionOperation.ForReading);
+                        else if (elem.Type == ElementValueType.UShort) value = PyInterpreter.ExecuteFunction<ushort>(elem, FunctionOperation.ForReading);
+                        else if (elem.Type == ElementValueType.UInt) value = PyInterpreter.ExecuteFunction<uint>(elem, FunctionOperation.ForReading);
+                    }
 
                     // Pre row write caching to avoid expensive duplicate calls between cells
                     switch (sselem.type)

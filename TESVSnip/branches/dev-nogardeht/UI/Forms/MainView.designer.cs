@@ -160,6 +160,7 @@ namespace TESVSnip.UI.Forms {
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripIncrInvalidRecStatus = new System.Windows.Forms.ToolStripLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.reduceFormVersionsTo40ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStripIncrFind.SuspendLayout();
@@ -670,7 +671,8 @@ namespace TESVSnip.UI.Forms {
             this.mergeRecordsXMLToolStripMenuItem,
             this.reorderSubrecordsToolStripMenuItem,
             this.newFormIDToolStripMenuItem,
-            this.newFormIDNoReferenceUpdateToolStripMenuItem});
+            this.newFormIDNoReferenceUpdateToolStripMenuItem,
+            this.reduceFormVersionsTo40ToolStripMenuItem});
             this.spellsToolStripMenuItem.Name = "spellsToolStripMenuItem";
             resources.ApplyResources(this.spellsToolStripMenuItem, "spellsToolStripMenuItem");
             // 
@@ -1099,6 +1101,11 @@ namespace TESVSnip.UI.Forms {
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.dockPanel.Skin = dockPanelSkin1;
             // 
+            // reduceFormVersionsTo40ToolStripMenuItem
+            // 
+            this.reduceFormVersionsTo40ToolStripMenuItem.Name = "reduceFormVersionsTo40ToolStripMenuItem";
+            resources.ApplyResources(this.reduceFormVersionsTo40ToolStripMenuItem, "reduceFormVersionsTo40ToolStripMenuItem");
+            // 
             // MainView
             // 
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.None;
@@ -1251,5 +1258,6 @@ namespace TESVSnip.UI.Forms {
         private System.Windows.Forms.ToolStripMenuItem recentFilelToolStripMenuItem;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripMenuItem resetSettingsToDefaultsToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem reduceFormVersionsTo40ToolStripMenuItem;
     }
 }
