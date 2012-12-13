@@ -6598,15 +6598,18 @@
 		<!-- localized; INFO records only exist under the DIAL grup; DATA, SCHR seem to be legacy/flags, TRDT has 4bytes unknown -->
 		<Group id="EDID" optional="1"/>
 		<Group id="VMAD" optional="1"/>
+		<Subrecord name="DATA" desc="(rare flag/legacy?)" optional="1" >
+			<Element name="Unknown s" type="ushort"/>
+			<Element name="(always 1/2)" type="ushort"/>
+			<Element name="Unknown f" type="float"/>
+		</Subrecord>
 		<Subrecord name="ENAM" desc="Check-boxes and HoursToReset" optional="1">
 			<Element name="Check-boxes 1" type="byte" flags="Goodbye;Random;SayOnce;8;16;RandomEnd;InvisibleContinue;WalkAway"/>
 			<Element name="Check-boxes 2" type="byte" flags="WAInvisibleMenu;ForceSubtitle;CanMoveWhileGreeting;NoLIPfile;RequiresPostProcessing;32;SpendsFavorPoints;128"/>
 			<Element name="HoursToReset (this # div by 2730)" type="ushort"/>
 		</Subrecord>
-		<Subrecord name="DATA" desc="(rare flag/legacy?)" optional="1" >
-			<Element name="Unknown s" type="ushort"/>
-			<Element name="(always 1/2)" type="ushort"/>
-			<Element name="Unknown f" type="float"/>
+		<Subrecord name="TPIC" desc="Topic (DIAL)" optional="1" repeat="1">
+			<Element name="DIAL FormID" type="formid" reftype="DIAL"/>
 		</Subrecord>
 		<Subrecord name="PNAM" desc="Linked to Other Topic" optional="1">
 			<Element name="INFO FormID" type="formid" reftype="INFO"/>
@@ -6621,21 +6624,6 @@
 			<Element name="INFO FormID" type="formid" reftype="INFO"/>
 		</Subrecord>
 		<Group id="CONDITIONAL" optional="1" repeat="1"/>
-		<Group optional="1" repeat="1">
-			<!-- quest; rare flags/legacy? -->
-			<Subrecord name="SCHR" desc="(quest flag/legacy?">
-				<Element name="(always 0)" type="uint"/>
-				<Element name="(always 0)" type="uint"/>
-				<Element name="(always 0)" type="uint"/>
-				<Element name="(always 0)" type="uint"/>
-				<Element name="(always 1)" type="ushort"/>
-				<Element name="(always 0)" type="ushort"/>
-			</Subrecord>
-			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1">
-				<Element name="QUST FormID" type="formid" reftype="QUST"/>
-			</Subrecord>
-			<Subrecord name="NEXT" desc="(always 0)" optional="1"/>
-		</Group>
 		<Group optional="1" repeat="1">
 			<!-- topic response; 4 unknown flags in TRDT; localized -->
 			<Subrecord name="TRDT" desc="Topic Response Data">
@@ -6670,19 +6658,35 @@
 			<Subrecord name="SNAM" desc="Idle Anim Speaker (IDLE)" optional="1">
 				<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
 			</Subrecord>
+      <Group id="CONDITIONAL" optional="1" repeat="1"/>
 			<Subrecord name="LNAM" desc="Idle Anim Listener (IDLE)" optional="1">
 				<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
 			</Subrecord>
-		</Group>
 		<Group id="CONDITIONAL" optional="1" repeat="1"/>
+		</Group>
+		<Group optional="1" repeat="1">
+			<!-- quest; rare flags/legacy? -->
+			<Subrecord name="SCHR" desc="(quest flag/legacy?">
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 0)" type="uint"/>
+				<Element name="(always 1)" type="ushort"/>
+				<Element name="(always 0)" type="ushort"/>
+			</Subrecord>
+			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1">
+				<Element name="QUST FormID" type="formid" reftype="QUST"/>
+			</Subrecord>
+			<Subrecord name="NEXT" desc="(always 0)" optional="1"/>
+		</Group>
 		<Group optional="1" repeat="1">
 			<!-- speaker/prompt; localized -->
-			<Subrecord name="ANAM" desc="Speaker (NPC_)" optional="1">
-				<Element name="NPC_ FormID" type="formid" reftype="NPC_"/>
-			</Subrecord>
 			<Subrecord name="RNAM" desc="Prompt" optional="1">
 				<!-- localized -->
 				<Element name="Text" type="lstring"/>
+			</Subrecord>
+			<Subrecord name="ANAM" desc="Speaker (NPC_)" optional="1">
+				<Element name="NPC_ FormID" type="formid" reftype="NPC_"/>
 			</Subrecord>
 		</Group>
 		<Subrecord name="TWAT" desc="Walk Away Dialog Topic (DIAL)" optional="1">
@@ -7286,11 +7290,11 @@
 		<Subrecord name="FNAM" desc="Causes Damage" optional="1">
 			<Element name="Causes Damage" type="byte" options="No;0;Yes;1"/>
 		</Subrecord>
-		<Subrecord name="TNAM" desc="Assigned Material (MATT)" optional="1">
-			<Element name="MATT FormID" type="formid" reftype="MATT"/>
-		</Subrecord>
 		<Subrecord name="MNAM" desc="(buffer/legacy always 0)" optional="1">
 			<Element name="(always 0)" type="uint"/>
+		</Subrecord>
+		<Subrecord name="TNAM" desc="Assigned Material (MATT)" optional="1">
+			<Element name="MATT FormID" type="formid" reftype="MATT"/>
 		</Subrecord>
 		<Subrecord name="SNAM" desc="Open Sound (SNDR)" optional="1">
 			<Element name="SNDR FormID" type="formid" reftype="SNDR"/>
@@ -7730,6 +7734,7 @@
 			<Element name="iUnknown 58" type="uint"/>
 			<Element name="iUnknown 59" type="uint"/>
 			<Element name="iUnknown 60" type="uint"/>
+      <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="BNAM" desc="Blur Blur Radius" optional="1">
 			<Element name="(always 0)" type="float"/>
@@ -8488,7 +8493,9 @@
 				<!-- localized -->
 				<Element name="(mayLocalize) Set Activate Label" type="lstring"/>
 			</Subrecord>
-			<Subrecord name="PRKF" desc="Rank Effect Footer" optional="1" repeat="1"/>
+			<Subrecord name="PRKF" desc="Rank Effect Footer" optional="1" repeat="1">
+        <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+      </Subrecord>
 		</Group>
 	</Record>
 	<Record name="BPTD" desc="Body Part">
@@ -10974,11 +10981,6 @@
 		<Subrecord name="BNAM" desc="Finale Music File (WAV)" optional="1">
 			<Element name="Path\Filename" type="string"/>
 		</Subrecord>
-		<Subrecord name="LNAM" desc="Loop Data" optional="1">
-			<Element name="Begin (sec)" type="float"/>
-			<Element name="End (sec)" type="float"/>
-			<Element name="Loop Count" type="uint"/>
-		</Subrecord>
 		<Subrecord name="FNAM" desc="Cue Points" optional="1">
 			<!-- Snip can't do #'d element-groups yet -->
 			<Element name="Cue Point (sec)" type="float" optional="1"/>
@@ -10990,6 +10992,11 @@
 			<Element name="Cue Point (sec)" type="float" optional="1"/>
 			<Element name="Cue Point (sec)" type="float" optional="1"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+		</Subrecord>
+		<Subrecord name="LNAM" desc="Loop Data" optional="1">
+			<Element name="Begin (sec)" type="float"/>
+			<Element name="End (sec)" type="float"/>
+			<Element name="Loop Count" type="uint"/>
 		</Subrecord>
 		<Group id="CONDITIONAL" optional="1" repeat="1"/>
 		<Subrecord name="SNAM" desc="Palette Tracks (MUST)" optional="1">
@@ -11306,14 +11313,14 @@
 	</Record>
 	<Record name="SOPM" desc="Sound Output Model">
 		<Group id="EDID" optional="1"/>
-		<Subrecord name="FNAM" desc="Alt Defined Speaker Output flag" optional="1">
-			<Element name="Defined Speaker Output" type="uint" options="Uses HRTF;0;Defined Speaker Output;1"/>
-		</Subrecord>
 		<Subrecord name="NAM1" desc="Check-Boxes" optional="1">
 			<Element name="AttenDist/AllowRumble" type="byte" options="None;0;Attenuate wDistance;1;Allows Rumble;2;Attenuate/Rumble;3"/>
 			<Element name="Unknown" type="byte"/>
 			<Element name="Unknown" type="byte"/>
 			<Element name="Reverb Send %" type="byte"/>
+		</Subrecord>
+		<Subrecord name="FNAM" desc="Alt Defined Speaker Output flag" optional="1">
+			<Element name="Defined Speaker Output" type="uint" options="Uses HRTF;0;Defined Speaker Output;1"/>
 		</Subrecord>
 		<Subrecord name="MNAM" desc="Defined Speaker Output" optional="1">
 			<Element name="Defined Speaker Output" type="uint" options="Uses HRTF;0;Defined Speaker Output;1"/>
