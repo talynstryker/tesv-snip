@@ -79,12 +79,90 @@
 			<Element name="KYWD FormID" type="formid" reftype="KYWD" repeat="1" optional="1"/>
 		</Subrecord>
 	</Group>
+	<Group id="EXTRATAB" optional="1"> <!-- Snip can't display formula-values yet -->
+		<Subrecord name="XALP" desc="Alpha Cutoff (Extra tab)" optional="1" size="2">
+			<Element name="Alpha Cutoff" type="byte"/>
+			<Element name="b(always 85)" type="byte"/>
+		</Subrecord>
+		<Subrecord name="XCNT" desc="Item Count (Extra tab)" optional="1" size="4">
+			<Element name="Count" type="int"/>
+		</Subrecord>
+		<Subrecord name="XFVC" desc="Favor Cost (Extra tab)" optional="1">
+			<Element name="Favor Cost" type="float"/>
+		</Subrecord>
+		<Subrecord name="XHTW" desc="Head-Tracking Weight (Extra tab)" optional="1" size="4">
+			<Element name="Head-Tracking Weight" type="float"/>
+		</Subrecord>
+		<Subrecord name="XRDS" desc="Light Radius (Extra tab)" optional="1" size="4"> <!-- Snip can't display formula-values yet -->
+			<Element name="Radius (this #+256)" type="float"/>
+		</Subrecord>
+	</Group>
 	<Group id="FACTOWN" optional="1">
 		<Subrecord name="XOWN" desc="Faction Ownership (FACT or NPC_)" optional="1">
 			<Element name="FACT or NPC_ FormID" type="formid"/>
 		</Subrecord>
 		<Subrecord name="XRNK" desc="Faction Rank" optional="1">
 			<Element name="Faction Rank (this #+1)" type="uint"/>
+		</Subrecord>
+	</Group>
+	<Group id="PATROL" optional="1"> <!-- 4 letter abbrev -->
+		<Subrecord name="XPPA" desc="Patrol Data Check-box (checked)" optional="1" size="0"/>
+		<Subrecord name="PDTO" desc="Patrol Data tab, Dialog Topic" optional="1" size="8"> <!-- 4 letter abbrev -->
+			<Element name="Dialog flag" type="int" options="No Dialog;0;Dialog Selected;1"/>
+			<Element name="Topic (4 letter abbrev)" type="str4"/>
+		</Subrecord>
+		<Subrecord name="XPRD" desc="Patrol Data tab, Idle Time" optional="1" size="4">
+			<Element name="Idle Time" type="float"/>
+		</Subrecord>
+	</Group>
+	<Group id="PLACEDOBJ" optional="1"> <!-- has legacy DELETED by CK; CK adds XLRL subrecord if not already there; has CK-inaccessible data -->
+		<Subrecord name="INAM" desc="ImageSpace (IMGS)" optional="1" size="4">
+			<Element name="IMGS FormID" type="formid" reftype="IMGS"/>
+		</Subrecord>
+		<Subrecord name="SCHR" desc="(legacy, DELETED by CK)" optional="1" size="20">
+			<Element name="i" type="int"/>
+			<Element name="i" type="int"/>
+			<Element name="i" type="int"/>
+			<Element name="i" type="int"/>
+			<Element name="s" type="short"/>
+			<Element name="s" type="short"/>
+		</Subrecord>
+		<Subrecord name="XAPD" desc="Parent Activate Only Check-box" optional="1" size="1">
+			<Element name="Parent Activate Only" type="byte" options="Unchecked;0;Checked;1"/>
+		</Subrecord>
+		<Subrecord name="XAPR" desc="Activate Parents tab" optional="1" size="8">
+			<Element name="Parent FormID" type="formid"/>
+			<Element name="Delay Time" type="float"/>
+		</Subrecord>
+		<Subrecord name="XEMI" desc="Emittance tab (LIGH)" optional="1" size="4">
+			<Element name="Emittance LIGH FormID" type="formid" reftype="LIGH"/>
+		</Subrecord>
+		<Subrecord name="XESP" desc="Enable Parent pulldown (REFR)" optional="1">
+			<Element name="REFR FormID" type="formid" reftype="REFR"/>
+			<Element name="Check-Boxes" type="int" options="None;0;SetEnableOpposite;1;Pop In;2;SetEnableOpp/Pop In;3"/>
+		</Subrecord>
+		<Subrecord name="XEZN" desc="Encounter Zone pulldown (ECZN)" optional="1" size="4">
+			<Element name="ECZN FormID" type="formid" reftype="ECZN"/>
+		</Subrecord>
+		<Subrecord name="XIS2" desc="Ignored by Sandbox Check-box (Checked)" optional="1" size="0"/>
+		<Subrecord name="XLCN" desc="Persist Location tab (LCTN)" optional="1" size="4">
+			<Element name="Persistence Location LCTN FormID" type="formid" reftype="LCTN"/>
+		</Subrecord>
+		<Subrecord name="XLKR" desc="Linked Ref tab" optional="1">
+			<Element name="KYWD FormID" type="formid" reftype="KYWD"/>
+			<Element name="FormID" type="formid"/>
+		</Subrecord>
+		<Subrecord name="XLRL" desc="Location of Current Reference (LCTN)" optional="1" size="4"> <!-- auto-added by CK to all ACHRs and to REFRs which are a triggerBox, room/portal marker, light, container, spawned item, or door -->
+			<Element name="LCTN FormID" type="formid" reftype="LCTN"/>
+		</Subrecord>
+		<Subrecord name="XLRT" desc="Location Ref Type tab (LCRT)" optional="1" size="4">
+			<Element name="LCRT FormID" type="formid" reftype="LCRT"/>
+		</Subrecord>
+		<Subrecord name="XMBR" desc="Multibound tab (REFR)" optional="1" size="4">
+			<Element name="REFR FormID" type="formid" reftype="REFR"/>
+		</Subrecord>
+		<Subrecord name="XRGD" desc="Havok-Enabled/RagDoll Container data" optional="1"> <!-- 1 CK-inaccessible unknown blob -->
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="DESTRUCT" optional="1">
@@ -844,10 +922,10 @@
 		</Subrecord>
 		<Subrecord name="NEXT" desc="NEXT" optional="1" />
 		<Subrecord name="SCDA" desc="SCDA" optional="1">
-			<Element name="Unknown" type="blob" />
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="SCTX" desc="SCTX" optional="1" >
-			<Element name="Unknown" type="blob" />
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="SCRO" desc="? Quest (QUST)" optional="1">
 			<Element name="FormID" type="formid" reftype="QUST" />
@@ -863,11 +941,11 @@
 		</Subrecord>
 		<!-- OFST might never show up. Added just in case for examination -->
 		<Subrecord name="OFST" desc="Offset" optional="1">
-			<Element name="Value" type="blob" hexview="1" hexviewwithdec="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<!-- DELE might never show up. Added just in case for examination -->
 		<Subrecord name="DELE" desc="Deleted Records" optional="1">
-			<Element name="Value" type="blob" hexview="1" hexviewwithdec="1"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="CNAM" desc="Author of the Plugin" optional="1">
 			<Element name="Author" type="string"/>
@@ -881,14 +959,14 @@
 				<Element name="Master-ESM File" type="string"/>
 			</Subrecord>
 			<Subrecord name="DATA" desc="(always zeroes)" optional="1" >
-				<Element name="Unknown" type="blob"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 		</Group>
 		<Subrecord name="ONAM" desc="List of Records Existing in Multiple ESMs" optional="1">
 			<Element name="Dupe FormID" type="formid" repeat="1" desc="only ACHR and REFR"/>
 		</Subrecord>
 		<Subrecord name="SCRN" desc="Screenshot" optional="1">
-			<Element name="Screenshot" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="INTV" desc="Internal Version #" optional="1">
 			<Element name="Version #" type="uint"/>
@@ -1211,7 +1289,7 @@
 		</Subrecord>
 		<Group id="MODEL_NAME" optional="1"/>
 		<Subrecord name="NAM2" desc="Marker" optional="1">
-			<Element name="Name" type="blob" />
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="MTNM" desc="MTNM" optional="1" repeat="1">
 			<Element name="Name" type="str4" />
@@ -3757,7 +3835,7 @@
 			<Element name="Stamina" type="ushort" />
 			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1"/>
 			<Element name="FarAwayModel Distance" type="float"/>
-			<Element name="Geared up weapons" type="byte" hexview="1" hexviewwithdec="1"/>
+			<Element name="Geared up weapons" type="byte"  hexview="1" hexviewwithdec="1"/>
 			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
 			<Element name="Unknown" type="byte" flags="1;2;4;8;16;32;64;128;256;512"/>
@@ -5532,19 +5610,15 @@
 			<Element name="(always 0C 00 00 00)" type="uint" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Group optional="1" repeat="1">
-      <Subrecord name="NVMI" desc="NavMesh Data (if UNSORTED DATA exists, below Zpos will be inaccurate)" optional="1" repeat="1">
+      <Subrecord name="NVMI" desc="NavMesh Data (if UNSORTED DATA exists, below Zpos will be inaccurate)" optional="1">
         <Element name="Actual NAVM FormID" type="formid" reftype="NAVM"/>
         <Element name="(all are 00 20 or 40)" type="uint" hexview="1" hexviewwithdec="1"/>
         <Element name="NAVM Xpos" type="float"/>
         <Element name="NAVM Ypos" type="float"/>
         <Element name="NAVM Zpos" type="float"/>
-        <Element name="Preferred Merges Flag" type="uint"/>
-        <Element name="Merged-To NAVM FormID" type="formid" reftype="NAVM"/>
+        <Element name="Preferred Merges Flag" type="uint" hexview="1" hexviewwithdec="1"/>
+        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
         <Element name="Preferred Merges NAVM FormID" type="formid" reftype="NAVM"/>
-        <Group optional="1" repeat="1">
-          <Element name="Unknown" type="uint"/>
-          <Element name="Door Ref" type="formid" reftype="NAVM"/>
-        </Group>
         <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
       </Subrecord>
 		</Group>
@@ -5909,7 +5983,7 @@
 					<Element name="Angular X" type="float"/>
 					<Element name="Angular Y" type="float"/>
 					<Element name="Angular Z" type="float"/>
-					<Element name="(always 0s)" type="blob"/>
+					<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 				</Subrecord>
 			</Group>
 			<Subrecord name="LNAM" desc="LNAM" optional="1">
@@ -5932,7 +6006,7 @@
 		<!-- localized; Snip can't handle element-groupings for RNAM and MHDT yet; MHDT -->
 		<Group id="EDID" optional="1"/>
 		<Subrecord name="RNAM" desc="RNAM" optional="1" repeat="1">
-			<Element name="Unknown blob" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="MHDT" desc="MHDT" optional="1">
 			<Element name="s" type="ushort"/>
@@ -6067,7 +6141,7 @@
 			<Element name="Path\Filename" type="string"/>
 		</Subrecord>
 		<Subrecord name="OFST" desc="Total # of Cells x4" optional="1">
-			<Element name="(always 0s)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Record>
 	<!-- start of CELL/WRLD record-types -->
@@ -6191,431 +6265,192 @@
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Record>
-	<Record name="REFR" desc="Object Reference">
-		<!-- localized; XLIG, XNDP, bunch of not-seen-yet  -->
+  <Record name="REFR" desc="Object Reference"> <!-- localized; 4letter abbrev; positions of subrecords change depending on time added to record; contains legacy DELETED by CK; 2bytes, 1short, 1blob unknown -->
 		<Group id="EDID" optional="1"/>
 		<Group id="VMAD" optional="1"/>
 		<Group id="NAME" optional="1"/>
-		<Subrecord name="XLIB" desc="Leveled Item Base (LVLI)" optional="1">
-			<Element name="FormID" type="formid" reftype="LVLI" />
-		</Subrecord>
-		<Group id="FACTOWN" optional="1"/>
-		<Group id="XLRT" optional="1"/>
-		<Subrecord name="XRGD" desc="Ragdoll Data" optional="1" >
-			<Element name="Unknown" type="blob" />
-		</Subrecord>
-    <Group id="XMBOPattern1" optional="1">
-      <Subrecord name="XMBO" desc="Object Bounds" optional="1">
-        <Element name="x1" type="float" />
-        <Element name="y1" type="float" />
-        <Element name="z1" type="float" />
-      </Subrecord>
-      <Group id="XPRM" optional="1"/>
-    </Group>
-    <Group id="XPRM" optional="1"/>
-    <!--            -->
-    <Group id="Pattern1" optional="1">
-      <Group id="XEMI" optional="1"/>
-      <Group id="XLKR" optional="1" repeat="1"/>
-      <Group id="XSCL" optional="1"/>
-    </Group>
-    <Group id="Pattern2" optional="1">
-      <Group id="XAPD" optional="1"/>
-      <Group id="XAPR" optional="1"/>
-      <Group id="XEMI" optional="1"/>
-    </Group>
-    <Group id="Pattern3" optional="1">
-      <Subrecord name="XRDS" desc="Light Related?" optional="1">
-        <Element name="Radius" type="float"/>
-      </Subrecord>
-      <Subrecord name="XLIG" desc="Light Data" optional="1">
-        <Element name="FOV 90+/-" type="float"/>
-        <Element name="Fade 1.35+/-" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-        <Element name="Shadow Depth Bias" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-      </Subrecord>
-      <Group id="XEMI" optional="1"/>
-    </Group>
-    <Group id="Pattern4" optional="1">
-      <Subrecord name="XRDS" desc="Light Related?" optional="1">
-        <Element name="Radius" type="float"/>
-      </Subrecord>
-      <Group id="XEMI" optional="1"/>
-      <Subrecord name="XLIG" desc="Light Data" optional="1">
-        <Element name="FOV 90+/-" type="float"/>
-        <Element name="Fade 1.35+/-" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-        <Element name="Shadow Depth Bias" type="float"/>
-        <Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-      </Subrecord>
-    </Group>
-    <Group id="XAPD" optional="1"/>
-    <Group id="XAPR" optional="1"/>
-    <Group id="XAPR" optional="1"/>
-   	<Group id="LevelModifier" optional="1"/>
-    <!--        -->
-		<Subrecord name="XTEL" desc="Door Teleport" optional="1">
-			<Element name="Door REFR FormID" type="formid" reftype="REFR"/>
-			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-			<Element name="Unknown" type="uint" hexview="1" hexviewwithdec="1"/>
-			<Element name="Flags" type="uint" flags="No Alarm" hexview="1" hexviewwithdec="1"/>
-		</Subrecord>
-		<Subrecord name="XTNM" desc="MessageBox (MESG)" optional="1">
-			<Element name="FormID" type="formid" reftype="MESG" />
-		</Subrecord>
-    <Group id="Pattern5" optional="1">
-		<Group id="XESP" optional="1"/>
-		<Group id="XTRI" optional="1"/>
-    </Group>
-    <Group id="Pattern6" optional="1">
-		<Group id="XTRI" optional="1"/>
-		<Group id="XESP" optional="1"/>
-    </Group>
-		<Subrecord name="XNDP" desc="door navMesh?" optional="1" >
-			<Element name="NAVM FormID" type="formid" reftype="NAVM"/>
- 			<Element name="x1" type="short" hexview="1" hexviewwithdec="1"/>
-			<Element name="y1" type="short" hexview="1" hexviewwithdec="1"/>
-		</Subrecord>
-    <!--        -->
-		<Subrecord name="XMBO" desc="Object Bounds" optional="1">
-			<Element name="x1" type="float" />
-			<Element name="y1" type="float" />
-			<Element name="z1" type="float" />
-		</Subrecord>
-		<Subrecord name="XPRD" desc="XPRD" optional="1">
-			<Element name="Unknown float" type="float" />
-		</Subrecord>
-		<Subrecord name="XPPA" desc="XPPA" optional="1" />
-		<Subrecord name="INAM" desc="ImageSpace (IMGS)" optional="1">
-			<Element name="IMGS FormID" type="formid" reftype="IMGS"/>
-		</Subrecord>
-    <Group id="Pattern7" optional="1">
-      <Subrecord name="PDTO" desc="PDTO" optional="1" >
-        <Element name="Type" type="uint" options="Topic Ref;0;Topic Subtype;1"/>
-        <!-- Needs Union Decider  -->
-        <!-- FormID or STR4   -->
-        <Element name="DIAL FormID" type="formid" reftype="DIAL" />
-      </Subrecord>
-      <Group id="XLKR" optional="1" repeat="1"/>
-    </Group>
-		<Subrecord name="XLOC" desc="Lock Information" optional="1">
-			<Element name="Level" type="byte" options="Novice;1;Apprentice;25;Adept;50;Expert;75;Master;100;Requires Key;255"/>
-			<Element name="Unknown 1" type="byte"  hexview="1" hexviewwithdec="1"/>
-			<Element name="Unknown 2" type="ushort"  hexview="1" hexviewwithdec="1"/>
-			<Element name="KEYM FormID" type="formid" reftype="KEYM"/>
-			<Element name="Flags" type="byte" flags="1;2;Leveled Lock;4;5;6;7;8"/>
-			<Element name="Unknown 3" type="byte" />
-			<Element name="Unknown 4" type="ushort" />
-      <!-- Verified if Size is needed here  -->
-			<Element name="Unknown 5" type="uint" />
-			<Element name="Unknown 6" type="uint" />
-		</Subrecord>
-		<Group id="XLRL" optional="1"/>
-    <!-- Begin Misc -->
-		<Subrecord name="XFVC" desc="Favor Cost" optional="1">
-			<Element name="Value" type="float" />
-		</Subrecord>
-		<Subrecord name="XMBR" desc="Multibound (REFR)" optional="1">
-			<Element name="REFR FormID" type="formid" reftype="REFR"/>
-		</Subrecord>
-		<Subrecord name="XPWR" desc="Reflected By (REFR)" optional="1" repeat="1">
-			<Element name="REFR FormID" type="formid" reftype="REFR"/>
-		</Subrecord>
-		<Group id="XSCL" optional="1"/>
-    <!-- End Misc -->
-		<Subrecord name="XMRK" desc="Map Data Marker" optional="1"/>
-    <!-- Map Marker Data -->
-		<Subrecord name="FNAM" desc="Marker Data" optional="1">
-			<Element name="Flags" type="byte" flags="Visible;Can Travel To;Show All Hidden"/>
-		</Subrecord>
-		<Group id="FULL" optional="1"/>
-		<Subrecord name="TNAM" desc="Marker Data" optional="1">
-			<Element name="Marker Type" type="ushort" options="City;1;Town;2;Settlement;3;Cave;4;Camp;5;Fort;6;Nordic Ruins;7;Dwemer Ruin;8;Shipwreck;9;Grove;10;Landmark;11;Dragon Lair;12;Farm;13;Wood Mill;14;Mine;15;Imperial Camp;16;Stormcloak Camp;17;Doomstone;18;Wheat Mill;19;Smelter;20;Stable;21;Imperial Tower;22;Clearing;23;Pass;24;Altar;25;Rock;26;Lighthouse;27;Orc Stronghold;28;Giant Camp;29;Shack;30;Nordic Tower;31;Nordic Dwelling;32;Docks;33;Shrine;34;Riften Castle;35;Riften Capitol;36;Windhelm Castle;37;Windhelm Capitol;38;Whiterun Castle;39;Whiterun Capitol;40;Solitude Castle;41;Solitude Capitol;42;Markarth Castle;43;Markarth Capitol;44;Winterhold Castle;45;Winterhold Capitol;46;Morthal Castle;47;Morthal Capitol;48;Falkreath Castle;49;Falkreath Capitol;50;Dawnstar Castle;51;Dawnstar Capitol;52"/>
-		</Subrecord>
-    <!-- End Map Marker Data -->
-    <!-- Extra Tab in the CK -->
-    <Group id="ExtraData1" optional="1">
-      <Subrecord name="XRDS" desc="Extra Data" optional="1">
-        <Element name="Radius" type="float"/>
-      </Subrecord>
-      <Group id="XLKR" optional="1" repeat="1"/>
-      <Subrecord name="XHTW" desc="Head-Tracking Weight" optional="1">
-        <Element name="Head-Tracking" type="float"/>
-      </Subrecord>
-			<Subrecord name="XFVC" desc="Favor Cost" optional="1">
-				<Element name="Favor Cost" type="float"/>
+		<Group optional="1" repeat="1"> <!-- localized; 4letter abbrev; these change position depending when created; legacy DELETED by CK; 2bytes unknown in XNDP, 1short unknown in XRMR, 1blob in XRGD -->
+			<Group id="EXTRATAB" optional="1"/>
+			<Group id="FACTOWN" optional="1"/>
+			<Group id="FULL" optional="1"/> <!-- localized -->
+			<Group id="PATROL" optional="1"/> <!-- 4letter abbrev -->
+			<Group id="PLACEDOBJ" optional="1"/> <!-- has legacy DELETED by CK; CK adds XLRL subrecord if not already there -->
+			<Group id="XPRM" optional="1"/>
+			<Group id="XTRI" optional="1"/>
+			<Subrecord name="XATR" desc="(REFR)" optional="1">
+				<Element name="REFR FormID" type="formid" optional="1" repeat="1"/>
 			</Subrecord>
-    </Group>
-    <!-- End Extra Data -->
-		<Group id="XLCN" optional="1"/>
-		<Subrecord name="XLCM" desc="XLCM" optional="1">
-			<Element name="Unknown 4bytes" type="uint" />
-		</Subrecord>
-    <!--           -->
-    <Group id="Pattern8" optional="1">
-      <Group id="XAPD" optional="1"/>
-      <Group id="XAPR" optional="1" repeat="1"/>
-      <Group id="XLRT" optional="1"/>
-    </Group>
-    <Group id="Pattern9" optional="1">
-      <Group id="XLKR" optional="1" repeat="1"/>
-      <Subrecord name="XIS2" desc="Ignored by Sandbox" optional="1"/>
-    </Group>
-    <Group id="Pattern10" optional="1">
-      <Subrecord name="XIS2" desc="Ignored by Sandbox" optional="1"/>
-      <Group id="XLKR" optional="1" repeat="1"/>
-    </Group>
-    <Group id="Pattern11" optional="1">
-      <Subrecord name="XIS2" desc="Ignored by Sandbox" optional="1"/>
-      <Group id="XESP" optional="1"/>
-    </Group>
-    <Group id="Pattern12" optional="1">
-      <Subrecord name="XIS2" desc="Ignored by Sandbox" optional="1"/>
-      <Group id="FACTOWN" optional="1"/>
-    </Group>
-    <Group id="Pattern13" optional="1">
-      <Subrecord name="XIS2" desc="Ignored by Sandbox" optional="1"/>
-      <Group id="XLRT" optional="1"/>
-    </Group>
-    <Group id="Pattern14" optional="1">
-      <Group id="XESP" optional="1"/>
-			<Subrecord name="XRGD" desc="XRGD" optional="1" >
-				<Element name="Unknown" type="blob" />
+			<Subrecord name="XPWR" desc="Reflects tab (REFR)" optional="1" repeat="1" size="4">
+				<Element name="REFR FormID" type="formid" reftype="REFR"/>
 			</Subrecord>
-      <Subrecord name="XEZN" desc="Encounter Zone (ECZN)" optional="1">
-        <Element name="ECZN FormID" type="formid" reftype="ECZN"/>
-      </Subrecord>
-      <Group id="FACTOWN" optional="1"/>
-    </Group>
-    <Group id="Pattern15" optional="1">
-      <Group id="FACTOWN" optional="1"/>
-      <Subrecord name="XEZN" desc="Encounter Zone (ECZN)" optional="1">
-        <Element name="ECZN FormID" type="formid" reftype="ECZN"/>
-      </Subrecord>
-      <Group id="XESP" optional="1"/>
-    </Group>
-    <Group id="XLKRPattern1" optional="1">
-      <Group id="XLKR" optional="1" repeat="1"/>
- 			<Group id="XLRT" optional="1"/>
-      <Subrecord name="XRDS" desc="Light Related?" optional="1">
-        <Element name="Radius" type="float"/>
-      </Subrecord>
-			<Subrecord name="XFVC" desc="Favor Cost" optional="1">
-				<Element name="Favor Cost" type="float"/>
-			</Subrecord>
-      <Group id="XLRL" optional="1"/>
-    </Group>
 
-    <!-- Verified to here  -->
-		<Group optional="1" repeat="1">
-			<!-- localized; these change position depending when created -->
-			<!-- localized -->
-			<Subrecord name="XCNT" desc="Item Count" optional="1">
-				<Element name="Count" type="uint"/>
-			</Subrecord>
-			<Subrecord name="XPPA" desc="XPPA" optional="1" />
-        <Group id="XPODPattern1" optional="1">
-          <Subrecord name="XPOD" desc="Portal Destination (REFR)" optional="1" >
-            <Element name="Origin FormID" type="formid" reftype="REFR"/>
-            <Element name="Destination FormID" type="formid" reftype="REFR"/>
-          </Subrecord>
-          <Subrecord name="XPTL" desc="Portal Data" optional="1" >
-            <Element name="Width" type="float"/>
-            <Element name="Height" type="float"/>
-            <Element name="Position X" type="float"/>
-            <Element name="Position X" type="float"/>
-            <Element name="Position X" type="float"/>
-            <Element name="Rotation (Quaternion?) q1" type="float"/>
-            <Element name="Rotation (Quaternion?) q2" type="float" desc="Multiply by 255"/>
-            <Element name="Rotation (Quaternion?) q3" type="float" desc="Multiply by 255"/>
-            <Element name="Rotation (Quaternion?) q4" type="float" desc="Multiply by 255"/>
-            <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
-          </Subrecord>
-          <Group id="XLRL" optional="1"/>
-        </Group>
-        <Group id="XPODPattern2" optional="1">
-          <Subrecord name="XPTL" desc="Portal Data" optional="1" >
-            <Element name="Width" type="float"/>
-            <Element name="Height" type="float"/>
-            <Element name="Position X" type="float"/>
-            <Element name="Position X" type="float"/>
-            <Element name="Position X" type="float"/>
-            <Element name="Rotation (Quaternion?) q1" type="float"/>
-            <Element name="Rotation (Quaternion?) q2" type="float" desc="Multiply by 255"/>
-            <Element name="Rotation (Quaternion?) q3" type="float" desc="Multiply by 255"/>
-            <Element name="Rotation (Quaternion?) q4" type="float" desc="Multiply by 255"/>
-            <Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
-          </Subrecord>
-          <Subrecord name="XPOD" desc="Portal Destination (REFR)" optional="1" >
-            <Element name="Origin FormID" type="formid" reftype="REFR"/>
-            <Element name="Destination FormID" type="formid" reftype="REFR"/>
-          </Subrecord>
-        </Group>
-			<Subrecord name="XRMR" desc="Reference Marker" optional="1">
-				<Element name="Count?" type="ushort"/>
-				<Element name="Flags?" type="ushort"/>
-			</Subrecord>
-			<Subrecord name="LNAM" desc="Lighting Template (LGTM)" optional="1">
+			<!-- Lights -->
+			<Subrecord name="LNAM" desc="Lighting Template (LGTM)" optional="1" size="4">
 				<Element name="LGTM FormID" type="formid" reftype="LGTM"/>
 			</Subrecord>
-			<Subrecord name="XLRM" desc="Location Room Marker (REFR)" optional="1" repeat="1">
+			<Subrecord name="XLIG" desc="Light Data tab" optional="1">
+				<Element name="FOV (this #+90)" type="float"/>
+				<Element name="Fade (this #+1)" type="float"/>
+				<Element name="End Distance Cap" type="float"/>
+				<Element name="Shadow Depth Bias" type="float"/>
+				<Element name="f(always 0)" type="float" optional="1"/>
+			</Subrecord>
+
+			<!-- Items and Containers -->
+			<Subrecord name="XLIB" desc="Leveled Item tab (LVLI)" optional="1" size="4">
+				<Element name="LVLI FormID" type="formid" reftype="LVLI"/>
+			</Subrecord>
+			<Subrecord name="XACT" desc="Pre-Activated (OpenByDefault Checked)" optional="1" size="4">
+				<Element name="i(always 13)" type="int"/>
+			</Subrecord>
+			<Subrecord name="XSPC" desc="Spawn Container (REFR)" optional="1" size="4">
 				<Element name="REFR FormID" type="formid" reftype="REFR"/>
 			</Subrecord>
-		</Group>
-		<Group optional="1" repeat="1">
-			<!-- dunno haven't seen yet -->
-			<Subrecord name="XCVL" desc="XCVL" optional="1">
-				<Element name="Unknown uint 1" type="uint"/>
-				<Element name="Unknown float" type="float"/>
-				<Element name="Unknown uint 2" type="uint"/>
-			</Subrecord>
-			<Subrecord name="XWCN" desc="XWCN" optional="1">
-				<Element name="Unknown uint" type="uint"/>
-			</Subrecord>
-			<Subrecord name="XWCU" desc="XWCU" optional="1">
-				<Element name="Unknown" type="float" />
-				<Element name="Unknown 1" type="float" />
-				<Element name="Unknown 2" type="uint" />
-				<Element name="Unknown 3" type="uint" />
-				<Element name="Unknown 4" type="uint" />
-				<Element name="Unknown 5" type="uint" />
-				<Element name="Unknown 6" type="uint" />
-				<Element name="Unknown 7" type="uint" />
-				<Element name="Unknown 8" type="uint" />
-				<Element name="Unknown 9" type="uint" />
-				<Element name="Unknown 10" type="uint" />
-				<Element name="Unknown 11" type="uint" />
-			</Subrecord>
-			<Subrecord name="XSPC" desc="? (REFR)" optional="1">
-				<Element name="FormID" type="formid" reftype="REFR" />
-			</Subrecord>
-			<Subrecord name="XMBO" desc="Object Bounds" optional="1">
-				<Element name="x1" type="ushort" />
-				<Element name="y1" type="ushort" />
-				<Element name="z1" type="ushort" />
-				<Element name="x2" type="ushort" />
-				<Element name="y2" type="ushort" />
-				<Element name="z2" type="ushort" />
-			</Subrecord>
-			<Subrecord name="XACT" desc="XACT" optional="1">
-				<Element name="Unknown uint" type="uint"/>
-			</Subrecord>
-			<Subrecord name="XRGB" desc="XRGB" optional="1">
-				<Element name="Unknown" type="float" />
-				<Element name="Unknown 1" type="uint" />
-				<Element name="Unknown 2" type="uint" />
-			</Subrecord>
-			<Subrecord name="XALP" desc="XALP" optional="1">
-				<Element name="Unknown ushort" type="ushort" />
-			</Subrecord>
-			<Subrecord name="XLTW" desc="? (REFR)" optional="1">
-				<Element name="FormID" type="formid" reftype="REFR" />
-			</Subrecord>
-			<Subrecord name="SCHR" desc="SCHR" optional="1">
-				<Element name="Unknown" type="uint" />
-				<Element name="Unknown 1" type="uint" />
-				<Element name="Unknown 2" type="uint" />
-				<Element name="Unknown 3" type="uint" />
-				<Element name="Unknown 4" type="uint" />
-			</Subrecord>
-			<Subrecord name="SCTX" desc="SCTX" optional="1" />
-			<Subrecord name="XOCP" desc="XOCP" optional="1">
-				<Element name="Unknown" type="float" />
-				<Element name="Unknown 1" type="float" />
-				<Element name="Unknown 2" type="float" />
-				<Element name="Unknown 3" type="float" />
-				<Element name="Unknown 4" type="float" />
-				<Element name="Unknown 5" type="float" />
-				<Element name="Unknown 6" type="float" />
-				<Element name="Unknown 7" type="float" />
-				<Element name="Unknown 8" type="float" />
-			</Subrecord>
-			<Subrecord name="XCZC" desc="? (CELL)" optional="1">
-				<Element name="FormID" type="formid" reftype="CELL" />
-			</Subrecord>
-			<Subrecord name="XCZA" desc="XCZA" optional="1">
-				<Element name="Unknown 4bytes" type="uint" />
-			</Subrecord>
-			<Subrecord name="XMBP" desc="XMBP" optional="1"/>
-      <Subrecord name="ONAM" desc="Open by Default" optional="1"/>
-		</Group>
 
-    <!-- Verified DATA Here -->
-    <!-- Attach reference -->
-    <!-- REFR, PGRE, PHZD, PARW, PBAR, PBEA, PCON, PFLA  -->
-    <Group id="Pattern14" optional="1">
-      <Subrecord name="XATR" desc="Attached to Ref" optional="1">
-        <Element name="FormID" type="formid"/>
-      </Subrecord>
-      <Group id="XSCL" optional="1"/>
-    </Group>
-    <Group id="POSDATA"/>
+			<!-- Markers -->
+			<Subrecord name="FNAM" desc="Marker Data Check-boxes" optional="1" size="1">
+				<Element name="Marker Check-boxes" type="byte" flags="Visible;Can't Travel To;Show All Hidden"/>
+			</Subrecord>
+			<Subrecord name="TNAM" desc="Marker Type Pulldown" optional="1" size="2">
+				<Element name="Marker Type" type="short" options="City;1;Town;2;Settlement;3;Cave;4;Camp;5;Fort;6;Nordic Ruins;7;Dwemer Ruin;8;Shipwreck;9;Grove;10;Landmark;11;Dragon Lair;12;Farm;13;Wood Mill;14;Mine;15;Imperial Camp;16;Stormcloak Camp;17;Doomstone;18;Wheat Mill;19;Smelter;20;Stable;21;Imperial Tower;22;Clearing;23;Pass;24;Altar;25;Rock;26;Lighthouse;27;Orc Stronghold;28;Giant Camp;29;Shack;30;Nordic Tower;31;Nordic Dwelling;32;Docks;33;Shrine;34;Riften Castle;35;Riften Capitol;36;Windhelm Castle;37;Windhelm Capitol;38;Whiterun Castle;39;Whiterun Capitol;40;Solitude Castle;41;Solitude Capitol;42;Markarth Castle;43;Markarth Capitol;44;Winterhold Castle;45;Winterhold Capitol;46;Morthal Castle;47;Morthal Capitol;48;Falkreath Castle;49;Falkreath Capitol;50;Dawnstar Castle;51;Dawnstar Capitol;52"/>
+			</Subrecord>
+			<Subrecord name="XLRM" desc="Linked Room Marker (REFR)" optional="1" repeat="1" size="4">
+				<Element name="REFR FormID" type="formid" reftype="REFR"/>
+			</Subrecord>
+			<Subrecord name="XMBO" desc="Marker Bounds" optional="1" size="12">
+				<Element name="X Bounds (this #x2)" type="float"/>
+				<Element name="Y Bounds (this #x2)" type="float"/>
+				<Element name="Z Bounds (this #x2)" type="float"/>
+			</Subrecord>
+			<Subrecord name="XMBP" desc="(legacy, DELETED by CK)" optional="1" size="0"/>
+			<Subrecord name="XMRK" desc="Marker Data Check-box (checked)" optional="1" size="0"/>
+			<Subrecord name="XOCP" desc="Occlusion Plane (Primitive tab) (seems to be legacy/redundant data)" optional="1" size="36"> <!-- Z Rotation is calculated in a strange way -->
+				<Element name="Bounds from X Origin" type="float"/>
+				<Element name="Bounds from Z Origin" type="float"/>
+				<Element name="X Origin" type="float"/>
+				<Element name="Y Origin" type="float"/>
+				<Element name="Z Origin" type="float"/>
+				<Element name="X Rotation" type="float"/>
+				<Element name="Y Rotation" type="float"/>
+				<Element name="Bounds from Y Origin" type="float"/>
+				<Element name="Z Rot (this #x57.2957)" type="float"/>
+			</Subrecord>
+			<Subrecord name="XPOD" desc="Room Markers connected by the Portal (REFR)" optional="1" size="8">
+				<Element name="REFR FormID 1" type="formid" reftype="REFR"/>
+				<Element name="REFR FormID 2" type="formid" reftype="REFR"/>
+			</Subrecord>
+			<Subrecord name="XPTL" desc="Primitive tab" optional="1" size="36"> <!-- Z Rotation is calculated in a strange way -->
+				<Element name="Bounds from X Origin" type="float"/>
+				<Element name="Bounds from Z Origin" type="float"/>
+				<Element name="X Origin" type="float"/>
+				<Element name="Y Origin" type="float"/>
+				<Element name="Z Origin" type="float"/>
+				<Element name="X Rotation" type="float"/>
+				<Element name="Y Rotation" type="float"/>
+				<Element name="Bounds from Y Origin" type="float"/>
+				<Element name="Z Rot (this #x57.2957)" type="float"/>
+			</Subrecord>
+			<Subrecord name="XRMR" desc="Room Marker data" optional="1" size="4"> <!-- unknown short -->
+				<Element name="# of Linked Room Markers" type="ushort"/>
+				<Element name="s(always 0/1)" type="ushort"/>
+			</Subrecord>
+
+			<!-- Doors -->
+			<Subrecord name="XLOC" desc="Lock tab" optional="1" size="20">
+				<Element name="Level to Pick" type="byte" options="AutoLoad;0;Novice;1;Apprentice;25;Adept;50;Expert;75;Master;100;Requires Key;255"/>
+				<Element name="b(19/125)" type="byte" options="Normal;19;QuestDoor;96;StrongBox;104;End Table;183"/>
+				<Element name="s(always 0 except autoLoad/furniture)" type="short" options="Normal;0;End Table;10541"/>
+				<Element name="KEYM FormID" type="formid" reftype="KEYM"/>
+				<Element name="Leveled Check-box" type="byte" options="Unchecked;0;Checked;4"/>
+				<Element name="b(0/45)" type="byte"/>
+				<Element name="b(0/11)" type="byte"/>
+				<Element name="b(0/4)" type="byte"/>
+				<Element name="i(always 0)" type="int"/>
+				<Element name="i(always 0)" type="int"/>
+			</Subrecord>
+			<Subrecord name="XNDP" desc="NavMesh containing the Door" optional="1" size="8"> <!-- 2bytes unknown -->
+				<Element name="NAVM FormID" type="formid" reftype="NAVM"/>
+				<Element name="NavMesh Tri Index #" type="ushort"/>
+				<Element name="b(always 0/8a/93/da)" type="byte" flags="1;2;4;8;16;32;64;128"/>
+				<Element name="b(always 0/08/12)" type="byte" flags="1;2;4;8;16;32;64;128"/>
+			</Subrecord>
+			<Subrecord name="XTEL" desc="Teleport tab" optional="1" size="32"> <!-- Z Rotation is calculated in a strange way -->
+				<Element name="Door REFR FormID" type="formid" reftype="REFR"/>
+				<Element name="X Position" type="float"/>
+				<Element name="Y Position" type="float"/>
+				<Element name="Z Position" type="float"/>
+				<Element name="X Rotation" type="float"/>
+				<Element name="Y Rotation" type="float"/>
+				<Element name="Z Rot (this #x57.2957)" type="float"/>
+				<Element name="No Alarm Check-box" type="int" options="Unchecked;0;Checked;1"/>
+			</Subrecord>
+			<Subrecord name="XTNM" desc="Teleport Loc Name (MESG)" optional="1" size="4">
+				<Element name="MESG FormID" type="formid" reftype="MESG"/>
+			</Subrecord>
+
+			<!-- Water -->
+			<Subrecord name="XCVL" desc="Exterior Water Current Linear Velocity" optional="1" size="12">
+				<Element name="Velocity X" type="float"/>
+				<Element name="Velocity Y" type="float"/>
+				<Element name="Velocity Z" type="float"/>
+			</Subrecord>
+			<Subrecord name="XCVR" desc="Exterior Water Current Linear Rotation" optional="1" size="12">
+				<Element name="Rotation X" type="float"/>
+				<Element name="Rotation Y" type="float"/>
+				<Element name="Rotation Z" type="float"/>
+			</Subrecord>
+			<Subrecord name="XCZA" desc="Water Current flag" optional="1" size="4">
+				<Element name="i(always 0)" type="int"/>
+			</Subrecord>
+			<Subrecord name="XCZC" desc="Cell the Water Current is in (CELL)" optional="1" size="4">
+				<Element name="CELL FormID" type="formid" reftype="CELL"/>
+			</Subrecord>
+			<Subrecord name="XLTW" desc="Light Reflected by (REFR)" optional="1" size="4">
+				<Element name="REFR FormID" type="formid" reftype="REFR"/>
+			</Subrecord>
+			<Subrecord name="XWCN" desc="Interior Water Current flag" optional="1" size="4">
+				<Element name="i(always 3)" type="int"/>
+			</Subrecord>			
+			<Subrecord name="XWCU" desc="Interior Water Current Velocity and Rotation" optional="1" size="48">
+				<Element name="Velocity X" type="float"/>
+				<Element name="Velocity Y" type="float"/>
+				<Element name="Velocity Z" type="float"/>
+				<Element name="f(always 0)" type="float"/>
+				<Element name="Rotation X" type="float"/>
+				<Element name="Rotation Y" type="float"/>
+				<Element name="Rotation Z" type="float"/>
+				<Element name="f(always 0)" type="float"/>
+				<Element name="f(always 0)" type="float"/>
+				<Element name="f(always 0)" type="float"/>
+				<Element name="f(always 0)" type="float"/>
+				<Element name="f(always 0)" type="float"/>
+			</Subrecord>
+		</Group>
+		<Group id="XSCL" optional="1"/>
+		<Subrecord name="ONAM" desc="Open by Default Check-box (Checked)" optional="1" size="0"/>
+		<Group id="POSDATA" optional="1"/>
 	</Record>
-	<Record name="ACHR" desc="Actor Reference">
+	<Record name="ACHR" desc="Actor Reference"> <!-- positions of subrecords change depending on time added to record; contains legacy DELETED by CK; 4letter abbrev; 1blob unknown -->
 		<Group id="EDID" optional="1"/>
 		<Group id="VMAD" optional="1"/>
 		<Group id="NAME" optional="1"/>
-		<Group id="MainPattern" optional="1" repeat="1">
-			<!-- these change position depending when created -->
+		<Group optional="1" repeat="1"> <!-- these change position depending when created; contains legacy DELETED by CK; 4letter abbrev -->
+			<Group id="EXTRATAB" optional="1"/>
 			<Group id="FACTOWN" optional="1"/>
-			<Group id="XAPD" optional="1"/>
-			<Group id="XAPR" optional="1"/>
-			<Group id="XEMI" optional="1"/>
-			<Group id="XESP" optional="1"/>
-			<Group id="XLCM" optional="1"/>
-			<Group id="XLCN" optional="1"/>
-      <Group id="XLKR" optional="1"/>
-			<Group id="XLRL" optional="1"/>
-			<Group id="XLRT" optional="1"/>
-			<Subrecord name="XFVC" desc="Favor Cost" optional="1">
-				<Element name="Favor Cost" type="float"/>
+			<Group id="PATROL" optional="1"/> <!-- 4letter abbrev -->
+			<Group id="PLACEDOBJ" optional="1"/> <!-- has legacy DELETED by CK; CK adds XLRL subrecord if not already there -->
+			<Subrecord name="XLCM" desc="Leveled Actor tab" optional="1" size="4">
+				<Element name="Actor Level Modifier" type="int" options="Easy;0;Medium;1;Hard;2;Very Hard;3"/>
 			</Subrecord>
-			<Subrecord name="XHTW" desc="Head-Tracking Weight" optional="1">
-				<Element name="Head-Tracking" type="float"/>
-			</Subrecord>
-			<Subrecord name="XMBR" desc="Multibound (REFR)" optional="1">
-				<Element name="REFR FormID" type="formid" reftype="REFR"/>
-			</Subrecord>
-			<Subrecord name="XIS2" desc="Ignored by Sandbox" optional="1"/>
-			<Subrecord name="XEZN" desc="Encounter Zone (ECZN)" optional="1">
-				<Element name="ECZN FormID" type="formid" reftype="ECZN"/>
-			</Subrecord>
-			<Subrecord name="XHOR" desc="Owned Horse Ref (ACHR)" optional="1">
+			<Subrecord name="XHOR" desc="Owned Horse Ref (ACHR)" optional="1" size="4">
 				<Element name="ACHR FormID" type="formid" reftype="ACHR"/>
 			</Subrecord>
-			<Subrecord name="XRGD" desc="Rag Doll Data" optional="1">
-				<Element name="Unknown" type="blob"/>
-			</Subrecord>
-			<Subrecord name="XRGB" desc="XRGB" optional="1">
-				<Element name="R" type="float"/>
-				<Element name="G" type="float"/>
-				<Element name="B" type="float"/>
-			</Subrecord>
-			<Subrecord name="XPRD" desc="XPRD" optional="1">
+			<Subrecord name="XRGB" desc="(unknown, rigid body?)" optional="1" size="12">
+				<Element name="f" type="float"/>
+				<Element name="f" type="float"/>
 				<Element name="f" type="float"/>
 			</Subrecord>
-			<Subrecord name="XPPA" desc="(buffer/flag)" optional="1" />
-			<Subrecord name="INAM" desc="ImageSpace (IMGS)" optional="1">
-				<Element name="IMGS FormID" type="formid" reftype="IMGS"/>
-			</Subrecord>
-			<Subrecord name="PDTO" desc="Dialog" optional="1" >
-				<Element name="i" type="uint"/>
-				<Element name="DIAL FormID" type="formid" reftype="DIAL"/>
-			</Subrecord>
 		</Group>
-		<Subrecord name="SCHR" desc="SCHR" optional="1">
-			<!-- misc not seen yet -->
-			<Element name="Unknown" type="uint"/>
-			<Element name="Unknown 1" type="uint"/>
-			<Element name="Unknown 2" type="uint"/>
-			<Element name="Unknown 3" type="uint"/>
-			<Element name="Unknown 4" type="uint"/>
-		</Subrecord>
 		<Group id="XSCL" optional="1"/>
 		<Group id="POSDATA" optional="1"/>
 	</Record>
@@ -6910,7 +6745,7 @@
 					<Element name="Unknown 4" type="uint"/>
 				</Subrecord>
 				<Subrecord name="SCTX" desc="SCTX" optional="1" repeat="1">
-					<Element name="Unknown" type="blob"/>
+					<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 				</Subrecord>
 				<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
 					<Element name="QUST FormID" type="formid" reftype="QUST"/>
@@ -7177,7 +7012,7 @@
 				<Element name="ObjectList Value" type="float"/>
 			</Subrecord>
 			<Subrecord name="BNAM" desc="Unknown" optional="1">
-				<Element name="Unknown" type="blob"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="PDTO" desc="Begin/End/Change tab Topic Name (4letter abbrev)" optional="1" repeat="1" >
 				<Element name="(always 1)" type="uint"/>
@@ -7260,7 +7095,7 @@
 				<Element name="(always 1)" type="ushort"/>
 			</Subrecord>
 			<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
-				<Element name="scripting code (deleted by the CK)" type="blob"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
 				<Element name="FormID" type="formid" reftype="QUST" />
@@ -7287,7 +7122,7 @@
 				<Element name="(always 1)" type="ushort"/>
 			</Subrecord>
 			<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
-				<Element name="scripting code (deleted by the CK)" type="blob"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
 				<Element name="FormID" type="formid" reftype="QUST" />
@@ -7314,10 +7149,10 @@
 				<Element name="(always 1)" type="ushort"/>
 			</Subrecord>
 			<Subrecord name="SCDA" desc="(legacy, deleted by CK)" optional="1">
-				<Element name="various flags and data (deleted by the CK)" type="blob"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1" repeat="1">
-				<Element name="scripting code (deleted by the CK)" type="blob"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
       </Subrecord>
 			<Subrecord name="QNAM" desc="Quest (QUST)" optional="1" repeat="1">
 				<Element name="FormID" type="formid" reftype="QUST" />
@@ -11299,7 +11134,7 @@
 				<Element name="Emotion Value" type="uint"/>
 			</Subrecord>
 			<Subrecord name="ANAM" desc="ANAM" optional="1" repeat="1">
-				<Element name="Unknown" type="blob" />
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="PNAM" desc="AI Package or Quest (PACK/QUST)" optional="1">
 				<Element name="PACK/QUST FormID" type="formid"/>
@@ -11356,7 +11191,7 @@
 		<Group id="MODEL" optional="1"/>
 		<!-- Snip doesn't support arranging this yet -->
 		<Subrecord name="DNAM" desc="Gamebryo File Data" optional="1" repeat="1">
-			<Element name="(CK's View Properties Data)" type="blob"/>
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Subrecord name="DATA" desc="Directional Material Data" optional="1">
 			<Element name="Falloff Scale" type="float"/>
