@@ -161,6 +161,7 @@ namespace TESVSnip.UI.Forms {
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripIncrInvalidRecStatus = new System.Windows.Forms.ToolStripLabel();
             this.dockPanel = new WeifenLuo.WinFormsUI.Docking.DockPanel();
+            this.reduceFormVersionsTo40ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.toolStripIncrFind.SuspendLayout();
@@ -1106,6 +1107,11 @@ namespace TESVSnip.UI.Forms {
             dockPaneStripSkin1.ToolWindowGradient = dockPaneStripToolWindowGradient1;
             dockPanelSkin1.DockPaneStripSkin = dockPaneStripSkin1;
             this.dockPanel.Skin = dockPanelSkin1;
+            // 
+            // reduceFormVersionsTo40ToolStripMenuItem
+            // 
+            this.reduceFormVersionsTo40ToolStripMenuItem.Name = "reduceFormVersionsTo40ToolStripMenuItem";
+            resources.ApplyResources(this.reduceFormVersionsTo40ToolStripMenuItem, "reduceFormVersionsTo40ToolStripMenuItem");
             // 
             // MainView
             // 

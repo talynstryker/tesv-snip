@@ -267,7 +267,7 @@ namespace TESVSnip.Framework
 
         public static float h2f(ArraySegment<byte> data)
         {
-            float f = 0;
+            //float f = 0;
             try
             {
                 if (data.Count >= 4)
