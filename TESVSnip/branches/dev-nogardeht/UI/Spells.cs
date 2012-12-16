@@ -792,7 +792,11 @@ namespace TESVSnip.UI
             }
         }
 
-
+        /// <summary>
+        /// Change all Form Value greater than 40 to 40
+        /// </summary>
+        /// <param name="plugin"></param>
+        /// <returns></returns>
         internal static int ChangeFormIdGreater40To40(Plugin plugin)
         {
             if (plugin == null)
@@ -812,8 +816,14 @@ namespace TESVSnip.UI
                 record.MatchRecordStructureToRecord();
                 if (record.Flags3 > 40)
                 {
-                    record.Flags3 = 40;
-                    countGreate40++;
+                    var data = new byte[4];
+                    TypeConverter.i2h(record.Flags3, data, 0);
+                    if (data[0] > 40)
+                    {
+                        data[0] = 40;
+                        record.Flags3 = TypeConverter.h2i(new ArraySegment<byte>(data, 0, 4));
+                        countGreate40++;
+                    }
                 }
             }
 
