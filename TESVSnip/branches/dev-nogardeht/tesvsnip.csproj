@@ -827,7 +827,6 @@
     <Content Include="Vendor\ObjectListView\Resources\sort-ascending1.png" />
     <Content Include="Vendor\ObjectListView\Resources\sort-descending.png" />
     <Content Include="Vendor\ObjectListView\Resources\sort-descending1.png" />
-    <Content Include="zlib1.dll" />
     <Content Include="zlib123.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
