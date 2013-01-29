@@ -2379,7 +2379,6 @@
 	<Record name="IDLM" desc="Idle Marker">
 		<Group id="EDID" optional="1"/>
 		<Group id="OBND" optional="1"/>
-		<Group id="MODEL" optional="1"/>
 		<Subrecord name="IDLF" desc="Check-boxes" optional="1">
 			<Element name="Check-boxes (def=Random)" type="byte" flags="Run in Sequence;Unknown 1;Do Once;Unknown 3;Ignored by Sandbox"/>
 		</Subrecord>
@@ -2392,6 +2391,7 @@
 		<Subrecord name="IDLA" desc="Idle Anim (IDLE)" optional="1">
 			<Element name="IDLE FormID" type="formid" reftype="IDLE" repeat="1" optional="1"/>
 		</Subrecord>
+		<Group id="MODEL" optional="1"/>
 	</Record>
 	<Record name="PROJ" desc="Projectile">
 		<!-- localized; Snip doesn't support arranging this yet -->
@@ -8739,29 +8739,23 @@
 		<Group id="OBND" optional="1"/>
 		<Subrecord name="ACBS" desc="Traits and Stats tabs (ULAGEPRUN - UserLevel, AutoCalc, Gender, Essential, PresetCharGen, Respawn, Unique, NoAffectOnStealthMeter)" optional="1">
 			<!-- 3unknown bytes, 1 ushort -->
-			<Element name="UL-A-G-E-P-R-U-N" type="byte" hexview="1" hexviewwithdec="1" flags="Female;Essential;Preset;Respawn;AutoCalc;Unique;NotAffectStealth;UserLevel"/>
-			<Element name="Summon-Protected" type="byte" hexview="1" hexviewwithdec="1" flags=";;;Protected;;;Summonable"/>
-			<Element name="OGAnim-NoBleed-SimpAct" type="byte" hexview="1" hexviewwithdec="1" flags="Doesn'tBleed;;BleedoutOverride;OppositeGenderAnims;SimpleActor"/>
-			<Element name="Invulnerable-IsGhost" type="byte" hexview="1" hexviewwithdec="1" flags=";;;;;IsGhost;;Invulnerable"/>
-			<Element name="Spell Points" type="ushort"/>
-			<Element name="Fatigue" type="ushort"/>
-			<Element name="Base Level" type="byte" desc="Forces Level"/>
-			<Element name="Start Level" type="byte" desc="Forces Level"/>
-			<Element name="alt level" type="byte" desc="Used when UseAltLevel is checked"/>
-			<Element name="alt level" type="byte"/>
-			<Element name="calcMin" type="ushort"/>
-			<Element name="Speed" type="ushort"/>
-			<Element name="Disposition Base" type="ushort"/>
-			<Element name="extra flags" type="byte" flags="Female;Vampire;UseWeapons;UseMagic;Hostile;32;64;DontHideName"/>
-			<Element name="(always 0)" type="byte"/>
-			<Element name="s(always 0/22)" type="ushort"/>
+			<Element name="UL-A-G-E-P-R-U-N" type="uint" hexview="1" hexviewwithdec="1" flags="Female;Essential;Is CharGen Face Preset;Respawn;Auto-calc stats;Unique;Doesn''t affect stealth meter;PC Level Mult;Use Template;Unknown 9;Unknown 10;Protected;Unknown 12;Unknown 13;Summonable;Unknown 15;Doesn''t bleed;Unknown 17;Bleedout Override;Opposite Gender Anims;Simple Actor;looped script;Unknown;Unknown;Unknown;Unknown;Unknown;Unknown;looped audio;Is Ghost;Unknown;Invulnerable"/>
+			<Element name="Magicka Offset" type="ushort"/>
+			<Element name="Stamina Offset" type="ushort"/>
+			<Element name="Level" type="short" desc="Forces Level"/>
+			<Element name="Calc min level" type="ushort"/>
+			<Element name="Calc max level" type="ushort"/>
+			<Element name="Speed Multiplier" type="ushort"/>
+			<Element name="Disposition Base" type="short"/>
+			<Element name="Template Flags" type="ushort" flags="Use Traits;Use Stats;Use Factions;Use Spell List;Use AI Data;Use AI Packages;Use Model/Animation;Use Base Data;Use Inventory;Use Script;Use Def Pack List;Use Attack Data;Use Keywords"/>
+			<Element name="Health Offset" type="ushort"/>
 			<Element name="BleedoutOverride #" type="ushort"/>
 		</Subrecord>
 		<Subrecord name="SNAM" desc="Factions tab" optional="1" repeat="1" >
 			<Element name="FACT FormID" type="formid" reftype="FACT"/>
 			<Element name="Rank" type="byte"/>
-			<Element name="(always 0)" type="byte"/>
-			<Element name="Flag" type="ushort"/>
+			<Element name="Unknown" type="byte" hexview="1" hexviewwithdec="1"/>
+			<Element name="Unknown" type="ushort" hexview="1" hexviewwithdec="1"/>
 		</Subrecord>
 		<Subrecord name="INAM" desc="Traits tab Death Item (LVLI)" optional="1">
 			<Element name="LVLI FormID" type="formid" reftype="LVLI"/>
@@ -8831,7 +8825,9 @@
 		</Subrecord>
 		<Subrecord name="PRKR" desc="SpellList tab Perk (PERK)" optional="1" repeat="1" >
 			<Element name="FormID" type="formid" reftype="PERK" />
-			<Element name="Unknown" type="uint" hexview="true" />
+			<Element name="Rank" type="byte" hexview="true" />
+			<Element name="Unknown" type="byte" hexview="true" />
+			<Element name="Unknown" type="ushort" hexview="true" />
 		</Subrecord>
 		<Subrecord name="COCT" desc="Inventory tab Container Total Item Count" optional="1">
 			<Element name="Total Count" type="uint"/>
