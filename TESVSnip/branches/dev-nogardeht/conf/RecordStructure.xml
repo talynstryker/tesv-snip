@@ -8769,7 +8769,6 @@
 		<Subrecord name="RNAM" desc="Traits tab Race Type (RACE)" optional="1">
 			<Element name="RACE FormID" type="formid" reftype="RACE"/>
 		</Subrecord>
-		<Group id="DESTRUCT" optional="1"/>
 		<!-- Snip doesn't support arranging this yet -->
 		<Subrecord name="SPCT" desc="SpellList tab Total Spell Count" optional="1">
 			<Element name="Count" type="uint"/>
@@ -8777,6 +8776,7 @@
 		<Subrecord name="SPLO" desc="SpellList tab Spell (SPEL)" optional="1" repeat="1">
 			<Element name="SPELL FormID" type="formid" reftype="SPEL"/>
 		</Subrecord>
+		<Group id="DESTRUCT" optional="1"/>
 		<Subrecord name="WNAM" desc="Traits tab Skin (ARMO)" optional="1">
 			<Element name="ARMO FormID" type="formid" reftype="ARMO"/>
 		</Subrecord>
@@ -8948,7 +8948,7 @@
 		</Subrecord>
 		<Group optional="1" repeat="1">
 			<!-- sound data -->
-			<Subrecord name="CSDT" desc="Sounds tab Sound Type">
+			<Subrecord name="CSDT" desc="Sounds tab Sound Type" optional="1">
 				<Element name="When Sound Plays" type="uint" options="Idle;0;Aware;1;Attack;2;Hit;3;Death;4;Weapon;5;Movement Loop;6;Conscious Loop;7"/>
 			</Subrecord>
 			<Subrecord name="CSDI" desc="Sounds tab Actor Sound (SNDR)" optional="1">
