@@ -10742,7 +10742,7 @@
 				<Element name="i(always 0)" type="int"/>
 			</Subrecord>
 			<Subrecord name="XCZR" desc="Unknown" optional="1">
-				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+				<Element name="REFR FormID" type="formid" optional="1" repeat="1"/>
 			</Subrecord>
 			<Subrecord name="XCZC" desc="Cell the Water Current is in (CELL)" optional="1" size="4">
 				<Element name="CELL FormID" type="formid" reftype="CELL"/>
@@ -10753,7 +10753,7 @@
 			<Subrecord name="XWCN" desc="Interior Water Current flag" optional="1" size="4">
 				<Element name="i(always 3)" type="int"/>
 			</Subrecord>
-			<Subrecord name="XWCU" desc="Interior Water Current Velocity and Rotation" optional="1" size="48">
+			<Subrecord name="XWCU" desc="Interior Water Current Velocity and Rotation" optional="1">
 				<Element name="Velocity X" type="float"/>
 				<Element name="Velocity Y" type="float"/>
 				<Element name="Velocity Z" type="float"/>
@@ -10765,7 +10765,7 @@
 				<Element name="f(always 0)" type="float"/>
 				<Element name="f(always 0)" type="float"/>
 				<Element name="f(always 0)" type="float"/>
-				<Element name="f(always 0)" type="float"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 		</Group>
 		<Group id="XSCL" optional="1"/>
