@@ -10741,6 +10741,9 @@
 			<Subrecord name="XCZA" desc="Water Current flag" optional="1" size="4">
 				<Element name="i(always 0)" type="int"/>
 			</Subrecord>
+			<Subrecord name="XCZR" desc="Unknown" optional="1">
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+			</Subrecord>
 			<Subrecord name="XCZC" desc="Cell the Water Current is in (CELL)" optional="1" size="4">
 				<Element name="CELL FormID" type="formid" reftype="CELL"/>
 			</Subrecord>
