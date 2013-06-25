@@ -150,6 +150,7 @@
 		<Subrecord name="XEMI" desc="Emittance tab (LIGH)" optional="1" size="4">
 			<Element name="Emittance LIGH FormID" type="formid" reftype="LIGH"/>
 		</Subrecord>
+		<Group id="XSCL" optional="1"/>
 		<Subrecord name="XESP" desc="Enable Parent pulldown (REFR)" optional="1">
 			<Element name="REFR FormID" type="formid" reftype="REFR"/>
 			<Element name="Check-Boxes" type="int" options="None;0;SetEnableOpposite;1;Pop In;2;SetEnableOpp/Pop In;3"/>
@@ -10553,6 +10554,7 @@
 			<Element name="Default Land Height" type="float"/>
 			<Element name="Default Water Height" type="float"/>
 		</Subrecord>
+		<Group id="MODEL" optional="1"/>
 		<Group id="ICONIMAGE" optional="1"/>
 		<Subrecord name="MNAM" desc="World Bounds" optional="1">
 			<Element name="UsableDimen X" type="int"/>
@@ -10769,7 +10771,6 @@
 				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 		</Group>
-		<Group id="XSCL" optional="1"/>
 		<Subrecord name="ONAM" desc="Open by Default Check-box (Checked)" optional="1" size="0"/>
 		<Group id="POSDATA" optional="1"/>
 	</Record>
