@@ -132,6 +132,9 @@
 			<Element name="s" type="short"/>
 			<Element name="s" type="short"/>
 		</Subrecord>
+		<Subrecord name="SCTX" desc="(legacy, deleted by CK)" optional="1">
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+		</Subrecord>
 		<Subrecord name="XAPD" desc="Parent Activate Only Check-box" optional="1" size="1">
 			<Element name="Parent Activate Only" type="byte" options="Unchecked;0;Checked;1"/>
 		</Subrecord>
@@ -171,6 +174,7 @@
 			<!-- 1 CK-inaccessible unknown blob -->
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
+		<Group id="XRGB" optional="1"/>
 	</Group>
 	<Group id="DESTRUCT" optional="1">
 		<!-- Snip doesn't support arranging this yet -->
@@ -706,6 +710,11 @@
 			<Element name="Actor Level Modifier" type="uint" options="Easy;0;Medium;1;Hard;2;Very Hard;3"/>
 		</Subrecord>
 	</Group>
+	<Group id="XRGB" optional="1">
+		<Subrecord name="XRGB" desc="Ragdoll Biped Data" optional="1" size="12">
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+		</Subrecord>
+	</Group>
 	<Group id="XLRL" optional="1">
 		<Subrecord name="XLRL" desc="Location Ref Type (LCTN)" optional="1">
 			<Element name="LCTN FormID" type="formid" reftype="LCTN"/>
@@ -1000,11 +1009,6 @@
 			<Subrecord name="XHOR" desc="Owned Horse Ref (ACHR)" optional="1" size="4">
 				<Element name="ACHR FormID" type="formid" reftype="ACHR"/>
 			</Subrecord>
-			<Subrecord name="XRGB" desc="(unknown, rigid body?)" optional="1" size="12">
-				<Element name="f" type="float"/>
-				<Element name="f" type="float"/>
-				<Element name="f" type="float"/>
-			</Subrecord>
 		</Group>
 		<Group id="XSCL" optional="1"/>
 		<Group id="POSDATA" optional="1"/>
@@ -1022,7 +1026,7 @@
 		<Group id="DESTRUCT" optional="1"/>
 		<!-- Snip doesn't support arranging this yet -->
 		<Group id="KEYWORDS" optional="1"/>
-		<Subrecord name="PNAM" desc="Marker Color">
+		<Subrecord name="PNAM" desc="Marker Color" optional="1">
 			<Element name="Red" type="byte"/>
 			<Element name="Green" type="byte"/>
 			<Element name="Blue" type="byte"/>
@@ -1600,19 +1604,36 @@
 			<Element name="Lighting Template Check-boxes 2" type="byte" flags="Fog Power;Fog Max;LightFadeDistances"/>
 			<Element name="Unknown" type="ushort"/>
 		</Subrecord>
-		<Subrecord name="LTMP" desc="Lighting Template (LGTM)" optional="1">
-			<Element name="LGTM FormID" type="formid" reftype="LGTM"/>
-		</Subrecord>
-		<Subrecord name="XCLW" desc="Water Height (reset to 0 if CK reopens cell)" optional="1">
-			<Element name="Water Height" type="float" desc="if scien-note then no water present"/>
-		</Subrecord>
 		<Group optional="1" repeat="1">
+			<Subrecord name="LTMP" desc="Lighting Template (LGTM)" optional="1">
+				<Element name="LGTM FormID" type="formid" reftype="LGTM"/>
+			</Subrecord>
 			<!-- XWCS unfinished -->
 			<Subrecord name="XCCM" desc="Interior Show Sky (REGN)" optional="1">
 				<Element name="REGN FormID" type="formid" reftype="REGN"/>
 			</Subrecord>
 			<Subrecord name="XCIM" desc="ImageSpace (IMGS)" optional="1">
 				<Element name="IMGS FormID" type="formid" reftype="IMGS"/>
+			</Subrecord>
+			<!-- water velocity -->
+			<Subrecord name="XWCN" desc="(always 3?)" optional="1">
+				<Element name="Unknown uint" type="uint"/>
+			</Subrecord>
+			<Subrecord name="XCLW" desc="Water Height (reset to 0 if CK reopens cell)" optional="1">
+				<Element name="Water Height" type="float" desc="if scien-note then no water present"/>
+			</Subrecord>
+			<Subrecord name="XWCS" desc="(always 3?)" optional="1">
+				<Element name="Unknown uint" type="uint" />
+			</Subrecord>
+			<Subrecord name="XWCU" desc="Water Velocity" optional="1">
+				<Element name="Linear X" type="float" desc="reset to 0 if cell is reopened"/>
+				<Element name="Linear Y" type="float" desc="reset to 0 if cell is reopened"/>
+				<Element name="Linear Z" type="float" desc="reset to 0 if cell is reopened"/>
+				<Element name="(always 0s)" type="float"/>
+				<Element name="Angular X" type="float"/>
+				<Element name="Angular Y" type="float"/>
+				<Element name="Angular Z" type="float"/>
+				<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 			</Subrecord>
 			<Group id="XLCN" optional="1"/>
 			<Subrecord name="XEZN" desc="Encounter Zone (ECZN)" optional="1">
@@ -1634,36 +1655,15 @@
 			<Subrecord name="XCWT" desc="Water Type (WATR)" optional="1">
 				<Element name="WATR FormID" type="formid" reftype="WATR"/>
 			</Subrecord>
-			<Group optional="1">
-				<!-- water velocity -->
-				<Subrecord name="XWCN" desc="(always 3?)">
-					<Element name="Unknown uint" type="uint"/>
-				</Subrecord>
-				<Subrecord name="XWCU" desc="Water Velocity">
-					<Element name="Linear X" type="float" desc="reset to 0 if cell is reopened"/>
-					<Element name="Linear Y" type="float" desc="reset to 0 if cell is reopened"/>
-					<Element name="Linear Z" type="float" desc="reset to 0 if cell is reopened"/>
-					<Element name="(always 0s)" type="float"/>
-					<Element name="Angular X" type="float"/>
-					<Element name="Angular Y" type="float"/>
-					<Element name="Angular Z" type="float"/>
-					<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
-				</Subrecord>
-			</Group>
 			<Subrecord name="LNAM" desc="LNAM" optional="1">
 				<Element name="Unknown uint" type="uint" />
 			</Subrecord>
-			<Subrecord name="XWCS" desc="(always 3?)" optional="1">
-				<Element name="Unknown uint" type="uint" />
+			<Subrecord name="XCLR" desc="Region (REGN)" optional="1">
+				<Element name="REGN FormID" type="formid" reftype="REGN" repeat="1" optional="1"/>
 			</Subrecord>
-			<Group optional="1" repeat="1">
-				<Subrecord name="XCLR" desc="Region (REGN)" optional="1">
-					<Element name="REGN FormID" type="formid" reftype="REGN" repeat="1" optional="1"/>
-				</Subrecord>
-				<Subrecord name="XNAM" desc="XNAM" optional="1">
-					<Element name="Unknown byte" type="byte"/>
-				</Subrecord>
-			</Group>
+			<Subrecord name="XNAM" desc="XNAM" optional="1">
+				<Element name="Unknown byte" type="byte"/>
+			</Subrecord>
 		</Group>
 	</Record>
 	<Record name="CLAS" desc="Character Class">
@@ -4588,7 +4588,7 @@
 			<Element name="WRLD Cell Grid X" hexview="1" hexviewwithdec="1" type="short" optional="1" options="Unknown Location Reference;32767"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
-		<Subrecord name="LCEC" desc="BaseActor Encounter Reference" optional="1">
+		<Subrecord name="LCEC" desc="BaseActor Encounter Reference" optional="1" repeat="1" >
 			<Element name="CELL/WRLD FormID" type="formid" optional="1"/>
 			<Element name="WRLD Cell Grid Y" hexview="1" hexviewwithdec="1" type="short" optional="1" options="Unknown Location Reference;32767"/>
 			<Element name="WRLD Cell Grid X" hexview="1" hexviewwithdec="1" type="short" optional="1" options="Unknown Location Reference;32767"/>
@@ -5988,9 +5988,9 @@
 				<!-- conditionals -->
 				<Subrecord name="NEXT" desc="Seperator" optional="1" />
 				<Group id="CONDITIONAL" optional="1" />
-      </Group>
+			</Group>
 			<Group id="SCEN_SCHR" optional="1" repeat="1"/>
-    </Group>
+		</Group>
 		<Group optional="1" repeat="1">
 			<Subrecord name="WNAM" desc="WNAM" optional="1" repeat="1">
 				<Element name="Unknown 4bytes" type="uint" />
@@ -6049,7 +6049,7 @@
 				<Element name="PACK/QUST FormID" type="formid"/>
 			</Subrecord>
 			<Group id="SCEN_SCHR" optional="1" repeat="1"/>
-    </Group>
+		</Group>
 		<Subrecord name="VNAM" desc="VNAM" optional="1">
 			<Element name="(always 3/0)" type="uint"/>
 			<Element name="(always 3/2)" type="uint"/>
@@ -6452,7 +6452,7 @@
 				<Element name="IDLE FormID" type="formid" reftype="IDLE"/>
 			</Subrecord>
 			<Group id="CONDITIONAL" optional="1" repeat="1"/>
-    </Group>
+		</Group>
 		<Group optional="1" repeat="1">
 			<!-- quest; rare flags/legacy? -->
 			<Subrecord name="SCHR" desc="(quest flag/legacy?">
@@ -10693,6 +10693,7 @@
 				<Element name="# of Linked Room Markers" type="ushort"/>
 				<Element name="s(always 0/1)" type="ushort"/>
 			</Subrecord>
+			<Group id="XLCM" optional="1"/>
 			<!-- Doors -->
 			<Subrecord name="XLOC" desc="Lock tab" optional="1" size="20">
 				<Element name="Level to Pick" type="byte" options="AutoLoad;0;Novice;1;Apprentice;25;Adept;50;Expert;75;Master;100;Requires Key;255"/>
