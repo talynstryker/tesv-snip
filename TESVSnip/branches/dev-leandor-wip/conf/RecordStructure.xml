@@ -119,6 +119,11 @@
 			<Element name="Idle Time" type="float"/>
 		</Subrecord>
 	</Group>
+	<Group id="XRGB" optional="1">
+		<Subrecord name="XRGB" desc="Ragdoll Biped Data" optional="1" size="12">
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+		</Subrecord>
+	</Group>
 	<Group id="PLACEDOBJ" optional="1">
 		<!-- has legacy DELETED by CK; CK adds XLRL subrecord if not already there; has CK-inaccessible data -->
 		<Subrecord name="INAM" desc="ImageSpace (IMGS)" optional="1" size="4">
@@ -708,11 +713,6 @@
 	<Group id="XLCM" optional="1">
 		<Subrecord name="XLCM" desc="Leveled Actor" optional="1">
 			<Element name="Actor Level Modifier" type="uint" options="Easy;0;Medium;1;Hard;2;Very Hard;3"/>
-		</Subrecord>
-	</Group>
-	<Group id="XRGB" optional="1">
-		<Subrecord name="XRGB" desc="Ragdoll Biped Data" optional="1" size="12">
-			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 	</Group>
 	<Group id="XLRL" optional="1">
