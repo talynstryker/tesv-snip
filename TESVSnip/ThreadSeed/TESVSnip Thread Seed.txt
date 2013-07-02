@@ -315,9 +315,10 @@ fiddly and not intuitive but that is in line with TESsnip anyway
 * Ails - Icons - [url=http://ails.deviantart.com/art/420-Pixel-Art-Icons-for-RPG-129892453]http://ails.deviantart.com/art/420-Pixel-Art-Icons-for-RPG-129892453[/url]
 * Crystal Project - Icons released under LGPL
 * wmrojer - For all the 4.3 and 4.3.1 Changes
-* SLuckyD - For his work on the latest RecordStructure.xml
+* SLuckyD - For his work on RecordStructure.xml Pre 4.4.0a
 * Leandro Conde - For his work on 4.4.0a
 * Smaug Nogardeht - For his work on 4.4.0a-4.4.2a
+* Sharlikran - For his work on RecordStructure.xml for 4.4.0a-4.4.2a
 
 [size=5][color=#00BFFF]License:[/color][/size]
 * The TESsnip code is licensed under GPL so this is by extension also GPL
