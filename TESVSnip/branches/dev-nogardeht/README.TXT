@@ -9,6 +9,17 @@ Requirements:
   .NET 4.0
 
 Change Log:
+v 4.4.2a
+
+- Updated RecordStructure.xml
+- Removed "Reduce Form Versions to 40" it did not provide the intended solution to Version Control with the CK
+
+v 4.4.1a
+
+- Updated RecordStructure.xml
+- Added "Reduce Form Versions to 40" and attempt to fix Version Control with the CK
+
+Change Log:
 v 4.4.0a
 - Added Zlib 1.2.4 support. [Leandro]
 - Completly Refactored the project. [Leandro]
