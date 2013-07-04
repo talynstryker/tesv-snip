@@ -12,7 +12,7 @@ The skyrim-plugin-decoding-project currently working on TES5Dump, in preparation
 
 Currently Leandro Conde and Smaug our two volunteers are no longer working on the project. Hopefully they will have a chance to return and help make more changes to the source code.
 
-We are looking for C# programmers that are willing to contribute to the project and produce a working copy of TESVSnip that will function as intended. From reading Figment's thread on the Nexus I understand there is also a
+We are looking for C# programmers that are willing to contribute to the project and produce a working copy of TESVSnip that will function as intended.
 
 The issue tracker on our site is set up for TESVSnip and I welcome any bug reports that cover version 4.4.2a. Feature enhancements are also welcome but they will be low priority until the version is stable enough to facilitate additional features. If a feature is currently implemented but not functioning correctly it will be resolved once the more critical issues are resolved.
 
