@@ -1298,6 +1298,14 @@
 			<Element name="Text" type="lstring"/>
 		</Subrecord>
 	</Record>
+	<Record name="PMIS" desc="Placed Missle">
+		<Group id="EDID" optional="1"/>
+		<Group id="VMAD" optional="1"/>
+		<Group id="NAME" optional="1"/>
+		<Subrecord name="DATA" desc="Check-boxes">
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
+		</Subrecord>
+	</Record>
 	<Record name="CELL" desc="Cell">
 		<!-- COMPRESSED, localized; XCLC, TVDT, XWCS, XCLL unfinished -->
 		<Group id="EDID" optional="1"/>
@@ -1308,12 +1316,70 @@
 			<Element name="Use Sky Lighting" type="byte" options="No;0;Yes;1"/>
 		</Subrecord>
 		<Subrecord name="XCLC" desc="Cell-Grid Location in WRLD" optional="1">
-			<Element name="X" type="uint"/>
-			<Element name="Y" type="uint"/>
+			<Element name="X" type="int"/>
+			<Element name="Y" type="int"/>
 			<Element name="Force Hide Land" type="byte" flags="Quad1;Quad2;Quad3;Quad4;16;32;64"/>
 			<Element name="(CK 81, Van 209/212)" type="byte" options="Persistent;23;CKExterior;81;UpdateESM;177;Update Persistent;189;VanExterior1;209;VanExterior2;212"/>
 			<Element name="(always 0/83)" type="byte" options="Persistent;0;Exterior;83;UpdateESM;84"/>
 			<Element name="(always 0)" type="byte"/>
+		</Subrecord>
+		<Subrecord name="XCLL" desc="Interior Cell Lighting" optional="1">
+			<!-- 2 unknown floats -->
+			<Element name="Ambient Red" type="byte"/>
+			<Element name="Ambient Green" type="byte"/>
+			<Element name="Ambient Blue" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="Directional Red" type="byte"/>
+			<Element name="Directional Green" type="byte"/>
+			<Element name="Directional Blue" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="Fog Near Red" type="byte"/>
+			<Element name="Fog Near Green" type="byte"/>
+			<Element name="Fog Near Blue" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="Fog Near Distance" type="float"/>
+			<Element name="Far" type="float"/>
+			<Element name="DirecRotation XY" type="float"/>
+			<Element name="DirecRotation Z" type="float"/>
+			<Element name="Directional Fade" type="float"/>
+			<Element name="Clip Distance" type="float"/>
+			<Element name="Power" type="float"/>
+			<Element name="DirecAmbient X+ R" type="byte"/>
+			<Element name="DirecAmbient X+ G" type="byte"/>
+			<Element name="DirecAmbient X+ B" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="DirecAmbient X- R" type="byte"/>
+			<Element name="DirecAmbient X- G" type="byte"/>
+			<Element name="DirecAmbient X- B" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="DirecAmbient Y+ R" type="byte"/>
+			<Element name="DirecAmbient Y+ G" type="byte"/>
+			<Element name="DirecAmbient Y+ B" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="DirecAmbient Y- R" type="byte"/>
+			<Element name="DirecAmbient Y- G" type="byte"/>
+			<Element name="DirecAmbient Y- B" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="DirecAmbient Z+ R" type="byte"/>
+			<Element name="DirecAmbient Z+ G" type="byte"/>
+			<Element name="DirecAmbient Z+ B" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="DirecAmbient Z- R" type="byte"/>
+			<Element name="DirecAmbient Z- G" type="byte"/>
+			<Element name="DirecAmbient Z- B" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="unknown float 1" type="float"/>
+			<Element name="unknown float 2" type="float"/>
+			<Element name="Fog Far Red" type="byte"/>
+			<Element name="Fog Far Green" type="byte"/>
+			<Element name="Fog Far Blue" type="byte"/>
+			<Element name="Unknown" type="byte"/>
+			<Element name="Max" type="float"/>
+			<Element name="LightFadeDist Start" type="float"/>
+			<Element name="LightFadeDist Far" type="float"/>
+			<Element name="Lighting Template Check-boxes 1" type="byte" flags="AmbientColor;DirectionalColor;Fog Color;FogNear;FogFar;DirectionalRotation;DirectionalFade;Clip Distance"/>
+			<Element name="Lighting Template Check-boxes 2" type="byte" flags="Fog Power;Fog Max;LightFadeDistances"/>
+			<Element name="Unknown" type="ushort"/>
 		</Subrecord>
 		<Subrecord name="TVDT" desc="TVDT" optional="1">
 			<Element name="i(always 3)" type="uint"/>
@@ -1547,63 +1613,9 @@
 			<Element name="3,1" type="byte"/>
 			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
-		<Subrecord name="XCLL" desc="Interior Cell Lighting" optional="1">
-			<!-- 2 unknown floats -->
-			<Element name="Ambient Red" type="byte"/>
-			<Element name="Ambient Green" type="byte"/>
-			<Element name="Ambient Blue" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="Directional Red" type="byte"/>
-			<Element name="Directional Green" type="byte"/>
-			<Element name="Directional Blue" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="Fog Near Red" type="byte"/>
-			<Element name="Fog Near Green" type="byte"/>
-			<Element name="Fog Near Blue" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="Fog Near Distance" type="float"/>
-			<Element name="Far" type="float"/>
-			<Element name="DirecRotation XY" type="float"/>
-			<Element name="DirecRotation Z" type="float"/>
-			<Element name="Directional Fade" type="float"/>
-			<Element name="Clip Distance" type="float"/>
-			<Element name="Power" type="float"/>
-			<Element name="DirecAmbient X+ R" type="byte"/>
-			<Element name="DirecAmbient X+ G" type="byte"/>
-			<Element name="DirecAmbient X+ B" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="DirecAmbient X- R" type="byte"/>
-			<Element name="DirecAmbient X- G" type="byte"/>
-			<Element name="DirecAmbient X- B" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="DirecAmbient Y+ R" type="byte"/>
-			<Element name="DirecAmbient Y+ G" type="byte"/>
-			<Element name="DirecAmbient Y+ B" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="DirecAmbient Y- R" type="byte"/>
-			<Element name="DirecAmbient Y- G" type="byte"/>
-			<Element name="DirecAmbient Y- B" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="DirecAmbient Z+ R" type="byte"/>
-			<Element name="DirecAmbient Z+ G" type="byte"/>
-			<Element name="DirecAmbient Z+ B" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="DirecAmbient Z- R" type="byte"/>
-			<Element name="DirecAmbient Z- G" type="byte"/>
-			<Element name="DirecAmbient Z- B" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="unknown float 1" type="float"/>
-			<Element name="unknown float 2" type="float"/>
-			<Element name="Fog Far Red" type="byte"/>
-			<Element name="Fog Far Green" type="byte"/>
-			<Element name="Fog Far Blue" type="byte"/>
-			<Element name="Unknown" type="byte"/>
-			<Element name="Max" type="float"/>
-			<Element name="LightFadeDist Start" type="float"/>
-			<Element name="LightFadeDist Far" type="float"/>
-			<Element name="Lighting Template Check-boxes 1" type="byte" flags="AmbientColor;DirectionalColor;Fog Color;FogNear;FogFar;DirectionalRotation;DirectionalFade;Clip Distance"/>
-			<Element name="Lighting Template Check-boxes 2" type="byte" flags="Fog Power;Fog Max;LightFadeDistances"/>
-			<Element name="Unknown" type="ushort"/>
+		<!-- Unsupported XCGD Console Record -->
+		<Subrecord name="XCGD" desc="Hand-Modified Height Data (by vertex)?" optional="1">
+			<Element name="Rest of Data" type="uint" hexview="1" hexviewwithdec="1" optional="1" repeat="1"/>
 		</Subrecord>
 		<Group optional="1" repeat="1">
 			<Subrecord name="LTMP" desc="Lighting Template (LGTM)" optional="1">
@@ -6497,6 +6509,7 @@
 		<Group id="KEYWORDS" optional="1"/>
 		<Group id="MODEL" optional="1"/>
 		<Group id="ICONIMAGE" optional="1"/>
+		<Group id="DESTRUCT" optional="1"/>
 		<Group id="ETYP" optional="1"/>
 		<!-- Snip doesn't support arranging this yet -->
 		<Group id="SOUNDS" optional="1"/>
